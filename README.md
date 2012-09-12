@@ -1,7 +1,9 @@
 Nietzsche
 =========
-
 MBTA Transit Redefined
 
-Laurence Toal
-Patricia Martin Vicente
+Team Members:
+Brett
+Laurence
+Patricia
+
