@@ -1,7 +1,6 @@
 Nietzsche
 =========
-MBTA Transit Redefined
-
+Humanizing MBTA Transport
 The Team:
 --------------
 Brett
