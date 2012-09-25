@@ -4,54 +4,13 @@ body {
   font-size: 16px;
 }
 
-#centerpiece {
-  display: block;
-  margin-top: 8em; 
-  margin-left: auto;
-  margin-right: auto;
-  width: 20em;
-}
-
-#logo {
-  margin-left: auto;
-  margin-right: auto;
-  width: 15em; 
-
-  display: block;
-}
-
-#slogan {
-  font-size: 1.5em;
-  text-align: center;
-}
-
-#navigation {
-  margin-left: auto;
-  margin-right: auto;
-  width: 20em;
-  background-color: black;
-  -webkit-border-radius:20px;
-  -moz-border-radius:20px;
-  -border-radius:20px;
-  border-radius: 20px;
-}
-
-.circle {
-  display: inline;  
-  width: 2em;
-}
-
-#locations {
-  display: inline-block;
-  padding-left: 0.8em;
-}
-
-.section {
-    margin-left: 3em;
-    margin-bottom: 3em;
-}
-
 .author {
   margin-top: 1em;
   color: rgb(165,165,165);  
+}
+
+.Nietzsche {
+  background-color: black;
+  color: #eee;
+  padding: 0 0.2em 0 0.2em;
 }

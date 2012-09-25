@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">  
+    <meta charset="utf-8">
     <title>Nietzsche</title>
     <meta
-      name="description" 
+      name="description"
       content="Humanizing MBTA Transit"
     />
     <link href="assets/bootstrap/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
@@ -12,102 +12,137 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width initial-scale=1"> <!-- , maximum-scale=1" -->
   </head>
+    
+    <div class="container">
 
     <div id='centerpiece'>
       <img id='logo' src="assets/images/NietzscheLogo.png" alt="Logo">
       <h2 id=slogan>humanizing MBTA transit</h2>
+
+      <div id='navigation'></div>
+        <nav id='links'>
+          <ul>
+            <li class="location">
+              <span class='circle'></span>
+              <a>Overview</a>
+            </li>
+            <li class="location">
+              <span class='circle'></span>
+              <a>Inspirations</a>
+            </li>
+            <li class="location">
+              <span class='circle'></span>
+              <a>Personas</a>
+            </li>
+            <li class="location">
+              <span class='circle'></span>
+              <a>Storyboards</a>
+            </li>
+          </ul>
+        </nav>
     </div>
-      <div id='navigation'>
-        <div id='locations'>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        <svg class="circle" height="16" xmlns="http://www.w3.org/2000/svg">
-          <circle id="redcircle" cx="15" cy="10" r="5" fill="black" stroke="white" stroke-width="2" />
-        </svg>
-        </div>
-      </div>
-      <!--
-      <nav id='links'>
-        <ul>
-          <li>Overview</li>
-          <li>Inspiration</li>
-        </ul>
-      </nav>
-      -->
-      <div id='overview' class='section'>
-        <h3>Overview</h3>
-        <p>Coming Soon!</p>
-      </div>
+
       <div class='section'>
-        <h3 id='inspiration'>Inspiration</h3>
-	<h4>Inspirations Gallery</h4>
-	    <a href="inspirations.html#t-times"><img src="t-times-red-line.jpg" alt="t times red line screenshot"/></a>
-	    <a href="inspirations.html#embark"><img src="embark-screen-1.png" alt="embark screenshot"/></a>
-	    <a href="inspirations.html#madrid"><img src="metro-madrid.jpg" alt="metro madrid screenshot"/></a>
-	<h4>Competitor Systems: MBTA-Suggested Apps</h4>
-	    <ul>
-	        <li><a href="http://www.whereisthet.com/">Where is the T</a></li>
-	        <li><a href="http://hopstop.com/?action=mobile">HopStop</a></li>
-	        <li><a href="http://transittimes.com.au/">TransitTimes+</a></li>
-		<li><a href="http://itunes.apple.com/us/app/my-stop-boston/id435308399?mt=8">My Stop Boston</a></li>
-		<li><a href="http://itunes.apple.com/us/app/openmbta-for-ipad/id395963566?mt=8">OpenMBTA for iPad</a></li>
-		<li><a href="http://itunes.apple.com/us/app/embark-boston-t-mbta-by-embark/id494522038?mt=8">Embark</a></li>
-		<li><a href="https://play.google.com/store/apps/details?id=net.aharm.mbta&hl=en">T Times</a></li>
-	</ul>
-
-	<h4>Related Systems</h4>
-	    <ul>
-		<li>Google Maps</li>
-		<li>Google Now</li>
-		<li>Metro Madrid App</li>
-	    </ul>
-
-	<h4>Misc. Systems</h4>
-	    <ul>
-		<li><a href="http://www.theverge.com/2012/7/23/3163903/solar-iphone-weather-app-hands-on">Solar</a></li>
-		<li><a href="http://itunes.apple.com/us/app/springpad/id360116898?mt=8">Springpad</a></li>
-		<li><a href="http://itunes.apple.com/us/app/pocket-formerly-read-it-later/id309601447?mt=8">Pocket</a></li>
-		<li>Twitter: Simple and clear interface</li>
-	    </ul>
-	<h4>General Inspirations</h4>
-	    <ul>
-		<li><a href="http://vimeo.com/36579366">Inventing on Principle</a></li>
-		<li>Data Visualization: <em>The Visual Display of Quantitative Information</em></li>
-		<li><a href="http://www.cooper.com/#work:parker">What has Cooper Design done?</a></li>
-		<li><a href="http://www.youtube.com/watch?v=pPqliPzHYyc">Google Now</a></li>
-		<li><a href="http://worrydream.com/MagicInk">Magic Ink</a></li>
-	    </ul>
-
-	<h4>Transit Inspirations</h4>
-	    <ul>
-		<li><a href="http://maps.google.com">Google Maps</a></li>
-		<li><a href="http://www.apple.com/ios/ios6/maps/">Apple Maps</a></li>
-		<li><a href="http://www.google.com/intl/en/landing/transit/#mdy">Google Transit</a></li>
-		<li><a href="http://howfuckedisthet.com/">How F***** is the T?</a></li>
-	    </ul>
-
-
+        <h3 id='inspiration' class='section-header'>Inspirations</h3>
+          <div id='inspiration-block' class='gallery-block'>
+            <a href="inspirations.html#magic-ink">
+              <img src="assets/images/inspirations-thumbnails/magic-ink.png" alt="magic ink screenshot"/>
+            </a>
+	    <a href="inspirations.html#t-times">
+              <img src="assets/images/inspirations-thumbnails/t-times.png" alt="t times red line screenshot"/>
+            </a>
+	    <a href="inspirations.html#embark">
+              <img src="assets/images/inspirations-thumbnails/embark.png" alt="embark screenshot"/>
+            </a>
+	    <a href="inspirations.html#madrid">
+              <img src="assets/images/inspirations-thumbnails/metro-madrid.png" alt="metro madrid screenshot"/>
+            </a>
+          </div>
       </div>
+
+    </div>
 
   </body>
-</html>
+  <style>
 
+    #centerpiece {
+      display: block;
+      margin-top: 8em; 
+      margin-left: auto;
+      margin-right: auto;
+      width: 20em;
+    }
+
+    #logo {
+      margin-left: auto;
+      margin-right: auto;
+      width: 15em; 
+
+      display: block;
+    }
+
+    #slogan {
+      font-size: 1.5em;
+      text-align: center;
+    }
+
+    #navigation {
+      margin-left: auto;
+      margin-right: auto;
+      width: 20em;
+      background-color: black;
+      -webkit-border-radius:20px;
+      -moz-border-radius:20px;
+      -border-radius:20px;
+      border-radius: 20px;
+    }
+
+    .section {
+      margin-top: 7em;
+    }
+    #navigation {
+      height: 1.5em;
+    }
+    .location {
+      display: inline-block;
+      -webkit-transform-origin:0%;
+      -webkit-transform:rotate(45deg);
+      width: 4em; // Width of each location in the nav bar
+      margin-top: -3em;
+    }
+
+    .location a {
+      display: block;
+      margin-left: 2.2em;
+      margin-top: -1.6em;
+    }
+    #links {
+      margin-top: -1.9em;
+      padding: 0em 1em;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #links ul {
+      margin: 0;
+    }
+    .circle {
+      background: url(assets/images/circle.png) no-repeat;
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+    }
+    .gallery-block {
+      background-color: black;  
+    }
+    #inspiration-block {
+      width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section-header {
+      background-color: black;
+      color: white;
+      padding-left: 2em;
+    }
+  </style>
+</html>
