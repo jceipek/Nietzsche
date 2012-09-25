@@ -1,16 +1,79 @@
-body {
-  background-color: rgb(252, 250, 250); 
-  margin: 2em;
-  font-size: 16px;
+#centerpiece {
+  display: block;
+  margin-top: 8em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20em;
 }
 
-.author {
-  margin-top: 1em;
-  color: rgb(165,165,165);  
+#logo {
+  margin-left: auto;
+  margin-right: auto;
+  width: 15em;
+
+  display: block;
 }
 
-.Nietzsche {
+#slogan {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+#navigation {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20em;
   background-color: black;
-  color: #eee;
-  padding: 0 0.2em 0 0.2em;
+  -webkit-border-radius:20px;
+  -moz-border-radius:20px;
+  -border-radius:20px;
+  border-radius: 20px;
+}
+
+.section {
+  margin-top: 7em;
+}
+#navigation {
+  height: 1.5em;
+}
+.location {
+  display: inline-block;
+  -webkit-transform-origin:0%;
+  -webkit-transform:rotate(45deg);
+  width: 4em; // Width of each location in the nav bar
+  margin-top: -3em;
+}
+
+.location a {
+  display: block;
+  margin-left: 2.2em;
+  margin-top: -1.6em;
+}
+#links {
+  margin-top: -1.9em;
+  padding: 0em 1em;
+  margin-left: auto;
+  margin-right: auto;
+}
+#links ul {
+  margin: 0;
+}
+.circle {
+  background: url(assets/images/circle.png) no-repeat;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+}
+.gallery-block {
+  background-color: black;
+}
+#inspiration-block {
+  width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-header {
+  background-color: black;
+  color: white;
+  padding-left: 10%;
 }
