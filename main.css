@@ -40,8 +40,15 @@
   display: inline-block;
   -webkit-transform-origin:0%;
   -webkit-transform:rotate(45deg);
-  width: 4em; // Width of each location in the nav bar
+  -moz-transform-origin:0%;
+  -moz-transform:rotate(45deg);
+  -o-transform-origin:0%;
+  -o-transform:rotate(45deg);
+  -ms-transform-origin:0%;
+  -ms-transform:rotate(45deg);
+  width: 3em; // Width of each location in the nav bar
   margin-top: -3em;
+  white-space: nowrap;
 }
 
 .location a {
