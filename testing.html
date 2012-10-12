@@ -62,43 +62,54 @@ Released   : 20120818
                                         train and figure out when we has to head to the station. On the other hand, <a href="needs.html#henryandelise">Henry &amp; Elise</a> need detailed
                                         directions of the entire route from their hotel to downtown Boston. Rather than separating these use cases at the top level, we structured the
                                         application so that the information Peter needs is available almost immediately whereas Henry &amp; Elise can spend more time interacting with the
-                                        application to get the information they need. We tried to make this information progression make sense rather than forcing users to "jump through hoops" 
+                                        application to get the information they need. We tried to make this information progression make sense rather than forcing users to "jump through hoops"
                                         by <a href="inspirations.html#magicink">overemphasizing interaction</a>.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="method">Method</h2>
 				<div class="entry">
-					<p>Unfortunately, very few of the individuals we met during the <a href="needs.html#synthesis">research phase</a> responded to our follow-up emails.
-                                        As such, test participants were primarily members of the Olin community who identified themselves as infrequent users of public transportation or users unfamiliar with the MBTA system &mdash; people with needs similar to <a href="needs.html#lilah">Lilah's</a>.</p>
+					<p>Unfortunately, very few of the individuals we met during the research phase responded to our follow-up emails. Consequently, most of our test participants
+                                        were members of the Olin community who identified themselves as infrequent users of public transportation or users unfamiliar with the MBTA system &mdash;
+                                        people with needs similar to <a href="needs.html#lilah">Lilah's</a>.</p>
 
-					<p>As described above, our design is meant to negate the need for different users to complete different tasks, merely interact with the software with varying levels of depth. As such, only one scenario was needed, although it was broken down into the following series of steps:
+					<p>Since our variable-depth design is meant to sidestep the need for different users to complete different tasks,
+                                        we focused on a single scenario broken down into the following steps:
 					    <ul>
-						<li>The participant is told there is a subway station near their apartment and they have been invited to a party at a friend’s house in Boston. They are asked to determine how to get their using public transportation, using this application.</li>
-						<li>When the participant reaches the directions page (Screen 3), we ask them to describe to the observer/facilitator in plain language how they will get to the party.</li>
-						<li>We notify the participant that the party has just been cancelled before he/she has had a chance to leave. The participant is asked to re-route to a new location starting from the screen showing the route to the party.</li>
-						<li>The participant is also asked what they would do if they arrived at a bus stop just as the bus was leaving (our design has a feature specifically for this situation and we wish to ensure that its functionality is clear).</li>
-						<li>The participant is also asked how they would determine where to go within a station in order to transfer from one train to another (a possible design feature would be a Google Streetview-style representation of the journey which could be accessed by tapping on the specific direction).</li>
+						<li>We tell each participant to imagine that there is a subway station near his/her apartment and that he/she has been
+                                                invited to a party at a friend's house in Boston. We then ask them to use our application prototype to find out how to get
+                                                there using public transportation.</li>
+						<li>When the participant reaches the directions page (Screen 3), we ask them to describe to the observer/facilitator in
+                                                plain language how they will get to the party.</li>
+						<li>We notify the participant that the party has just been cancelled before he/she has had a chance to leave.
+                                                We ask the participant is to re-route to a new location starting from the screen showing the route to the party.</li>
+						<li>Public transportation seldom works on schedule. We ask the participant what he/she would do if he/she arrived at
+                                                a bus stop just as the bus was leaving. Our design has a button specifically for this situation and we want to ensure
+                                                that its functionality is clear.</li>
+						<li>We ask the participant how he/she would determine where to go within a station in order to transfer from one train
+                                                to another. Our prototype includes a Google Streetview-style representation of this journey which can be accessed by tapping
+                                                on a specific station.</li>
 					    </ul>
 					</p>
- 
-					<p>These questions were administered by the facilitator, who also took notes during the test. Another team member acted as the computer, mentally making additional observations that were then compared and discussed after the test participant had left.
-In addition to the scenario completed by the participant, the participant was asked about the alternative versions of Screen 2 we had prepared. We also asked for feedback on the other screens.</p>
-					<p>(<a href="#top">top of page</a>)</p>	
+
+					<p>These questions were administered by a facilitator who also took notes during the test. Another team member acted as the computer and made additional
+                                        observations (mentally) that were then compared and discussed after the test participant had left. In addition to the scenario completed by the participant,
+                                        we asked the participant about the alternative versions of Screen 2 we had prepared. We also asked for feedback on the other screens.</p>
+					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 
 				<h2 class="title" id="measures">Test Measures</h2>
 				<div class="entry">
 					<p>The observations were largely qualitative in nature, paying attention to how long it took for participants to make a decision or navigate a page, the confidence with which participants described their actions or choices, whether or not they were able to correctly determine the functionality of certain UI elements, and of course the explicit feedback given at the end of each test. These notes were collected and then de-briefed by the entire team at the end of the project phase, allowing us to spot common feedback issues and rule out edge-case complaints. The team acknowledges the lack of quantitative information gathered, but much of the functionality of our design is dependent on motion and the user’s progression through the journey, limiting the effectiveness of paper prototypes to fully explore the design concept.</p>
-					<p>(<a href="#top">top of page</a>)</p>	
+					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 
 				<h2 class="title" id="results">Results</h2>
 				<div class="entry">
 					<p>The following is a bulleted list of our key insights and observations gathered from testing, arranged by which part of the interface they are about. Insights that came up during multiple tests are noted with “+X”</p>
- 
+
 					<h3>Screen 1</h3>
 					    <ul>
 					        <li>Testers liked the integration with their contact list, felt like search results were “relevant”, “useful” +3</li>
@@ -141,7 +152,7 @@ In addition to the scenario completed by the participant, the participant was as
 					    <ul>
 						<li>Almost all testers expressed interest in the “Street-view” visuals, but felt that it would be more difficult to align a picture on a phone with their surroundings than to simply look for a sign.</li>
 					    </ul>
-	
+
 					<h3>General Observations</h3>
 					    <ul>
 						<li>Wording instructions is very challenging. Testers tended to input the information we gave them – in some tests we gave the participants the address of the place they were going, in others we only gave them the person’s name.</li>
@@ -149,7 +160,7 @@ In addition to the scenario completed by the participant, the participant was as
 						<li>One major limitation of the paper prototype was that “clickable” things were not always obviously “clickable”</li>
 						<li>Certain users make decisions based on availability of cell signal, assume app needs data. Others turn on Airplane Mode to conserve battery, hope app doesn’t need data</li>
 					    </ul>
-					<p>(<a href="#top">top of page</a>)</p>	
+					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="discussion">Discussion</h2>
@@ -173,13 +184,13 @@ In addition to the scenario completed by the participant, the participant was as
 					    <li>Use language that is clear</li>
 					    <li>Use icons and symbols; make sure transit colors align with the real world</li>
 					</ul>
- 
+
 					<p>As mentioned earlier, our design has certain features that were difficult to test in paper. This primarily includes modifying the size and arrangement of screens to make use of scrolling – tests gave positive feedback about scaling line segments by time, but this means short segments become very information dense and difficult to read. Lengthening the directions list would solve this, but we are not sure what effect scrolling will have on user perception.</p>
 
 					<p>We would also like to use MBTA GPS data to provide more accurate time information and show users’ current locations on their journey, actions that are best tested as a user actually goes through their journey, not just sitting in a room in front of paper.</p>
 
 					<p>Overall, we were impressed at how much we were able to learn from a paper prototype – our test participants posed questions and made decisions that forced us and will force us to refine our design further. It is clear our next iteration will be a great improvement, but there are still many other aspects that will need testing.</p>
-					<p>(<a href="#top">top of page</a>)</p>	
+					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="appendicies">Appendices</h2>
@@ -189,14 +200,14 @@ In addition to the scenario completed by the participant, the participant was as
 
 					<h3>Script</h3>
 				        <p>Our <a href="PaperPrototypingScript.pdf">user test script</a> contains the introductory briefing we gave each user, as well as the scenarios we asked them to walk through</p>
-					
+
 					<h3>Raw Data</h3>
 					<p>A collection of sticky notes created during team de-briefing after all user tests were completed, highlighting the most important feedback we recieved.</p>
 					<p><img src="images/lowfi1.jpg" width="100%"></p>
 					<p><img src="images/lowfi2.jpg" width="100%"></p>
 					<p><img src="images/lowfi3.jpg" width="100%"></p>
-					<p><img src="images/lowfi4.jpg" width="100%"></p>				
-					<p>(<a href="#top">top of page</a>)</p>	
+					<p><img src="images/lowfi4.jpg" width="100%"></p>
+					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 
