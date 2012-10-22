@@ -5,6 +5,10 @@ http://www.freecsstemplates.org
 Released for free under a Creative Commons Attribution 2.5 License
 */
 
+/*
+ * Some edits by Julian Ceipek (10/12/2012)
+ */
+
 body {
 	margin: 0;
 	padding: 0;
@@ -560,4 +564,8 @@ a:hover {
 
 p.quote {
 	font-style: italic;
+}
+
+.highlighted {
+  color: rgb(230, 45, 45);
 }
