@@ -1,50 +1,41 @@
-window.onload = function() {
+function writeMessage(messageLayer, message) {
+        var context = messageLayer.getContext();
+        messageLayer.clear();
+        context.font = "18pt Calibri";
+        context.fillStyle = "black";
+        context.fillText(message, 10, 25);
+      }
+
+      $(function() {
         var stage = new Kinetic.Stage({
-          container: 'container',
+          container: "screen1Container",
           width: 578,
           height: 200
         });
-        var layer = new Kinetic.Layer();
+        var circleLayer = new Kinetic.Layer();
+        var messageLayer = new Kinetic.Layer();
 
-        for(var n = 0; n < 10; n++) {
-          var circle = new Kinetic.Circle({
-            x: Math.random() * stage.getWidth(),
-            y: Math.random() * stage.getHeight(),
-            radius: Math.random() * 50 + 25,
-            fill: 'red',
-            strokeWidth: 3
-          });
+        var numEvents = 0;
 
-          layer.add(circle);
-        }
-
-        var rect = new Kinetic.Rect({
-          x: 300,
-          y: 90,
-          width: 100,
-          height: 50,
-          fill: 'green',
-          strokeWidth: 3,
-          offset: {
-            x: 50,
-            y: 25
-          },
-          draggable: true,
-          id: 'myRect'
+        var circle = new Kinetic.Circle({
+          x: stage.getWidth() / 2,
+          y: stage.getHeight() / 2 + 10,
+          radius: 70,
+          fill: "red",
+          stroke: "black",
+          strokeWidth: 4
         });
 
-        layer.add(rect);
-        stage.add(layer);
+        circle.on("mouseover mousedown mouseup", function() {
+          writeMessage(messageLayer, "Multi-event binding!  Events: " + (++numEvents));
+        });
+        circle.on("mouseout", function() {
+          writeMessage(messageLayer, "");
+        });
 
-        document.getElementById('activate').addEventListener('click', function() {
-          var shape = stage.get('#myRect')[0];
-          shape.transitionTo({
-            scale: {
-              x: Math.random() * 2,
-              y: Math.random() * 2
-            },
-            duration: 1,
-            easing: 'elastic-ease-out'
-          });
-        }, false);
-      };
+        circleLayer.add(circle);
+
+        stage.add(circleLayer);
+        stage.add(messageLayer);
+      });
+
