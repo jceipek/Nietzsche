@@ -1,0 +1,23 @@
+#screen-wrapper {
+  width: 640px;
+  height: 940px; /* (-20 for title bar) */
+  background-color: black;
+}
+
+#top-bar {
+  background-color: blue;
+}
+
+.field-container label {
+  text-align: right;
+  font-size: 3em;
+  padding-top: 10px;
+  margin-left: 1em;
+  margin-right: 1em;
+  //width: 20em;
+}
+
+#from-field, #to-field {
+  width: 70%;
+  height: 2em;
+}
