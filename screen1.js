@@ -4,13 +4,13 @@ $(function() {
 
   var screen1 = {
     portraitData: {
-      listHeaderHeight: 40,
-      listItemHeight: 90
+      listHeaderHeight: 20,
+      listItemHeight: 45
     },
     stage: new Kinetic.Stage({
             container: 'screen1Container',
-            width: 640,
-            height: 940}),
+            width: 320,
+            height: 470}),
     shapesLayer: new Kinetic.Layer(),
     listItemsGroup: new Kinetic.Group()
   };
