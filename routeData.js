@@ -40,3 +40,16 @@ PossibleRoutes.push(
     }
   }
 );
+
+PossibleRoutes.push(
+  {
+    type: 'PLACES',
+    nickname: 'Here',
+    name: 'Olin College of Engineering',
+    address: '1000 Olin Way',
+    location: 'Needham, MA',
+    mapsData: {
+      // Put Google Maps Data Here
+    }
+  }
+);

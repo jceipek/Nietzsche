@@ -1,17 +1,32 @@
+body, #screen-wrapper {
+  overflow: hidden;  
+}
+
 #screen-wrapper {
   width: 320px;
   height: 470px; /* (-20 for title bar) */
-  background-color: black;
+  background-color: #eee;
+}
+
+form {
+  margin-bottom: 0px;  
 }
 
 #top-bar {
-  background-color: blue;
+  color: #eee;
+  font-family: 'HelveticaNeue-Light';
+  padding: 0px;
+  background-image: -webkit-gradient(linear, left top, left bottom, 
+                                       from(#555), to(#333));
+  border-bottom-style: solid;
+  border-bottom-color: black; 
+  border-bottom-width: 1px;
 }
 
 .field-container label {
   text-align: right;
   font-size: 1.5em;
-  padding-top: 10px;
+  padding-top: 5px;
   margin-left: 1em;
   margin-right: 1em;
   //width: 20em;
@@ -20,4 +35,17 @@
 #from-field, #to-field {
   width: 70%;
   height: 1em;
+  margin-bottom: 5px;
+  margin-top: 0px;
+}
+
+label {
+  margin-bottom: 5px;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+canvas {
+  width: 320px;  
+  height: 470px;  
 }
