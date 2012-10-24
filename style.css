@@ -12,7 +12,7 @@ Released for free under a Creative Commons Attribution 2.5 License
 body {
 	margin: 0;
 	padding: 0;
-	background: #690000 url(images/img01.jpg) repeat;
+	background: #690000 url(images/site/img01.jpg) repeat;
 	font-family: 'Open Sans Condensed', sans-serif;
 	font-size: 16px;
 	color: #404040;
@@ -56,7 +56,7 @@ a:hover {
 
 #wrapper {
 	overflow: hidden;
-	background: #FFFFFF url(images/img05.jpg) repeat;
+	background: #FFFFFF url(images/site/img05.jpg) repeat;
 }
 
 .container {
@@ -83,7 +83,7 @@ a:hover {
 #banner {
 	overflow: hidden;
 	height: 400px;
-	background: url(images/img04.jpg) no-repeat center bottom;
+	background: url(images/site/img04.jpg) no-repeat center bottom;
 }
 
 #banner .image-style {
@@ -187,7 +187,7 @@ a:hover {
 #menu-wrapper {
 	overflow: hidden;
 	height: 53px;
-	background: url(images/img02.jpg) repeat;
+	background: url(images/site/img02.jpg) repeat;
 }
 
 #menu {
@@ -210,7 +210,7 @@ a:hover {
 #menu a {
 	display: block;
 	padding: 0px 30px;
-	background: url(images/img10.png) no-repeat right 50%;
+	background: url(images/site/img10.png) no-repeat right 50%;
 	line-height: 52px;
 	text-decoration: none;
 	text-transform: lowercase;
@@ -297,7 +297,7 @@ a:hover {
 	height: 25px;
 	padding: 2px 0px 0px 0px;
 	margin-right: 10px;
-	background: url(images/img08.jpg) no-repeat left top;
+	background: url(images/site/img08.jpg) no-repeat left top;
 	text-align: center;
 	color: #FFFFFF;
 }
@@ -308,7 +308,7 @@ a:hover {
 	width: 88px;
 	height: 25px;
 	padding: 2px 0px 0px 0px;
-	background: url(images/img08.jpg) no-repeat left top;
+	background: url(images/site/img08.jpg) no-repeat left top;
 	text-align: center;
 	color: #FFFFFF;
 }
@@ -360,7 +360,7 @@ a:hover {
 /* Three Column Footer Content */
 
 #footer-content {
-	background: url(images/img04.png) no-repeat center top;
+	background: url(images/site/img04.png) no-repeat center top;
 	color: #C59C9C;
 }
 
@@ -403,7 +403,7 @@ a:hover {
 	height: 100px;
 	margin: 0 auto;
 	padding: 50px 0px 0px 0px;
-	background: url(images/img04.png) no-repeat center top;
+	background: url(images/site/img04.png) no-repeat center top;
 }
 
 #footer p {
@@ -445,7 +445,7 @@ a:hover {
 	width: 252px;
 	height: 38px;
 	padding: 15px 0px 0px 0px;
-	background: url(images/img07.jpg) no-repeat left top;
+	background: url(images/site/img07.jpg) no-repeat left top;
 	letter-spacing: -2px;
 	text-align: center;
 	text-transform: lowercase;
@@ -456,7 +456,7 @@ a:hover {
 .box1 {
 	overflow: hidden;
 	height: 300px;
-	background: url(images/img04.jpg) no-repeat center bottom;
+	background: url(images/site/img04.jpg) no-repeat center bottom;
 }
 
 .list-style1 {
@@ -503,7 +503,7 @@ a:hover {
 #banner {
 	overflow: hidden;
 	height: 450px;
-	background: url(images/img04.png) no-repeat center bottom;
+	background: url(images/site/img04.png) no-repeat center bottom;
 }
 
 /* Three Column Content */
@@ -530,7 +530,7 @@ a:hover {
 }
 
 .box-style {
-	background: #191919 url(images/img05.jpg) repeat;
+	background: #191919 url(images/site/img05.jpg) repeat;
 }
 
 .box-style h2 {
@@ -545,7 +545,7 @@ a:hover {
 }
 
 .box-style .arrow {
-	background: url(images/img06.png) no-repeat right top;
+	background: url(images/site/img06.png) no-repeat right top;
 }
 
 .box-style .content {
@@ -558,7 +558,7 @@ a:hover {
 .divider {
 	overflow: hidden;
 	height: 50px;
-	background: url(images/img04.png) no-repeat center top;
+	background: url(images/site/img04.png) no-repeat center top;
 }
 
 
