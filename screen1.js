@@ -41,7 +41,7 @@ $(function() {
           fill: '#555',
           text: headerTitle,
           fontSize: 14,
-          fontFamily: 'Calibri',
+          fontFamily: 'Helvetica Neue',
           textFill: '#FFF',
           width: width,
           padding: 20,
