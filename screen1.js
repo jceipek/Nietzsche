@@ -5,7 +5,7 @@ $(function() {
   var screen1 = {
     portraitData: {
       listHeaderHeight: 40,
-      listItemHeight: 80
+      listItemHeight: 90
     },
     stage: new Kinetic.Stage({
             container: 'screen1Container',
@@ -41,12 +41,12 @@ $(function() {
           fill: '#555',
           text: headerTitle,
           fontSize: 14,
-          fontFamily: 'Calibri',
+          fontFamily: 'HelveticaNeue',
           textFill: '#FFF',
           width: width,
           padding: 20,
           align: 'left',
-          fontStyle: 'italic'
+          //fontStyle: 'italic'
         });
     group.add(routeHeader);
 
@@ -56,44 +56,44 @@ $(function() {
   var createRouteItem = function (y, width, height, route) {
     //TODO: Finish this by making it a group and adding route information
     var group = new Kinetic.Group();
-    /*var rectItem = new Kinetic.Rect({
-        
+    var rectItem = new Kinetic.Rect({
+        x: 0,
+        y: y,
+        width: width,
+        height: height,
+        fill: 'white',
+        stroke: 'grey',
+        strokeWidth: 2
     });
-    */
+    
     var routeItem = new Kinetic.Text({
           x: 0,
           y: y,
-          stroke: '#555',
-          strokeWidth: 2,
-          fill: '#FFF',
-          text: route.nickname + "\n" + route.name + "\n" + route.address +"\n" + route.location,
-          fontSize: 14,
-          fontFamily: 'Calibri',
+          text: route.nickname,
+          fontSize: 12,
+          fontFamily: 'HelveticaNeue',
           textFill: '#000',
           width: width,
           padding: 20,
           align: 'left',
-          fontStyle: 'italic'
+          fontStyle: 'bold'
         });
         
-       /* var routeItemDetails = new Kinetic.Text({
+        var routeItemDetails = new Kinetic.Text({
           x: 0,
-          y: y,
-          stroke: '#555',
-          strokeWidth: 2,
-          fill: '#FFF',
-          text: route.nickname + "\n" + route.name + "\n" + route.address +"\n" + route.location,
-          fontSize: 14,
-          fontFamily: 'Calibri',
-          textFill: '#000',
+          y: y+20,
+          text: route.name + "\n" + route.address +"\n" + route.location,
+          fontSize: 10,
+          fontFamily: 'HelveticaNeue',
+          textFill: '#555',
           width: width,
           padding: 20,
           align: 'left',
-          fontStyle: 'italic'
-        });*/
-        //group.add(rectItem);
+        });
+         group.add(rectItem);
         group.add(routeItem);
-        //group.add(routeItemDetails);
+        group.add(routeItemDetails);
+       
                 
         return group;
   };
