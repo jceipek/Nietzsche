@@ -4,8 +4,8 @@ $(function() {
 
   var screen1 = {
     portraitData: {
-      listHeaderHeight: 20,
-      listItemHeight: 45
+      listHeaderHeight: 30,
+      listItemHeight: 90
     },
     stage: new Kinetic.Stage({
             container: 'screen1Container',
@@ -44,7 +44,8 @@ $(function() {
           fontFamily: 'HelveticaNeue',
           textFill: '#FFF',
           width: width,
-          padding: 20,
+          height: height,
+          padding: 5,
           align: 'left',
           //fontStyle: 'italic'
         });

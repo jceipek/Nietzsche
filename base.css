@@ -1,5 +1,5 @@
 #screen-wrapper {
-  width: 320;
+  width: 320px;
   height: 470px; /* (-20 for title bar) */
   background-color: black;
 }
@@ -10,7 +10,7 @@
 
 .field-container label {
   text-align: right;
-  font-size: 3em;
+  font-size: 1.5em;
   padding-top: 10px;
   margin-left: 1em;
   margin-right: 1em;
@@ -19,5 +19,5 @@
 
 #from-field, #to-field {
   width: 70%;
-  height: 2em;
+  height: 1em;
 }
