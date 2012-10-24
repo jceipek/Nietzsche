@@ -31,9 +31,9 @@ $(function() {
     return true;  
   }
 
-  var createRouteHeader = function (container, y, width, height, headerTitle) {
+  var createRouteHeader = function (y, width, height, headerTitle) {
     //TODO: Finish this by making it a group and adding a title
-    var rect = new Kinetic.Rect({
+    var group = new Kinetic.Rect({
       x: 0,
       y: y,
       width: width,
@@ -43,12 +43,13 @@ $(function() {
       stroke: 'black',
       strokeWidth: 4
     });
-    container.add(rect);
+
+    return group;
   };
 
-  var createRouteItem = function (container, y, width, height, route) {
+  var createRouteItem = function (y, width, height, route) {
     //TODO: Finish this by making it a group and adding route information
-    var rect = new Kinetic.Rect({
+    var group = new Kinetic.Rect({
       x: 0,
       y: y,
       width: width,
@@ -58,7 +59,7 @@ $(function() {
       stroke: 'black',
       strokeWidth: 4
     });
-    container.add(rect);
+    return group;
   };
 
   $('#to-field').keyup(function(){
