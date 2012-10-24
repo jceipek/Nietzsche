@@ -139,7 +139,7 @@ $(function() {
               matches++;
             }
             var item = createRouteItem(currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
-            item.on('click', generateListItemSelectedFunction(fieldId, PossibleRoutes[i]));
+            item.on('click touchstart', generateListItemSelectedFunction(fieldId, PossibleRoutes[i]));
             listGroup.add(item);
             currYOffset += itemHeight;
           }
