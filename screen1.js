@@ -33,33 +33,70 @@ $(function() {
 
   var createRouteHeader = function (y, width, height, headerTitle) {
     //TODO: Finish this by making it a group and adding a title
-    var group = new Kinetic.Rect({
-      x: 0,
-      y: y,
-      width: width,
-      height: height,
-      fill: 'green',
-      align:"center",
-      stroke: 'black',
-      strokeWidth: 4
-    });
+    var group = new Kinetic.Group();
+    var routeHeader = new Kinetic.Text({
+          x: 0,
+          y: y,
+          stroke: '#555',
+          strokeWidth: 2,
+          fill: '#555',
+          text: headerTitle,
+          fontSize: 14,
+          fontFamily: 'Calibri',
+          textFill: '#FFF',
+          width: width,
+          padding: 20,
+          align: 'left',
+          fontStyle: 'italic'
+        });
+    group.add(routeHeader);
 
     return group;
   };
 
   var createRouteItem = function (y, width, height, route) {
     //TODO: Finish this by making it a group and adding route information
-    var group = new Kinetic.Rect({
-      x: 0,
-      y: y,
-      width: width,
-      height: height,
-      fill: 'white',
-      align:"center",
-      stroke: 'black',
-      strokeWidth: 4
+    var group = new Kinetic.Group();
+    /*var rectItem = new Kinetic.Rect({
+        
     });
-    return group;
+    */
+    var routeItem = new Kinetic.Text({
+          x: 0,
+          y: y,
+          stroke: '#555',
+          strokeWidth: 2,
+          fill: '#FFF',
+          text: route.nickname + "\n" + route.name + "\n" + route.address +"\n" + route.location,
+          fontSize: 14,
+          fontFamily: 'Calibri',
+          textFill: '#000',
+          width: width,
+          padding: 20,
+          align: 'left',
+          fontStyle: 'italic'
+        });
+        
+       /* var routeItemDetails = new Kinetic.Text({
+          x: 0,
+          y: y,
+          stroke: '#555',
+          strokeWidth: 2,
+          fill: '#FFF',
+          text: route.nickname + "\n" + route.name + "\n" + route.address +"\n" + route.location,
+          fontSize: 14,
+          fontFamily: 'Calibri',
+          textFill: '#000',
+          width: width,
+          padding: 20,
+          align: 'left',
+          fontStyle: 'italic'
+        });*/
+        //group.add(rectItem);
+        group.add(routeItem);
+        //group.add(routeItemDetails);
+                
+        return group;
   };
 
   $('#to-field').keyup(function(){
