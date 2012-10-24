@@ -80,11 +80,13 @@ $(function() {
       for (var i=0; (i < PossibleRoutes.length && currYOffset < screenHeight); i++) {
         if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString)) {
           if (matches === 0) {
-            createRouteHeader(listGroup, currYOffset, screenWidth, headerHeight, headerString);
+            var item = createRouteHeader(currYOffset, screenWidth, headerHeight, headerString);
+            listGroup.add(item);
             currYOffset += headerHeight;
             matches++;
           }
-          createRouteItem(listGroup, currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
+          var item = createRouteItem(currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
+          listGroup.add(item);
           currYOffset += itemHeight;
         } 
       }
