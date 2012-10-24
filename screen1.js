@@ -1,34 +1,135 @@
+var PossibleRoutes = [];
+
+ROUTE_TYPES = ['CONTACTS', 'PLACES'];
+
+PossibleRoutes.push(
+  {
+    type: 'CONTACTS',
+    nickname: 'Jenna M. Home',
+    name: 'Jenna Mitnick',
+    address: '1534 This Place',
+    location: 'Somerville, MA',
+    mapsData: {
+      // Put Google Maps Data Here
+    }
+  }
+);
+
+PossibleRoutes.push(
+  {
+    type: 'CONTACTS',
+    nickname: 'Josh R. Home',
+    name: 'Josh Randall',
+    address: '183 Thorne Pike',
+    location: 'Watertown, MA',
+    mapsData: {
+      // Put Google Maps Data Here
+    }
+  }
+);
+
+PossibleRoutes.push(
+  {
+    type: 'PLACES',
+    nickname: 'Josh R. Home',
+    name: 'Josh Randall',
+    address: '183 Thorne Pike',
+    location: 'Watertown, MA',
+    mapsData: {
+      // Put Google Maps Data Here
+    }
+  }
+);
+
 $(function() {
 
   var screen1 = {
+    portraitData: {
+      listHeaderHeight: 40,
+      listItemHeight: 80
+    },
     stage: new Kinetic.Stage({
             container: 'screen1Container',
             width: 640,
             height: 940}),
-    shapesLayer: new Kinetic.Layer()
+    shapesLayer: new Kinetic.Layer(),
+    listItemsGroup: new Kinetic.Group()
     //messageLayer: new Kinetic.Layer()
   };
   screen1.stage.add(screen1.shapesLayer);
+  screen1.shapesLayer.add(screen1.listItemsGroup);
 
-  var createRouteItem = function (layer) {
+  // Given a route and a search string, indicates whether the route is
+  //   matches the string.
+  var routeMatchesStringFilter = function (route, string, type) {
+    // TODO: Implement this.
+    if (type !== route.type) {
+      return false;
+    }
+    if (string === '') {
+      return false;  
+    }
+    return true;  
+  }
+
+  var createRouteHeader = function (container, y, width, height, headerTitle) {
+    //TODO: Finish this by making it a group and adding a title
     var rect = new Kinetic.Rect({
-      x: 239,
-      y: 75,
-      width: 100,
-      height: 50,
+      x: 0,
+      y: y,
+      width: width,
+      height: height,
       fill: 'green',
       align:"center",
       stroke: 'black',
       strokeWidth: 4
     });
-    layer.add(rect);
+    container.add(rect);
+  };
+
+  var createRouteItem = function (container, y, width, height, route) {
+    //TODO: Finish this by making it a group and adding route information
+    var rect = new Kinetic.Rect({
+      x: 0,
+      y: y,
+      width: width,
+      height: height,
+      fill: 'white',
+      align:"center",
+      stroke: 'black',
+      strokeWidth: 4
+    });
+    container.add(rect);
   };
 
   $('#to-field').keyup(function(){
-          console.log($('#to-field').val());
-          //if($('#to-field').val())
-          createRouteItem(screen1.shapesLayer);
-          screen1.shapesLayer.draw();
+    var currentValue = $('#to-field').val();
+    var screenWidth = screen1.stage.getWidth();
+    var screenHeight = screen1.stage.getHeight();
+    var itemHeight = screen1.portraitData.listItemHeight;
+    var headerHeight = screen1.portraitData.listHeaderHeight;
+    var listGroup = screen1.listItemsGroup;
+    
+    console.log(currentValue);
+    listGroup.removeChildren(); // Clear the list
+    
+    var currYOffset = 0;
+    for (var routeTypeIdx=0; routeTypeIdx < ROUTE_TYPES.length; routeTypeIdx++) {
+      var headerString = ROUTE_TYPES[routeTypeIdx];
+      var matches = 0;
+      for (var i=0; (i < PossibleRoutes.length && currYOffset < screenHeight); i++) {
+        if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString)) {
+          if (matches === 0) {
+            createRouteHeader(listGroup, currYOffset, screenWidth, headerHeight, headerString);
+            currYOffset += headerHeight;
+            matches++;
+          }
+          createRouteItem(listGroup, currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
+          currYOffset += itemHeight;
+        } 
+      }
+    }
+    screen1.shapesLayer.draw();
   });
 
 });
