@@ -21,16 +21,17 @@ $(function() {
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
     // TODO: Implement this.
+    string = string.toLowerCase()
     if (type !== route.type) {
       return false;
     }
     if (string === '') {
       return false;
     }
-    if((route.nickname).search(string) !== -1 
-      || (route.name).search(string) !== -1 
-      || (route.address).search(string) !== -1 
-      || (route.location).search(string) !== -1) {
+    if(route.nickname.toLowerCase().search(string) !== -1 
+      || route.name.toLowerCase().search(string) !== -1 
+      || route.address.toLowerCase().search(string) !== -1 
+      || route.location.toLowerCase().search(string) !== -1) {
       return true;
     }
     return false;
