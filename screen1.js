@@ -27,7 +27,13 @@ $(function() {
     if (string === '') {
       return false;
     }
-    return true;
+    if((route.nickname).search(string) !== -1 
+      || (route.name).search(string) !== -1 
+      || (route.address).search(string) !== -1 
+      || (route.location).search(string) !== -1) {
+      return true;
+    }
+    return false;
   }
 
   var createRouteHeader = function (y, width, height, headerTitle) {
