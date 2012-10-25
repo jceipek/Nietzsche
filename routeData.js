@@ -31,19 +31,6 @@ PossibleRoutes.push(
 PossibleRoutes.push(
   {
     type: 'PLACES',
-    nickname: 'Josh R. Home',
-    name: 'Josh Randall',
-    address: '183 Thorne Pike',
-    location: 'Watertown, MA',
-    mapsData: {
-      // Put Google Maps Data Here
-    }
-  }
-);
-
-PossibleRoutes.push(
-  {
-    type: 'PLACES',
     nickname: 'Here',
     name: 'Olin College of Engineering',
     address: '1000 Olin Way',
@@ -52,4 +39,19 @@ PossibleRoutes.push(
       // Put Google Maps Data Here
     }
   }
+
+
+PossibleRoutes.push(
+  {
+    type: 'PLACES',
+    nickname: "Ben & Jerry's"
+    name: 'Ben & Jerry\'s',
+    address: '48 N. Other Ave',
+    location: 'Woodland, MA',
+    mapsData: {
+      // Put Google Maps Data Here
+    }
+  }
+
 );
+
