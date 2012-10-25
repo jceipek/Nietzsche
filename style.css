@@ -101,6 +101,11 @@ a:hover {
 	text-align: center;
 }
 
+.static-proto {
+	width: 320px;
+	height: 470px;
+}
+
 #logo h1 {
 	padding: 50px 0px 0px 0px;
 	letter-spacing: -6px;
