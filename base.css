@@ -14,10 +14,11 @@ form {
 
 #top-bar {
   color: #eee;
-  font-family: 'HelveticaNeue-Light';
+  font-family: HelveticaNeue-Light, Sans-Serif;
   padding: 0px;
   background-image: -webkit-gradient(linear, left top, left bottom, 
                                        from(#555), to(#333));
+  background-image: linear-gradient(to bottom, #555, #333);
   border-bottom-style: solid;
   border-bottom-color: black; 
   border-bottom-width: 1px;

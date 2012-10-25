@@ -20,7 +20,6 @@ $(function() {
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
-    // TODO: Implement this.
     string = string.toLowerCase()
     if (type !== route.type) {
       return false;
@@ -38,7 +37,6 @@ $(function() {
   }
 
   var createRouteHeader = function (y, width, height, headerTitle) {
-    //TODO: Finish this by making it a group and adding a title
     var group = new Kinetic.Group();
     var routeHeader = new Kinetic.Text({
       x: 0,
@@ -79,7 +77,6 @@ $(function() {
   };
 
   var createRouteItem = function (y, width, height, route) {
-    //TODO: Finish this by making it a group and adding route information
     var group = new Kinetic.Group();
     var background = new Kinetic.Rect({
       x: 0,
@@ -132,6 +129,10 @@ $(function() {
       if(fromFieldValue !== '' && toFieldValue !== '') {
         // TODO: Go to next screen!
         console.log('NEXT SCREEN!');
+      }
+
+      if (fieldId == '#from-field') {
+        $('#to-field').focus()
       }
 
       var selectionRect = new Kinetic.Rect({
