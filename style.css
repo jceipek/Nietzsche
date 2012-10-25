@@ -104,6 +104,8 @@ a:hover {
 .static-proto {
 	width: 320px;
 	height: 470px;
+	align: center;
+	
 }
 
 #logo h1 {
