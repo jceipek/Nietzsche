@@ -2,6 +2,11 @@
 
 $(function() {
 
+  var Application = {
+    from_route: null,
+    to_route: null
+  };
+
   var screen1 = {
     portraitData: {
       listHeaderHeight: 40,
@@ -121,11 +126,15 @@ $(function() {
   var generateListItemSelectedFunction = function (item, fieldId, route) {
     return function () {
       var listGroup = screen1.listItemsGroup;
-      //listGroup.removeChildren(); // Clear the list
       screen1.shapesLayer.draw();
       var fromFieldValue = $('#from-field').val();
       var toFieldValue = $('#to-field').val();
       $(fieldId).val(route.nickname);
+      if (fieldId === '#from-field') {
+        Application.from_route = route;
+      } else if (fieldId === '#to-field') {
+        Application.to_route = route;
+      }
       if(fromFieldValue !== '' && toFieldValue !== '') {
         // TODO: Go to next screen!
         console.log('NEXT SCREEN!');
