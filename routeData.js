@@ -39,19 +39,19 @@ PossibleRoutes.push(
       // Put Google Maps Data Here
     }
   }
+);
 
 
 PossibleRoutes.push(
   {
     type: 'PLACES',
-    nickname: "Ben & Jerry's"
-    name: 'Ben & Jerry\'s',
+    nickname: "Ben & Jerry's",
+    name: "Ben & Jerry's",
     address: '48 N. Other Ave',
     location: 'Woodland, MA',
     mapsData: {
       // Put Google Maps Data Here
     }
   }
-
 );
 
