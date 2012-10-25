@@ -85,7 +85,7 @@ $(function() {
     var group = new Kinetic.Group();
     var background = new Kinetic.Rect({
       x: 0,
-      y: y,
+      y: 0,
       width: width,
       height: height,
       fill: 'white',
@@ -95,7 +95,7 @@ $(function() {
 
     var nickname = new Kinetic.Text({
       x: 0,
-      y: y,
+      y: 0,
       text: route.nickname,
       fontSize: 24,
       fontFamily: 'HelveticaNeue-Medium',
@@ -107,7 +107,7 @@ $(function() {
 
     var routeDetails = new Kinetic.Text({
       x: 0,
-      y: y+40,
+      y: 40,
       text: route.name + "\n" + route.address +"\n" + route.location,
       fontSize: 20,
       fontFamily: 'HelveticaNeue',
@@ -117,6 +117,9 @@ $(function() {
       align: 'left',
     });
 
+    group.setPosition(0, y);
+    group.setWidth(width);
+    group.setHeight(height);
     group.add(background);
     group.add(nickname);
     group.add(routeDetails);
@@ -126,7 +129,6 @@ $(function() {
   var generateListItemSelectedFunction = function (item, fieldId, route) {
     return function () {
       var listGroup = screen1.listItemsGroup;
-      screen1.shapesLayer.draw();
       var fromFieldValue = $('#from-field').val();
       var toFieldValue = $('#to-field').val();
       $(fieldId).val(route.nickname);
@@ -154,7 +156,9 @@ $(function() {
         strokeWidth: 4
       });
 
-      item.add(selectionRect);
+      //item.add(selectionRect);
+
+      //screen1.shapesLayer.draw();
     };
   };
 

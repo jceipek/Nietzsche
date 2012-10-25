@@ -3,8 +3,8 @@ body, #screen-wrapper {
 }
 
 #screen-wrapper {
-  width: 320px;
-  height: 470px; /* (-20 for title bar) */
+  width: 640px;
+  height: 940px; /* (-20 for title bar) */
   background-color: #eee;
 }
 
@@ -26,27 +26,29 @@ form {
 
 .field-container label {
   text-align: right;
-  font-size: 1.5em;
-  padding-top: 5px;
-  margin-left: 1em;
+  font-size: 3em;
+  padding-top: 10px;
   margin-right: 1em;
-  //width: 20em;
+  //width: 40em;
 }
 
 #from-field, #to-field {
   width: 70%;
-  height: 1em;
+  height: 1.5em;
   margin-bottom: 5px;
   margin-top: 0px;
+  font-size: 30px;
+  padding: 3px;
+  line-height: 1em;
 }
 
 label {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   margin-top: 0px;
   padding-top: 0px;
 }
 
 canvas {
-  width: 320px;  
-  height: 470px;  
+  width: 640px;  
+  height: 940px;  
 }
