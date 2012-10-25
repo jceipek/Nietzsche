@@ -28,9 +28,9 @@ $(function() {
     if (string === '') {
       return false;
     }
-    if(route.nickname.toLowerCase().search(string) !== -1 
-      || route.name.toLowerCase().search(string) !== -1 
-      || route.address.toLowerCase().search(string) !== -1 
+    if(route.nickname.toLowerCase().search(string) !== -1
+      || route.name.toLowerCase().search(string) !== -1
+      || route.address.toLowerCase().search(string) !== -1
       || route.location.toLowerCase().search(string) !== -1) {
       return true;
     }
@@ -71,7 +71,7 @@ $(function() {
       stroke: '#555',
       strokeWidth: 4
     });
-    
+
     group.add(background);
     group.add(routeHeader);
 
@@ -90,7 +90,7 @@ $(function() {
       stroke: 'grey',
       strokeWidth: 4
     });
-    
+
     var nickname = new Kinetic.Text({
       x: 0,
       y: y,
@@ -102,7 +102,7 @@ $(function() {
       padding: 20,
       align: 'left'
     });
-        
+
     var routeDetails = new Kinetic.Text({
       x: 0,
       y: y+40,
@@ -117,7 +117,7 @@ $(function() {
 
     group.add(background);
     group.add(nickname);
-    group.add(routeDetails);            
+    group.add(routeDetails);
     return group;
   };
 
@@ -188,7 +188,7 @@ $(function() {
         return {
           x: 0,
           y: y
-        };  
+        };
       });
       screen1.shapesLayer.draw();
     };
@@ -199,8 +199,10 @@ $(function() {
   });
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
-  });  
+  });
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
+
+  $('#to-field').focus();
 
 });
