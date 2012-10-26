@@ -5,6 +5,8 @@ $(function() {
   var Application = {
     from_route: null,
     to_route: null,
+    departure_time: new Date(),
+    directions: [],
     SHORT_DELAY: 200,
     stage: new Kinetic.Stage({
       container: 'screenContainer',
@@ -33,7 +35,8 @@ $(function() {
 
   var graphicalComparisonScreen = {
     portraitData: {
-      routeItemHeight: 150
+      routeItemHeight: 150,
+      routeSelectionButtonWidth: 88
     },
     mainLayer: new Kinetic.Layer(),
     routeItemsGroup: new Kinetic.Group(),
@@ -53,7 +56,7 @@ $(function() {
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
     string = string.toLowerCase()
-    if (type !== route.type) {
+    if (type !== undefined && type !== route.type) {
       return false;
     }
     if (string === '') {
@@ -232,6 +235,9 @@ $(function() {
           listGroup.removeChildren();
           routeSelectionScreen.mainLayer.draw();
         }, Application.SHORT_DELAY);
+        //Start Generating Routes
+        Application.departure_time = new Date();
+        computeDirections();
         transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
         console.log('NEXT SCREEN!');
       }
@@ -323,6 +329,95 @@ $(function() {
     };
   };
 
+  var createGraphicalRouteItem = function (y, width, height, direction) {
+    var buttonWidth = graphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
+    var group = new Kinetic.Group();
+    var background = new Kinetic.Rect({
+      x: 0,
+      y: y,
+      width: width,
+      height: height,
+      fill: 'white',
+      stroke: 'black'
+    });
+    var selectionButton = new Kinetic.Rect({
+      x: width - buttonWidth,
+      y: y,
+      width: buttonWidth,
+      height: height,
+      fill: 'black',
+      cornerRadius: 20
+    });
+
+    var scalingFactor = 0.1;
+    var departureTime = new Date(direction.departure_time.value);
+    var duration = direction.duration.value;
+
+    var fakeRoute = new Kinetic.Rect({
+      x: 20,
+      y: y+height/2-10,
+      width: duration*scalingFactor,
+      height: 20,
+      fill: 'blue'
+    });
+
+    group.add(background);
+    group.add(fakeRoute);
+    group.add(selectionButton);
+    return group;
+  };
+
+  var computeDirections = function () {
+    var router = new google.maps.DirectionsService();
+    var start = Application.from_route;
+    var end = Application.to_route;
+    var request = {
+      origin: start.mapsData.location,
+      destination: end.mapsData.location,
+      travelMode: google.maps.TravelMode.TRANSIT,
+      transitOptions: {
+        departureTime: Application.departure_time,
+      },
+      provideRouteAlternatives: true,
+      unitSystem: google.maps.UnitSystem.IMPERIAL
+    };
+    router.route(request, function (response, status) {
+      if (status === google.maps.DirectionsStatus.OK) {
+        for (var routeIdx = 0; routeIdx < response.routes.length; routeIdx++) {
+          var legs = response.routes[routeIdx].legs;
+          var leg = legs[0];
+          if (leg) {
+            Application.directions.push(leg);
+          }
+        }
+        displayGraphicalRoutes();
+        console.log(response);
+      } else {
+        console.log('Routing Failed!');
+      }
+    });
+  };
+
+  var displayGraphicalRoutes = function () {
+    for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
+      var direction = Application.directions[directionIdx];
+      var graphicalRouteItem = 
+        createGraphicalRouteItem(directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, Application.stage.getWidth(), 
+                                 graphicalComparisonScreen.portraitData.routeItemHeight, direction);
+      graphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
+    }
+    graphicalComparisonScreen.mainLayer.draw();
+  };
+
+  var getFirstRouteWithMatch = function (string) {
+    for (var routeIdx = 0; routeIdx < PossibleRoutes.length; routeIdx++)
+    {
+      if (routeMatchesStringFilter(PossibleRoutes[routeIdx], string)) {
+        return PossibleRoutes[routeIdx];
+      }
+    }
+  };
+
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
   });
@@ -331,6 +426,8 @@ $(function() {
   });
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
+
+  Application.from_route = getFirstRouteWithMatch('Here');
 
   $('#to-field').focus();
 
