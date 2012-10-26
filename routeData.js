@@ -30,7 +30,7 @@ PossibleRoutes.push(
 
 PossibleRoutes.push(
   {
-    type: 'CONTACTS',
+    type: 'PLACES',
     nickname: 'Here',
     name: 'Olin College of Engineering',
     address: '1000 Olin Way',
@@ -44,7 +44,7 @@ PossibleRoutes.push(
 
 PossibleRoutes.push(
   {
-    type: 'CONTACTS',
+    type: 'PLACES',
     nickname: "Ben & Jerry's",
     name: "Ben & Jerry's",
     address: '48 N. Other Ave',
