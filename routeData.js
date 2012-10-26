@@ -23,8 +23,7 @@ PossibleRoutes.push(
     address: '100 Marshall Street',
     location: 'Watertown, MA',
     mapsData: {
-      '100 Marshall Street, Watertown, MA'
-      // Put Google Maps Data Here
+      location: '100 Marshall Street, Watertown, MA'
     }
   }
 );
