@@ -119,8 +119,7 @@ $(function() {
       }, time);
 
     }
-
-  }
+  };
 
   var createRouteHeader = function (y, width, height, headerTitle) {
     var group = new Kinetic.Group();
