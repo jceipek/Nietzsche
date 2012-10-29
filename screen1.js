@@ -371,22 +371,18 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-
-      /*var legRect = new Kinetic.Rect({
-        x: start+10,
-        y: y+height/2-10,
-        width: duration*scalingFactor,
-        height: 20,
-        fill: 'blue'
-      });*/
-
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
       routeGroup.add(stepLine);
 
-      var icon = createWalkingIcon(stepStart, y+height/2, 40);
+      var iconMid = {
+        x: stepStart+(stepEnd - stepStart)/2,
+        y: y+height/2+4
+      };
+      var iconSideLength = 30;
+      var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
 
       routeGroup.add(icon);
     }
