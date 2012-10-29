@@ -5,6 +5,8 @@ $(function() {
   var Application = {
     from_route: null,
     to_route: null,
+    departure_time: new Date(),
+    directions: [],
     SHORT_DELAY: 200,
     stage: new Kinetic.Stage({
       container: 'screenContainer',
@@ -33,10 +35,12 @@ $(function() {
 
   var graphicalComparisonScreen = {
     portraitData: {
-      routeItemHeight: 150
+      routeItemHeight: 150,
+      routeSelectionButtonWidth: 88
     },
     mainLayer: new Kinetic.Layer(),
     routeItemsGroup: new Kinetic.Group(),
+    routeButtonsGroup: new Kinetic.Group(),
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
@@ -48,12 +52,13 @@ $(function() {
   Application.stage.add(graphicalComparisonScreen.mainLayer);
   graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.background);
   graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeItemsGroup);
+  graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeButtonsGroup);
 
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
     string = string.toLowerCase()
-    if (type !== route.type) {
+    if (type !== undefined && type !== route.type) {
       return false;
     }
     if (string === '') {
@@ -119,8 +124,7 @@ $(function() {
       }, time);
 
     }
-
-  }
+  };
 
   var createRouteHeader = function (y, width, height, headerTitle) {
     var group = new Kinetic.Group();
@@ -233,6 +237,9 @@ $(function() {
           listGroup.removeChildren();
           routeSelectionScreen.mainLayer.draw();
         }, Application.SHORT_DELAY);
+        //Start Generating Routes
+        Application.departure_time = new Date();
+        computeDirections();
         transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
         console.log('NEXT SCREEN!');
       }
@@ -324,6 +331,168 @@ $(function() {
     };
   };
 
+  // Given a time, what is the x position on the canvas that corresponds to it?
+  var posFromTime = function (time, initialTime, scalingFactor) {
+    // Convert to seconds and scale by scalingFactor
+    return (time - initialTime)/1000 * scalingFactor;
+  };
+
+  var createGraphicalRouteItem = function (y, width, height, direction) {
+    
+    var routeGroup = new Kinetic.Group();
+    var background = new Kinetic.Rect({
+      x: 0,
+      y: y,
+      width: width,
+      height: height,
+      fill: 'white',
+      stroke: 'black'
+    });
+    routeGroup.add(background);
+
+    var scalingFactor = 0.1;
+    var departureTime = new Date(direction.departure_time.value);
+    var duration = direction.duration.value;
+    var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
+
+    var timeOffset = departureTime;
+    for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
+      //ctx.fillStyle = steps[stepIdx].transit.line.color;
+      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
+      }
+
+      var firstRounded = (stepIdx === 0);
+      var lastRounded = (stepIdx === direction.steps.length-1);
+
+      var stepStart = posFromTime(timeOffset, Application.departure_time, scalingFactor);
+
+      var stepEnd = new Date(timeOffset);
+      stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
+      stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
+
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
+
+      timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
+
+      routeGroup.add(stepLine);
+
+      var iconMid = {
+        x: stepStart+(stepEnd - stepStart)/2,
+        y: y+height/2+4
+      };
+      var iconSideLength = 30;
+      var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+
+      routeGroup.add(icon);
+    }
+
+    return routeGroup;
+  };
+
+  var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
+    var radius = thickness/2;
+    var stepShape = new Kinetic.Rect({
+      x: xStart,
+      y: yMid-radius,
+      width: xEnd-xStart,
+      height: thickness,
+      fill: color
+    });
+    return stepShape;
+  }
+
+   var createRoundedIconBg = function (x, y, sideLength, color) {
+       var iconbg = new Kinetic.Rect({
+           x: x,
+           y: y,
+           height: sideLength,
+           width: sideLength,
+           fill: color,
+           cornerRadius: 10
+       });
+       return iconbg;
+   }
+
+  var createWalkingIcon = function (x, y, sideLength) {
+    /*TODO: Rewrite to be appropriate function*/
+    var iconGroup = new Kinetic.Group();
+    iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
+    return iconGroup;
+  }
+
+  var createGraphicalRouteButton = function (x, y, width, height, direction) {
+    var buttonGroup = new Kinetic.Group();
+    var selectionButton = new Kinetic.Rect({
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      fill: 'black',
+      cornerRadius: 20
+    });
+
+    buttonGroup.add(selectionButton);
+    return buttonGroup;
+  }
+
+  var computeDirections = function () {
+    var router = new google.maps.DirectionsService();
+    var start = Application.from_route;
+    var end = Application.to_route;
+    var request = {
+      origin: start.mapsData.location,
+      destination: end.mapsData.location,
+      travelMode: google.maps.TravelMode.TRANSIT,
+      transitOptions: {
+        departureTime: Application.departure_time,
+      },
+      provideRouteAlternatives: true,
+      unitSystem: google.maps.UnitSystem.IMPERIAL
+    };
+    router.route(request, function (response, status) {
+      if (status === google.maps.DirectionsStatus.OK) {
+        for (var routeIdx = 0; routeIdx < response.routes.length; routeIdx++) {
+          var legs = response.routes[routeIdx].legs;
+          var leg = legs[0];
+          if (leg) {
+            Application.directions.push(leg);
+          }
+        }
+        displayGraphicalRoutes();
+        console.log(response);
+      } else {
+        console.log('Routing Failed!');
+      }
+    });
+  };
+
+  var displayGraphicalRoutes = function () {
+    console.log(Application.directions);
+    for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
+      var direction = Application.directions[directionIdx];
+      var graphicalRouteItem = 
+        createGraphicalRouteItem(directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, Application.stage.getWidth(), 
+                                 graphicalComparisonScreen.portraitData.routeItemHeight, direction);
+      var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-graphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+                                   directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, 
+                                   graphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
+                                   graphicalComparisonScreen.portraitData.routeItemHeight);
+      graphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
+      graphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
+    }
+    graphicalComparisonScreen.mainLayer.draw();
+  };
+
+  var getFirstRouteWithMatch = function (string) {
+    for (var routeIdx = 0; routeIdx < PossibleRoutes.length; routeIdx++)
+    {
+      if (routeMatchesStringFilter(PossibleRoutes[routeIdx], string)) {
+        return PossibleRoutes[routeIdx];
+      }
+    }
+  };
+
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
   });
@@ -333,6 +502,7 @@ $(function() {
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
+<<<<<<< HEAD
   $('#to-field').focus().blur().focus();
   //$('#to-field').bind('click', focus-to-field());
 
@@ -344,5 +514,10 @@ $(function() {
   //function focus-to-field() {
     //$('#to-field').focus();
   //}
+=======
+  Application.from_route = getFirstRouteWithMatch('Here');
+
+  $('#to-field').focus();
+>>>>>>> c6c5f2b53f6fd9e8014f88d7da3964ecb80bb09a
 
 });

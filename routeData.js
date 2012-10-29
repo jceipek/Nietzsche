@@ -7,10 +7,10 @@ PossibleRoutes.push(
     type: 'CONTACTS',
     nickname: 'Jenna M. Home',
     name: 'Jenna Mitnick',
-    address: '1534 This Place',
+    address: '116 Jaques Street',
     location: 'Somerville, MA',
     mapsData: {
-      // Put Google Maps Data Here
+      location: '116 Jaques Street, Somerville, MA'
     }
   }
 );
@@ -20,10 +20,10 @@ PossibleRoutes.push(
     type: 'CONTACTS',
     nickname: 'Josh R. Home',
     name: 'Josh Randall',
-    address: '183 Thorne Pike',
+    address: '100 Marshall Street',
     location: 'Watertown, MA',
     mapsData: {
-      // Put Google Maps Data Here
+      location: '100 Marshall Street, Watertown, MA'
     }
   }
 );
@@ -36,7 +36,7 @@ PossibleRoutes.push(
     address: '1000 Olin Way',
     location: 'Needham, MA',
     mapsData: {
-      // Put Google Maps Data Here
+      location: '1000 Olin Way, Needham, MA'
     }
   }
 );
@@ -47,11 +47,10 @@ PossibleRoutes.push(
     type: 'PLACES',
     nickname: "Ben & Jerry's",
     name: "Ben & Jerry's",
-    address: '48 N. Other Ave',
-    location: 'Woodland, MA',
+    address: '174 Newbury Street',
+    location: 'Boston, MA',
     mapsData: {
-      // Put Google Maps Data Here
+      location: '174 Newbury Street, Boston, MA'
     }
   }
 );
-
