@@ -380,7 +380,7 @@ $(function() {
         fill: 'blue'
       });*/
 
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, firstRounded, lastRounded);
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -390,14 +390,14 @@ $(function() {
     return routeGroup;
   };
 
-  var createStepLine = function (xStart, xEnd, yMid, thickness, startRounded, endRounded) {
+  var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
     var radius = thickness/2;
     var stepShape = new Kinetic.Rect({
       x: xStart,
       y: yMid-radius,
       width: xEnd-xStart,
       height: thickness,
-      fill: 'blue'
+      fill: color
     });
     return stepShape;
   }
