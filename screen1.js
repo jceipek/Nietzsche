@@ -333,6 +333,16 @@ $(function() {
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
-  $('#to-field').focus();
+  $('#to-field').focus().blur().focus();
+  //$('#to-field').bind('click', focus-to-field());
+
+ // $('#to-field').bind('touchstart', function() {
+   //  $('#to-field').focus();
+    //});
+    //$('#to-field').trigger('touchstart');
+  
+  //function focus-to-field() {
+    //$('#to-field').focus();
+  //}
 
 });
