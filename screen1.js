@@ -40,6 +40,7 @@ $(function() {
     },
     mainLayer: new Kinetic.Layer(),
     routeItemsGroup: new Kinetic.Group(),
+    routeButtonsGroup: new Kinetic.Group(),
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
@@ -51,6 +52,7 @@ $(function() {
   Application.stage.add(graphicalComparisonScreen.mainLayer);
   graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.background);
   graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeItemsGroup);
+  graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeButtonsGroup);
 
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
@@ -329,8 +331,14 @@ $(function() {
     };
   };
 
+  // Given a time, what is the x position on the canvas that corresponds to it?
+  var posFromTime = function (time, initialTime, scalingFactor) {
+    // Convert to seconds and scale by scalingFactor
+    return (time - initialTime)/1000 * scalingFactor;
+  };
+
   var createGraphicalRouteItem = function (y, width, height, direction) {
-    var buttonWidth = graphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
+    
     var group = new Kinetic.Group();
     var background = new Kinetic.Rect({
       x: 0,
@@ -340,21 +348,14 @@ $(function() {
       fill: 'white',
       stroke: 'black'
     });
-    var selectionButton = new Kinetic.Rect({
-      x: width - buttonWidth,
-      y: y,
-      width: buttonWidth,
-      height: height,
-      fill: 'black',
-      cornerRadius: 20
-    });
 
     var scalingFactor = 0.1;
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
+    var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
     var fakeRoute = new Kinetic.Rect({
-      x: 20,
+      x: start+10,
       y: y+height/2-10,
       width: duration*scalingFactor,
       height: 20,
@@ -363,9 +364,23 @@ $(function() {
 
     group.add(background);
     group.add(fakeRoute);
-    group.add(selectionButton);
     return group;
   };
+
+  var createGraphicalRouteButton = function (x, y, width, height, direction) {
+    var buttonGroup = new Kinetic.Group();
+    var selectionButton = new Kinetic.Rect({
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      fill: 'black',
+      cornerRadius: 20
+    });
+
+    buttonGroup.add(selectionButton);
+    return buttonGroup;
+  }
 
   var computeDirections = function () {
     var router = new google.maps.DirectionsService();
@@ -399,12 +414,18 @@ $(function() {
   };
 
   var displayGraphicalRoutes = function () {
+    console.log(Application.directions);
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, Application.stage.getWidth(), 
                                  graphicalComparisonScreen.portraitData.routeItemHeight, direction);
+      var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-graphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+                                   directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, 
+                                   graphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
+                                   graphicalComparisonScreen.portraitData.routeItemHeight);
       graphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
+      graphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
     }
     graphicalComparisonScreen.mainLayer.draw();
   };
