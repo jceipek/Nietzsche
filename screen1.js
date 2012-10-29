@@ -339,7 +339,7 @@ $(function() {
 
   var createGraphicalRouteItem = function (y, width, height, direction) {
     
-    var group = new Kinetic.Group();
+    var routeGroup = new Kinetic.Group();
     var background = new Kinetic.Rect({
       x: 0,
       y: y,
@@ -348,24 +348,59 @@ $(function() {
       fill: 'white',
       stroke: 'black'
     });
+    routeGroup.add(background);
 
     var scalingFactor = 0.1;
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
-    var fakeRoute = new Kinetic.Rect({
-      x: start+10,
-      y: y+height/2-10,
-      width: duration*scalingFactor,
-      height: 20,
+    var timeOffset = departureTime;
+    for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
+      //ctx.fillStyle = steps[stepIdx].transit.line.color;
+      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
+      }
+
+      var firstRounded = (stepIdx === 0);
+      var lastRounded = (stepIdx === direction.steps.length-1);
+
+      var stepStart = posFromTime(timeOffset, Application.departure_time, scalingFactor);
+
+      var stepEnd = new Date(timeOffset);
+      stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
+      stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
+
+
+      /*var legRect = new Kinetic.Rect({
+        x: start+10,
+        y: y+height/2-10,
+        width: duration*scalingFactor,
+        height: 20,
+        fill: 'blue'
+      });*/
+
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, firstRounded, lastRounded);
+
+      timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
+
+      routeGroup.add(stepLine);
+    }
+
+    return routeGroup;
+  };
+
+  var createStepLine = function (xStart, xEnd, yMid, thickness, startRounded, endRounded) {
+    var radius = thickness/2;
+    var stepShape = new Kinetic.Rect({
+      x: xStart,
+      y: yMid-radius,
+      width: xEnd-xStart,
+      height: thickness,
       fill: 'blue'
     });
-
-    group.add(background);
-    group.add(fakeRoute);
-    return group;
-  };
+    return stepShape;
+  }
 
   var createGraphicalRouteButton = function (x, y, width, height, direction) {
     var buttonGroup = new Kinetic.Group();
