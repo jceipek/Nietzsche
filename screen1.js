@@ -385,6 +385,10 @@ $(function() {
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
       routeGroup.add(stepLine);
+
+      var icon = createWalkingIcon(stepStart, y+height/2, 40);
+
+      routeGroup.add(icon);
     }
 
     return routeGroup;
@@ -400,6 +404,25 @@ $(function() {
       fill: color
     });
     return stepShape;
+  }
+
+  var createRoundedIconBg = function (x, y, sideLength, color) {
+    /*TODO: Rewrite to be appropriate function*/
+    var bg = new Kinetic.Rect({
+      x: x,
+      y: y,
+      width: sideLength,
+      height: sideLength,
+      fill: color
+    });
+    return bg;
+  }
+
+  var createWalkingIcon = function (x, y, sideLength) {
+    /*TODO: Rewrite to be appropriate function*/
+    var iconGroup = new Kinetic.Group();
+    iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
+    return iconGroup;
   }
 
   var createGraphicalRouteButton = function (x, y, width, height, direction) {
