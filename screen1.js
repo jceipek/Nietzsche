@@ -522,7 +522,7 @@ $(function() {
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD<<<<<<<<
   $('#to-field').focus().blur().focus();
   //$('#to-field').bind('click', focus-to-field());
 
@@ -539,5 +539,6 @@ $(function() {
 
   $('#to-field').focus();
 >>>>>>> c6c5f2b53f6fd9e8014f88d7da3964ecb80bb09a
+*/
 
 });
