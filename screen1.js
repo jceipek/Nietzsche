@@ -357,8 +357,9 @@ $(function() {
 
     var timeOffset = departureTime;
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
-      //ctx.fillStyle = steps[stepIdx].transit.line.color;
+      var stepColor = 'black';
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        stepColor = direction.steps[stepIdx].transit.line.color;
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       }
 
@@ -371,7 +372,7 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -419,6 +420,33 @@ $(function() {
     var iconGroup = new Kinetic.Group();
     iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
     return iconGroup;
+  }
+
+  var createMessageBubble = function (anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
+    var bubbleGroup = new Kinetic.Group();
+    var bg = new Kinetic.Shape({
+      //TODO: Fill this out
+      drawFunc: function (context) {
+        ctx.beginPath();
+
+        var flagHeight = height/5;
+        var flagWidth = height/5;
+        var bubbleHeight = height-flagHeight;
+        var bubbleWidth = width;
+
+        var origin = {
+          x: anchorX,
+          y: anchorY
+        };
+
+        
+
+        cx.fill();
+      }
+      fill: color
+    });
+    bubbleGroup.add(bg);
+    return bubbleGroup;
   }
 
   var createGraphicalRouteButton = function (x, y, width, height, direction) {
