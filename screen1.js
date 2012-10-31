@@ -435,6 +435,7 @@ $(function() {
    }
 
    var createTIcon = function (x, y, sidelength) {
+       var iconGroup = new Kinetic.Group();
        var tIcon = new Kinetic.Text({
            x: x,
            y: x,
@@ -447,15 +448,58 @@ $(function() {
            padding: 15,
            cornerRadius: 30 //should be a better way to make the border a circle - maybe create circle separately
        });
-         return tIcon; 
-       }
+      // var tIconBg = new Kinetic.Circle({
+        //   x: x,
+        //   y: y,
+        //   radius: tIcon.width+10,
+        //   stroke: 'black',
+        //   strokeWidth: 5,
+        //   fill: 'white'
+       //});
+       iconGroup.add(tIconBg);
+       iconGroup.add(tIcon); 
+   }
+
+   var createBusIcon = function (x, y, sidelength) {
+     var iconGroup = new Kinetic.Group();
+     iconGroup.add(createRoundedIconBg(x, y, sidelength, 'yellow'));
+     var busGraphic = new Kinetic.Shape({
+         drawFunc: function(context) {
+         }
+     });
 
   var createWalkingIcon = function (x, y, sideLength) {
-    /*TODO: Rewrite to be appropriate function*/
-    var iconGroup = new Kinetic.Group();
-    iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
-    return iconGroup;
+    //var iconGroup = new Kinetic.Group();
+    //iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
+    var walkingIcon = new Kinetic.Shape({
+        drawFunc: function(context) {
+          //head+body
+          context.moveTo(200,50);
+          context.lineTo(190,65);
+          //context.lineCap = 'round';
+          context.lineTo(190,100);
+          //context.lineCap = 'round';
+          //legs
+          context.moveTo(170,125);
+          context.lineTo(190,100);
+          context.lineTo(210,110);
+          context.lineTo(210,125);
+          //arms
+          context.moveTo(170,85);
+          context.lineTo(185,65);
+          context.lineTo(210,85);
+          //style
+          context.lineCap = 'round';
+          this.stroke(context);
+        },
+        stroke: 'black',
+        strokeWidth: 5.25,
+        lineJoin: 'round',
+        });
+    //iconGroup.add(walkingIcon);
+    return walkingIcon;
   }
+
 
   var createGraphicalRouteButton = function (x, y, width, height, direction) {
     var buttonGroup = new Kinetic.Group();
