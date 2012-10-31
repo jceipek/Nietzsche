@@ -372,7 +372,7 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-      //var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
+     
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
@@ -384,7 +384,7 @@ $(function() {
         y: y+height/2+4
       };
       var iconSideLength = 30;
-      var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+      var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue');
 
       routeGroup.add(icon);
     }
@@ -430,44 +430,114 @@ $(function() {
            height: sideLength,
            width: sideLength,
            fill: color,
-           cornerRadius: 10
+           cornerRadius: 5
        });
        return iconbg;
    }
 
    var createTIcon = function (x, y, sidelength) {
-       var iconGroup = new Kinetic.Group();
-       var tIcon = new Kinetic.Text({
-           x: x,
-           y: x,
-           stroke: 'black',
-           strokeWidth: 1,
-           text: 'T',
-           fontSize: 30,
+       var tIcon = new Kinetic.Group();
+       var radius = sidelength/2;
+       var tIconText = new Kinetic.Text({
+           x: x-radius,
+           y: y-radius+5,
+           text: ' T',
+           fontSize: 20,
            fontFamily: 'Calibri',
            textFill: 'black',
-           padding: 15,
-           cornerRadius: 30 //should be a better way to make the border a circle - maybe create circle separately
+           padding: 15
        });
-      // var tIconBg = new Kinetic.Circle({
-        //   x: x,
-        //   y: y,
-        //   radius: tIcon.width+10,
-        //   stroke: 'black',
-        //   strokeWidth: 5,
-        //   fill: 'white'
-       //});
-       iconGroup.add(tIconBg);
-       iconGroup.add(tIcon); 
-   }
-
-   var createBusIcon = function (x, y, sidelength) {
-     var iconGroup = new Kinetic.Group();
-     iconGroup.add(createRoundedIconBg(x, y, sidelength, 'yellow'));
-     var busGraphic = new Kinetic.Shape({
-         drawFunc: function(context) {
-         }
-     });
+       
+       var tIconCircle = new Kinetic.Circle({
+           x: x+radius,
+           y: y+radius,
+           radius: radius,
+           stroke: 'black',
+           strokeWidth: 1,
+           padding: 15
+       });
+       
+       tIcon.add(tIconCircle);
+       tIcon.add(tIconText);
+       
+         return tIcon; 
+       }
+       
+  var createBusIcon = function(x,y, sidelength, color){
+      var busIcon = new Kinetic.Group();
+      
+      var inset = sidelength/6;
+      var lightInset = sidelength/5;
+      var lightRadius = sidelength*0.05;
+      var arcInset = sidelength*0.25;
+      var wheelWidth = sidelength*0.2;
+      var radius = sidelength/2;
+      
+      var busBg = new Kinetic.Rect({
+        x: x+inset,
+        y: y+inset,
+        height: sidelength-inset*2,
+        width: sidelength-inset*2,
+        fill: 'white',
+        cornerRadius: 2
+      });
+      
+      var busWindow = new Kinetic.Shape({
+        drawFunc: function(context) {
+        context.beginPath();
+        context.arc(x+radius, y+radius, radius-arcInset, 0, Math.PI, true);
+        context.closePath();
+        context.fillStyle = color;
+        context.fill();
+      }
+      });
+      
+     var lightLeft = new Kinetic.Circle({
+       x: x+sidelength/2-lightInset,
+       y: y+sidelength/2+lightInset,
+       radius: lightRadius,
+       fill: color,
+       padding: 15
+      });
+    
+      var lightRight = new Kinetic.Circle({
+       x: x+sidelength/2+lightInset,
+       y: y+sidelength/2+lightInset,
+       radius: lightRadius,
+       fill: color,
+       padding: 15
+      });
+      
+      var wheelRight = new Kinetic.Shape({
+        drawFunc: function(context) {
+        context.beginPath();
+        context.arc(x+radius+lightInset, y+sidelength-inset, wheelWidth/2, 0, Math.PI, false);
+        context.closePath();
+        context.fillStyle = 'white';
+        context.fill();
+      }
+      });
+      
+      var wheelLeft = new Kinetic.Shape({
+        drawFunc: function(context) {
+        context.beginPath();
+        context.arc(x+radius-lightInset, y+sidelength-inset, wheelWidth/2, 0, Math.PI, false);
+        context.closePath();
+        context.fillStyle = 'white';
+        context.fill();
+      }
+      });
+      
+      busIcon.add(createRoundedIconBg(x,y,sidelength, color));
+      busIcon.add(busBg);
+      busIcon.add(busWindow);
+      busIcon.add(lightLeft);
+      busIcon.add(lightRight);
+      busIcon.add(wheelLeft);
+      busIcon.add(wheelRight);
+      return busIcon;
+      
+  }
 
 var createWalkingIcon = function (x, y, sideLength) {
     //TODO: Fix scaling
