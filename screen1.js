@@ -371,7 +371,8 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
+      //var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -390,17 +391,36 @@ $(function() {
     return routeGroup;
   };
 
-  var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
+  var createStepLine = function (xStart, xEnd, yMid, thickness, startRounded, endRounded) {
     var radius = thickness/2;
-    var stepShape = new Kinetic.Rect({
-      x: xStart,
-      y: yMid-radius,
-      width: xEnd-xStart,
-      height: thickness,
-      fill: color
+    var stepShape = new Kinetic.Shape({
+      drawFunc: function(context) {
+      
+        context.beginPath();
+        if(startRounded){
+          context.arc(xStart+radius, yMid, radius, Math.PI/2, -Math.PI/2, false);
+        }
+        else{
+          context.moveTo(xStart, yMid+radius);
+          context.lineTo(xStart, yMid-radius);
+        }
+        if(endRounded){
+          context.arc(xEnd-radius, yMid, radius, -Math.PI/2, Math.PI/2, false);
+        }
+        else{
+          context.lineTo(xEnd, yMid-radius);
+        }
+        context.lineTo(xEnd, yMid+radius);
+        
+        context.closePath();
+        
+        this.fill(context);
+      },
+      fill: "blue"
     });
     return stepShape;
   }
+
 
    var createRoundedIconBg = function (x, y, sideLength, color) {
        var iconbg = new Kinetic.Rect({
@@ -518,7 +538,7 @@ $(function() {
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
-<<<<<<< HEAD
+/*<<<<<<< HEAD<<<<<<<<
   $('#to-field').focus().blur().focus();
   //$('#to-field').bind('click', focus-to-field());
 
@@ -535,5 +555,6 @@ $(function() {
 
   $('#to-field').focus();
 >>>>>>> c6c5f2b53f6fd9e8014f88d7da3964ecb80bb09a
+*/
 
 });
