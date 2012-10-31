@@ -372,6 +372,7 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
+     
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
@@ -539,10 +540,35 @@ $(function() {
   }
 
   var createWalkingIcon = function (x, y, sideLength) {
-    /*TODO: Rewrite to be appropriate function*/
-    var iconGroup = new Kinetic.Group();
-    iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
-    return iconGroup;
+    //var iconGroup = new Kinetic.Group();
+    //iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
+    var walkingIcon = new Kinetic.Shape({
+        drawFunc: function(context) {
+          //head+body
+          context.moveTo(200,50);
+          context.lineTo(190,65);
+          //context.lineCap = 'round';
+          context.lineTo(190,100);
+          //context.lineCap = 'round';
+          //legs
+          context.moveTo(170,125);
+          context.lineTo(190,100);
+          context.lineTo(210,110);
+          context.lineTo(210,125);
+          //arms
+          context.moveTo(170,85);
+          context.lineTo(185,65);
+          context.lineTo(210,85);
+          //style
+          context.lineCap = 'round';
+          this.stroke(context);
+        },
+        stroke: 'black',
+        strokeWidth: 5.25,
+        lineJoin: 'round',
+        });
+    //iconGroup.add(walkingIcon);
+    return walkingIcon;
   }
 
   var createMessageBubble = function (anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
