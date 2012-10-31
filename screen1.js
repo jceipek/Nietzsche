@@ -372,6 +372,7 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
+      //var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
@@ -393,27 +394,62 @@ $(function() {
 
   var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
     var radius = thickness/2;
-    var stepShape = new Kinetic.Rect({
-      x: xStart,
-      y: yMid-radius,
-      width: xEnd-xStart,
-      height: thickness,
+    var stepShape = new Kinetic.Shape({
+      drawFunc: function(context) {
+      
+        context.beginPath();
+        if(startRounded){
+          context.arc(xStart+radius, yMid, radius, Math.PI/2, -Math.PI/2, false);
+        }
+        else{
+          context.moveTo(xStart, yMid+radius);
+          context.lineTo(xStart, yMid-radius);
+        }
+        if(endRounded){
+          context.arc(xEnd-radius, yMid, radius, -Math.PI/2, Math.PI/2, false);
+        }
+        else{
+          context.lineTo(xEnd, yMid-radius);
+        }
+        context.lineTo(xEnd, yMid+radius);
+        
+        context.closePath();
+        
+        this.fill(context);
+      },
       fill: color
     });
     return stepShape;
   }
 
-  var createRoundedIconBg = function (x, y, sideLength, color) {
-    /*TODO: Rewrite to be appropriate function*/
-    var bg = new Kinetic.Rect({
-      x: x,
-      y: y,
-      width: sideLength,
-      height: sideLength,
-      fill: color
-    });
-    return bg;
-  }
+
+   var createRoundedIconBg = function (x, y, sideLength, color) {
+       var iconbg = new Kinetic.Rect({
+           x: x,
+           y: y,
+           height: sideLength,
+           width: sideLength,
+           fill: color,
+           cornerRadius: 10
+       });
+       return iconbg;
+   }
+
+   var createTIcon = function (x, y, sidelength) {
+       var tIcon = new Kinetic.Text({
+           x: x,
+           y: x,
+           stroke: 'black',
+           strokeWidth: 1,
+           text: 'T',
+           fontSize: 30,
+           fontFamily: 'Calibri',
+           textFill: 'black',
+           padding: 15,
+           cornerRadius: 30 //should be a better way to make the border a circle - maybe create circle separately
+       });
+         return tIcon; 
+       }
 
   var createWalkingIcon = function (x, y, sideLength) {
     /*TODO: Rewrite to be appropriate function*/
@@ -442,7 +478,7 @@ $(function() {
         
 
         cx.fill();
-      }
+      },
       fill: color
     });
     bubbleGroup.add(bg);
@@ -521,6 +557,7 @@ $(function() {
     }
   };
 
+
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
   });
@@ -533,5 +570,16 @@ $(function() {
   Application.from_route = getFirstRouteWithMatch('Here');
 
   $('#to-field').focus();
+
+  //$('#to-field').bind('click', focus-to-field());
+
+ // $('#to-field').bind('touchstart', function() {
+   //  $('#to-field').focus();
+    //});
+    //$('#to-field').trigger('touchstart');
+  
+  //function focus-to-field() {
+    //$('#to-field').focus();
+  //}
 
 });
