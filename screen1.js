@@ -357,8 +357,9 @@ $(function() {
 
     var timeOffset = departureTime;
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
-      //ctx.fillStyle = steps[stepIdx].transit.line.color;
+      var stepColor = 'black';
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        stepColor = direction.steps[stepIdx].transit.line.color;
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       }
 
@@ -372,7 +373,7 @@ $(function() {
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
       //var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, firstRounded, lastRounded);
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -391,7 +392,7 @@ $(function() {
     return routeGroup;
   };
 
-  var createStepLine = function (xStart, xEnd, yMid, thickness, startRounded, endRounded) {
+  var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
     var radius = thickness/2;
     var stepShape = new Kinetic.Shape({
       drawFunc: function(context) {
@@ -416,7 +417,7 @@ $(function() {
         
         this.fill(context);
       },
-      fill: "blue"
+      fill: color
     });
     return stepShape;
   }
@@ -500,6 +501,32 @@ $(function() {
     return walkingIcon;
   }
 
+  var createMessageBubble = function (anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
+    var bubbleGroup = new Kinetic.Group();
+    var bg = new Kinetic.Shape({
+      //TODO: Fill this out
+      drawFunc: function (context) {
+        ctx.beginPath();
+
+        var flagHeight = height/5;
+        var flagWidth = height/5;
+        var bubbleHeight = height-flagHeight;
+        var bubbleWidth = width;
+
+        var origin = {
+          x: anchorX,
+          y: anchorY
+        };
+
+        
+
+        cx.fill();
+      },
+      fill: color
+    });
+    bubbleGroup.add(bg);
+    return bubbleGroup;
+  }
 
   var createGraphicalRouteButton = function (x, y, width, height, direction) {
     var buttonGroup = new Kinetic.Group();
@@ -573,6 +600,7 @@ $(function() {
     }
   };
 
+
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
   });
@@ -582,8 +610,10 @@ $(function() {
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
-/*<<<<<<< HEAD<<<<<<<<
-  $('#to-field').focus().blur().focus();
+  Application.from_route = getFirstRouteWithMatch('Here');
+
+  $('#to-field').focus();
+
   //$('#to-field').bind('click', focus-to-field());
 
  // $('#to-field').bind('touchstart', function() {
@@ -594,11 +624,5 @@ $(function() {
   //function focus-to-field() {
     //$('#to-field').focus();
   //}
-=======
-  Application.from_route = getFirstRouteWithMatch('Here');
-
-  $('#to-field').focus();
->>>>>>> c6c5f2b53f6fd9e8014f88d7da3964ecb80bb09a
-*/
 
 });
