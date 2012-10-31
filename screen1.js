@@ -384,8 +384,9 @@ $(function() {
         y: y+height/2+4
       };
       var iconSideLength = 30;
-      var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue');
-
+      var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', '400');
+      //var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+    
       routeGroup.add(icon);
     }
 
@@ -436,16 +437,27 @@ $(function() {
    }
 
    var createTIcon = function (x, y, sidelength) {
+    //TODO: Make it that it looks like a real T icon
        var tIcon = new Kinetic.Group();
        var radius = sidelength/2;
-       var tIconText = new Kinetic.Text({
-           x: x-radius,
-           y: y-radius+5,
-           text: ' T',
-           fontSize: 20,
-           fontFamily: 'Calibri',
-           textFill: 'black',
-           padding: 15
+       
+       var verticalRect = new Kinetic.Rect({
+          x: x+sidelength*0.425,
+          y: y+sidelength*0.40,
+          height: sidelength*0.5,
+          width: sidelength*0.207,
+          fill: 'black'
+       });
+       
+       var horizontalRect = new Kinetic.Rect({
+          //x: x+sidelength*0.21,
+          //y: y+sidelength*0.13,
+          x: x+sidelength*0.15,
+          y: y+sidelength*0.25,
+          //height: sidelength*0.173,
+          height: sidelength*0.207,
+          width: sidelength*0.736,
+          fill: 'black'
        });
        
        var tIconCircle = new Kinetic.Circle({
@@ -453,17 +465,18 @@ $(function() {
            y: y+radius,
            radius: radius,
            stroke: 'black',
-           strokeWidth: 1,
-           padding: 15
+           strokeWidth: sidelength*0.0363
        });
        
+       
        tIcon.add(tIconCircle);
-       tIcon.add(tIconText);
+       tIcon.add(horizontalRect);
+       tIcon.add(verticalRect);
        
          return tIcon; 
        }
-       
-  var createBusIcon = function(x,y, sidelength, color){
+var createBusIcon = function(x,y, sidelength, color, number){
+      //TODO: Add the bus number
       var busIcon = new Kinetic.Group();
       
       var inset = sidelength/6;
@@ -473,13 +486,34 @@ $(function() {
       var wheelWidth = sidelength*0.2;
       var radius = sidelength/2;
       
+      var busNumber = new Kinetic.Text({
+          x: x,
+          y: y+sidelength*1.1,
+          text: number,
+          fontSize: 20,
+          fontFamily: "Calibri",
+          fontStyle: 'bold',
+          align: 'center',
+          textFill: "white",
+          padding: inset
+       });
+       
+      var iconbg = new Kinetic.Rect({
+        x: x,
+        y: y,
+        height: sidelength*2,
+        width: busNumber.getTextWidth() + inset,
+        fill: color,
+        cornerRadius: 5
+       });
+       
       var busBg = new Kinetic.Rect({
         x: x+inset,
         y: y+inset,
         height: sidelength-inset*2,
         width: sidelength-inset*2,
         fill: 'white',
-        cornerRadius: 2
+        cornerRadius: 2, 
       });
       
       var busWindow = new Kinetic.Shape({
@@ -492,20 +526,20 @@ $(function() {
       }
       });
       
-     var lightLeft = new Kinetic.Circle({
-       x: x+sidelength/2-lightInset,
-       y: y+sidelength/2+lightInset,
-       radius: lightRadius,
-       fill: color,
-       padding: 15
+      var lightLeft = new Kinetic.Circle({
+        x: x+sidelength/2-lightInset,
+        y: y+sidelength/2+lightInset,
+        radius: lightRadius,
+        fill: color,
+        padding: 15
       });
     
       var lightRight = new Kinetic.Circle({
-       x: x+sidelength/2+lightInset,
-       y: y+sidelength/2+lightInset,
-       radius: lightRadius,
-       fill: color,
-       padding: 15
+        x: x+sidelength/2+lightInset,
+        y: y+sidelength/2+lightInset,
+        radius: lightRadius,
+        fill: color,
+        padding: 15
       });
       
       var wheelRight = new Kinetic.Shape({
@@ -528,16 +562,17 @@ $(function() {
       }
       });
       
-      busIcon.add(createRoundedIconBg(x,y,sidelength, color));
+      busIcon.add(iconbg);
       busIcon.add(busBg);
       busIcon.add(busWindow);
       busIcon.add(lightLeft);
       busIcon.add(lightRight);
       busIcon.add(wheelLeft);
       busIcon.add(wheelRight);
+      busIcon.add(busNumber);
       return busIcon;
       
-  }
+}
 
   var createWalkingIcon = function (x, y, sideLength) {
     //var iconGroup = new Kinetic.Group();
