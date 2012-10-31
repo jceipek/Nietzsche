@@ -414,6 +414,22 @@ $(function() {
        return iconbg;
    }
 
+   var createTIcon = function (x, y, sidelength) {
+       var tIcon = new Kinetic.Text({
+           x: x,
+           y: x,
+           stroke: 'black',
+           strokeWidth: 1,
+           text: 'T',
+           fontSize: 30,
+           fontFamily: 'Calibri',
+           textFill: 'black',
+           padding: 15,
+           cornerRadius: 30 //should be a better way to make the border a circle - maybe create circle separately
+       });
+         return tIcon; 
+       }
+
   var createWalkingIcon = function (x, y, sideLength) {
     /*TODO: Rewrite to be appropriate function*/
     var iconGroup = new Kinetic.Group();
