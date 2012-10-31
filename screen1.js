@@ -552,27 +552,26 @@ $(function() {
       
   }
 
-  var createWalkingIcon = function (x, y, sideLength) {
+var createWalkingIcon = function (x, y, sideLength) {
+    //TODO: Fix scaling
     //var iconGroup = new Kinetic.Group();
+    //var iconBg = createRoundedIconBg(x, y, sideLength, 'red');
     //iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
     var walkingIcon = new Kinetic.Shape({
         drawFunc: function(context) {
           //head+body
-          context.moveTo(200,50);
-          context.lineTo(190,65);
-          //context.lineCap = 'round';
-          context.lineTo(190,100);
-          //context.lineCap = 'round';
+          context.moveTo(x+(0.588*sideLength)/*(sideLength-35)*/,y+(0.0588*sideLength));//y+(sideLength-80));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.3125*sideLength));//(sideLength-60));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
           //legs
-          context.moveTo(170,125);
-          context.lineTo(190,100);
-          context.lineTo(210,110);
-          context.lineTo(210,125);
+          context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,y+(0.941*sideLength));//(sideLength-5));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.765*sideLength));//(sideLength-20));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.941*sideLength));//(sideLength-5));
           //arms
-          context.moveTo(170,85);
-          context.lineTo(185,65);
-          context.lineTo(210,85);
-          //style
+          context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,1*sideLength);
+          context.lineTo(x+(0.412*sideLength)/*(sideLength-50)*/,y+(0.235*sideLength));//(sideLength-65));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,1*sideLength);
           context.lineCap = 'round';
           this.stroke(context);
         },
@@ -580,7 +579,7 @@ $(function() {
         strokeWidth: 5.25,
         lineJoin: 'round',
         });
-    //iconGroup.add(walkingIcon);
+    //iconGroup.add(iconBg);
     return walkingIcon;
   }
 
