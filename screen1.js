@@ -356,6 +356,7 @@ $(function() {
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
     var timeOffset = departureTime;
+    var startFlagExists = false;
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var stepColor = 'black';
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
@@ -364,7 +365,7 @@ $(function() {
       }
 
       var firstRounded = (stepIdx === 0);
-      var lastRounded = (stepIdx === direction.steps.length-1);
+      var isEnd = (stepIdx === direction.steps.length-1);
 
       var stepStart = posFromTime(timeOffset, Application.departure_time, scalingFactor);
 
@@ -372,8 +373,20 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-     
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
+      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        if (startFlagExists === false) {
+          var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
+          var flag = createMessageBubble(stepStart, y+height/2, 30, stepColor, firstTransitTime);
+          routeGroup.add(flag);
+          startFlagExists = true;
+        }
+      }
+      if (isEnd) {
+        var endTime = direction.arrival_time.text;
+        var flag = createMessageBubble(stepEnd, y+height/2, 30, stepColor, endTime);
+          routeGroup.add(flag);
+      }
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -574,27 +587,26 @@ var createBusIcon = function(x,y, sidelength, color, number){
       
 }
 
-  var createWalkingIcon = function (x, y, sideLength) {
+var createWalkingIcon = function (x, y, sideLength) {
+    //TODO: Fix scaling
     //var iconGroup = new Kinetic.Group();
+    //var iconBg = createRoundedIconBg(x, y, sideLength, 'red');
     //iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
     var walkingIcon = new Kinetic.Shape({
         drawFunc: function(context) {
           //head+body
-          context.moveTo(200,50);
-          context.lineTo(190,65);
-          //context.lineCap = 'round';
-          context.lineTo(190,100);
-          //context.lineCap = 'round';
+          context.moveTo(x+(0.588*sideLength)/*(sideLength-35)*/,y+(0.0588*sideLength));//y+(sideLength-80));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.3125*sideLength));//(sideLength-60));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
           //legs
-          context.moveTo(170,125);
-          context.lineTo(190,100);
-          context.lineTo(210,110);
-          context.lineTo(210,125);
+          context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,y+(0.941*sideLength));//(sideLength-5));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.765*sideLength));//(sideLength-20));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.941*sideLength));//(sideLength-5));
           //arms
-          context.moveTo(170,85);
-          context.lineTo(185,65);
-          context.lineTo(210,85);
-          //style
+          context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,1*sideLength);
+          context.lineTo(x+(0.412*sideLength)/*(sideLength-50)*/,y+(0.235*sideLength));//(sideLength-65));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,1*sideLength);
           context.lineCap = 'round';
           this.stroke(context);
         },
@@ -602,34 +614,48 @@ var createBusIcon = function(x,y, sidelength, color, number){
         strokeWidth: 5.25,
         lineJoin: 'round',
         });
-    //iconGroup.add(walkingIcon);
+    //iconGroup.add(iconBg);
     return walkingIcon;
   }
 
-  var createMessageBubble = function (anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
+  var createMessageBubble = function (anchorX, anchorY, height, color, text) {
+    var offset = 0;
+    var l = height;
     var bubbleGroup = new Kinetic.Group();
     var bg = new Kinetic.Shape({
       //TODO: Fill this out
-      drawFunc: function (context) {
+      drawFunc: function (ctx) {
         ctx.beginPath();
-
-        var flagHeight = height/5;
-        var flagWidth = height/5;
-        var bubbleHeight = height-flagHeight;
-        var bubbleWidth = width;
-
-        var origin = {
-          x: anchorX,
-          y: anchorY
-        };
-
-        
-
-        cx.fill();
+        ctx.moveTo(0, .692*l);
+        ctx.lineTo(offset, .427*l);
+        ctx.arc(.077*l+offset, .077*l, .077*l, Math.PI, 1.5*Math.PI, false)
+        ctx.arc(.923*l+offset, .077*l, .077*l, 1.5*Math.PI, 0, false);
+        ctx.arc(.923*l+offset, .4*l, .077*l, 0, 0.5*Math.PI, false);
+        ctx.lineTo(.154*l+offset, .477*l);
+        ctx.lineTo(0, .692*l);
+        ctx.lineWidth = 1;
+        ctx.closePath();
+        this.fill(ctx);        
       },
-      fill: color
+      fill: color,
+   
     });
+
+    var textInset = 0.1 * height;
+    var bubbleText = new Kinetic.Text({
+      x: 0,
+      y: 0,
+      text: text,
+      fontSize: 11,
+      fontFamily: "HelveticaNeue-Medium",
+      textFill: "white",
+      padding: textInset,
+      align: "left"
+    });
+
     bubbleGroup.add(bg);
+    bubbleGroup.add(bubbleText);
+    bubbleGroup.setPosition(anchorX, anchorY - height * 2);
     return bubbleGroup;
   }
 
