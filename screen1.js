@@ -54,6 +54,28 @@ $(function() {
   graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeItemsGroup);
   graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeButtonsGroup);
 
+// TODO: Think about actual implementation for this
+  var detailedDirectionsScreen = {
+    portraitData: {
+      routeItemHeight: 150,
+      routeSelectionButtonWidth: 88
+    },
+    mainLayer: new Kinetic.Layer(),
+    routeItemsGroup: new Kinetic.Group(),
+    routeButtonsGroup: new Kinetic.Group(),
+    background: new Kinetic.Rect({
+      x: 0,
+      y: 0,
+      width: Application.stage.getWidth(),
+      height: Application.stage.getHeight(),
+      fill: '#e00'
+    })
+  };
+  Application.stage.add(detailedDirectionsScreen.mainLayer);
+  detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.background);
+  detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.routeItemsGroup);
+  detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.routeButtonsGroup);
+
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
@@ -71,7 +93,7 @@ $(function() {
       return true;
     }
     return false;
-  }
+  };
 
   // Transitions from one screen to another using mainLayer
   // POSSIBLE_TRANSITIONS: 'SWAP', 'SCALE TOP'
@@ -117,12 +139,47 @@ $(function() {
         /* RESET ORIGINAL SCREEN AND HIDE IT */
         startScreen.mainLayer.setScale(1);
         startScreen.mainLayer.setOffset(0,0);
+        endScreen.mainLayer.setPosition(0,0);
         startScreen.mainLayer.setPosition(0,0);
         startScreen.mainLayer.hide();
         startScreen.mainLayer.draw();
+        endScreen.mainLayer.draw();
         /* END RESET */
       }, time);
+    } else if (transition === 'SLIDE LEFT') {
+      endScreen.mainLayer.moveToTop();
+      startScreen.mainLayer.moveToBottom();
+      endScreen.mainLayer.setPosition(Application.stage.getWidth(), 0);
+      endScreen.mainLayer.show();
 
+      var anim = new Kinetic.Animation({
+        func: function(frame) {
+          var fractionComplete = frame.time/time;
+          var width = Application.stage.getWidth();
+
+          endScreen.mainLayer.setPosition(
+            width-fractionComplete*width,
+            endScreen.mainLayer.getPosition().y);
+          startScreen.mainLayer.setPosition(
+            -fractionComplete*width,
+            startScreen.mainLayer.getPosition().y);
+          endScreen.mainLayer.draw();
+          startScreen.mainLayer.draw();
+        },
+        node: Application.stage
+      });
+
+      anim.start();
+      setTimeout(function () {
+        anim.stop();
+        /* RESET ORIGINAL SCREEN AND HIDE IT */
+        startScreen.mainLayer.setPosition(0,0);
+        endScreen.mainLayer.setPosition(0,0);
+        startScreen.mainLayer.hide();
+        startScreen.mainLayer.draw();
+        endScreen.mainLayer.draw();
+        /* END RESET */
+      }, time);
     }
   };
 
@@ -220,6 +277,13 @@ $(function() {
     return group;
   };
 
+  var generateRouteIconSelectedFunction = function (button, route) {
+    return function () {
+      transitionScreen(graphicalComparisonScreen, detailedDirectionsScreen, 'SLIDE LEFT', Application.SHORT_DELAY);
+      console.log('To the detailed directions screen!');
+    }
+  };
+
   var generateListItemSelectedFunction = function (item, fieldId, route) {
     return function () {
       var listGroup = routeSelectionScreen.listItemsGroup;
@@ -241,7 +305,7 @@ $(function() {
         Application.departure_time = new Date();
         computeDirections();
         transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
-        console.log('NEXT SCREEN!');
+        console.log('To the graphical comparison screen!');
       }
 
       if (fieldId == '#from-field') {
@@ -279,7 +343,6 @@ $(function() {
         txt.setTextFill(txt.getAttrs().swapTextFill);
         txt.setAttrs({swapTextFill: tempTextFill});
       }
-
 
       routeSelectionScreen.mainLayer.draw();
     };
@@ -384,6 +447,9 @@ $(function() {
         y: y+height/2+4
       };
       var iconSideLength = 30;
+      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        
+      }
       var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
 
       routeGroup.add(icon);
@@ -420,7 +486,7 @@ $(function() {
       fill: color
     });
     return stepShape;
-  }
+  };
 
 
    var createRoundedIconBg = function (x, y, sideLength, color) {
@@ -433,7 +499,7 @@ $(function() {
            cornerRadius: 10
        });
        return iconbg;
-   }
+   };
 
    var createTIcon = function (x, y, sidelength) {
        var tIcon = new Kinetic.Text({
@@ -449,16 +515,16 @@ $(function() {
            cornerRadius: 30 //should be a better way to make the border a circle - maybe create circle separately
        });
          return tIcon; 
-       }
+  };
 
   var createWalkingIcon = function (x, y, sideLength) {
     /*TODO: Rewrite to be appropriate function*/
     var iconGroup = new Kinetic.Group();
     iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
     return iconGroup;
-  }
+  };
 
-  var createMessageBubble = function (anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
+  var createMessageBubble = function (text, anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
     var bubbleGroup = new Kinetic.Group();
     var bg = new Kinetic.Shape({
       //TODO: Fill this out
@@ -469,13 +535,28 @@ $(function() {
         var flagWidth = height/5;
         var bubbleHeight = height-flagHeight;
         var bubbleWidth = width;
+        var radius = 3;
 
         var origin = {
           x: anchorX,
           y: anchorY
         };
 
-        
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(origin.x, origin.y-flagHeight-height+radius);
+
+        ctx.arc(origin.x-radius, origin.y-flagHeight-height+radius,
+                    radius, 0.0, M_PI*3.0/2.0, true);//Top Right Radius
+    
+        ctx.lineTo(origin.x-width+radius, origin.y-flagHeight-height); //Top Left
+        ctx.arc(origin.x-width+radius, origin.y-flagHeight-height+radius,
+                    radius, -M_PI/2.0, M_PI, true); //Top Left Radius
+
+        ctx.lineTo(origin.x-width, origin.y-flagHeight-radius); //Bottom Left
+        ctx.arc(origin.x-width+radius, origin.y-flagHeight-radius,
+                    radius, M_PI, M_PI/2.0, true);
+    
+        ctx.lineTo(origin.x, origin.y);
 
         cx.fill();
       },
@@ -483,7 +564,7 @@ $(function() {
     });
     bubbleGroup.add(bg);
     return bubbleGroup;
-  }
+  };
 
   var createGraphicalRouteButton = function (x, y, width, height, direction) {
     var buttonGroup = new Kinetic.Group();
@@ -498,7 +579,7 @@ $(function() {
 
     buttonGroup.add(selectionButton);
     return buttonGroup;
-  }
+  };
 
   var computeDirections = function () {
     var router = new google.maps.DirectionsService();
@@ -556,7 +637,6 @@ $(function() {
       }
     }
   };
-
 
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
