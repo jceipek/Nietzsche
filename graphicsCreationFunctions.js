@@ -276,37 +276,38 @@ var createRouteItem = function (y, width, height, route) {
 };
 
 var createWalkingIcon = function (x, y, sideLength) {
-  //TODO: Fix scaling
-  var walkingIcon = new Kinetic.Group();
-  var iconBg = createRoundedIconBg(x, y, sideLength, 'red'); //TODO: Change color
-  var person = new Kinetic.Shape({
-    drawFunc: function(context) {
-      context.beginPath();
-      //head+body
-      context.moveTo(x+(0.588*sideLength)/*(sideLength-35)*/,y+(0.0588*sideLength));//y+(sideLength-80));
-      context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.3125*sideLength));//(sideLength-60));
-      context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
-      //legs
-      context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,y+(0.941*sideLength));//(sideLength-5));
-      context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
-      context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.765*sideLength));//(sideLength-20));
-      context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.941*sideLength));//(sideLength-5));
-      //arms
-      context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,1*sideLength);
-      context.lineTo(x+(0.412*sideLength)/*(sideLength-50)*/,y+(0.235*sideLength));//(sideLength-65));
-      context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,1*sideLength);
-      context.closePath();
-      context.lineCap = 'round';
-      this.stroke(context);
-    },
-    stroke: 'black',
-    strokeWidth: 5.25,
-    lineJoin: 'round',
-  });
-  walkingIcon.add(iconBg);
-  walkingIcon.add(person);
-  return walkingIcon;
-};
+    var inset = sideLength/5;
+    var walkingIcon = new Kinetic.Group();
+    var iconBg = createRoundedIconBg(x, y, sideLength, '#CC00FF'); //TODO: Change color
+    var person = new Kinetic.Shape({
+        drawFunc: function(context) {
+          context.beginPath();
+          context.closePath();
+          //head+body
+          context.moveTo(x+(0.588*sideLength),y+(0.0588*sideLength)+(inset/4));
+          context.lineTo(x+(0.471*sideLength),y+(0.3125*sideLength)-(inset/2));
+          context.lineTo(x+(0.471*sideLength),y+(0.588*sideLength)-(inset/2));
+          //legs
+          context.moveTo(x+(0.235*sideLength),y+(0.941*sideLength)-(inset/4));
+          context.lineTo(x+(0.471*sideLength),y+(0.588*sideLength)-(inset/4));
+          context.lineTo(x+(0.706*sideLength),y+(0.765*sideLength)-(inset/4));
+          context.lineTo(x+(0.706*sideLength),y+(0.941*sideLength)-(inset/4));
+	  //arms
+          context.moveTo(x+(0.235*sideLength),y+(0.412*sideLength)+(inset/4));
+          context.lineTo(x+(0.412*sideLength)+(inset/4),y+(0.235*sideLength)+(inset/4));
+          context.lineTo(x+(0.706*sideLength),y+(0.412*sideLength)+(inset/4));
+          //context.closePath();
+          context.lineCap = 'round';
+          this.stroke(context);
+        },
+        stroke: 'black',
+        strokeWidth: .118*sideLength,
+        lineJoin: 'round',
+        });
+    walkingIcon.add(iconBg);
+    walkingIcon.add(person);
+    return walkingIcon;
+  }
 
 
 
