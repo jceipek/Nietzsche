@@ -278,11 +278,10 @@ var createRouteItem = function (y, width, height, route) {
 var createWalkingIcon = function (x, y, sideLength) {
     var inset = sideLength/5;
     var walkingIcon = new Kinetic.Group();
-    var iconBg = createRoundedIconBg(x, y, sideLength, '#CC00FF'); //TODO: Change color
+    var iconBg = createRoundedIconBg(x, y, sideLength, '#00CED1'); //TODO: Change color
     var person = new Kinetic.Shape({
         drawFunc: function(context) {
           context.beginPath();
-          context.closePath();
           //head+body
           context.moveTo(x+(0.588*sideLength),y+(0.0588*sideLength)+(inset/4));
           context.lineTo(x+(0.471*sideLength),y+(0.3125*sideLength)-(inset/2));
@@ -300,7 +299,7 @@ var createWalkingIcon = function (x, y, sideLength) {
           context.lineCap = 'round';
           this.stroke(context);
         },
-        stroke: 'black',
+        stroke: 'white',
         strokeWidth: .118*sideLength,
         lineJoin: 'round',
         });
