@@ -9,6 +9,7 @@ $(function() {
     departure_time: new Date(),
     directions: [],
     SHORT_DELAY: 200,
+    MEDIUM_DELAY: 300,
     stage: new Kinetic.Stage({
       container: 'screenContainer',
       width: 640,
@@ -224,7 +225,7 @@ $(function() {
 
   var generateRouteIconSelectedFunction = function (button, direction) {
     return function () {
-      transitionScreen(graphicalComparisonScreen, detailedDirectionsScreen, 'SLIDE LEFT', Application.SHORT_DELAY);
+      transitionScreen(graphicalComparisonScreen, detailedDirectionsScreen, 'SLIDE LEFT', Application.MEDIUM_DELAY);
       console.log('To the detailed directions screen!');
     }
   };
@@ -297,6 +298,7 @@ $(function() {
           Application.departure_time = new Date();
         }
         computeDirections();
+        $(fieldId).blur();
         transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
         console.log('To the graphical comparison screen!');
       }
