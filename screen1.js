@@ -428,6 +428,13 @@ $(function() {
       var stepColor = 'black';
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         stepColor = direction.steps[stepIdx].transit.line.color;
+        if (direction.steps[stepIdx].transit.line !== undefined && direction.steps[stepIdx].transit.line.vehicle !== undefined) {
+          var line = direction.steps[stepIdx].transit.line;
+          var vehicleName = line.vehicle.name;
+          if (vehicleName === "Bus") {
+            stepColor = '#D3D15F' // TODO: Change to be better yellow?
+          }
+        }
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       }
 
@@ -474,7 +481,7 @@ $(function() {
           if (vehicleName === "Train" || vehicleName === "Subway" || vehicleName === "Light rail") {
             icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
           } else if (vehicleName === "Bus") {
-            icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', line.short_name);
+            icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor, line.short_name);
           }
         } else if (direction.steps[stepIdx].travel_mode !== "WALKING"){
           console.log("What");
