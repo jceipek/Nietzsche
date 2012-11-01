@@ -1,5 +1,6 @@
 // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
-
+var demoTime = null;
+demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
 $(function() {
 
   var Application = {
@@ -302,7 +303,9 @@ $(function() {
           routeSelectionScreen.mainLayer.draw();
         }, Application.SHORT_DELAY);
         //Start Generating Routes
-        Application.departure_time = new Date();
+        if (demoTime == null) {
+          Application.departure_time = new Date();
+        }
         computeDirections();
         transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
         console.log('To the graphical comparison screen!');
@@ -419,6 +422,7 @@ $(function() {
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
     var timeOffset = departureTime;
+    var startFlagExists = false;
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var stepColor = 'black';
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
@@ -427,7 +431,7 @@ $(function() {
       }
 
       var firstRounded = (stepIdx === 0);
-      var lastRounded = (stepIdx === direction.steps.length-1);
+      var isEnd = (stepIdx === direction.steps.length-1);
 
       var stepStart = posFromTime(timeOffset, Application.departure_time, scalingFactor);
 
@@ -435,8 +439,20 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-      //var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, 'blue', firstRounded, lastRounded);
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, lastRounded);
+      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        if (startFlagExists === false) {
+          var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
+          var flag = createMessageBubble(stepStart, y+height/2, 30, stepColor, firstTransitTime);
+          routeGroup.add(flag);
+          startFlagExists = true;
+        }
+      }
+      if (isEnd) {
+        var endTime = direction.arrival_time.text;
+        var flag = createMessageBubble(stepEnd, y+height/2, 30, stepColor, endTime);
+          routeGroup.add(flag);
+      }
+      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -447,11 +463,9 @@ $(function() {
         y: y+height/2+4
       };
       var iconSideLength = 30;
-      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
-        
-      }
-      var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
-
+      //var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', '6');
+      var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+    
       routeGroup.add(icon);
     }
 
@@ -496,73 +510,224 @@ $(function() {
            height: sideLength,
            width: sideLength,
            fill: color,
-           cornerRadius: 10
+           cornerRadius: 5
        });
        return iconbg;
    };
 
    var createTIcon = function (x, y, sidelength) {
-       var tIcon = new Kinetic.Text({
-           x: x,
-           y: x,
-           stroke: 'black',
-           strokeWidth: 1,
-           text: 'T',
-           fontSize: 30,
-           fontFamily: 'Calibri',
-           textFill: 'black',
-           padding: 15,
-           cornerRadius: 30 //should be a better way to make the border a circle - maybe create circle separately
+    //TODO: Make it that it looks like a real T icon
+       var tIcon = new Kinetic.Group();
+       var radius = sidelength/2;
+       var insetSide = sidelength*0.13;
+       var insetTop = sidelength*0.21;
+       var thickness = sidelength*0.0363;
+       
+       tIcon.setPosition(x,y);
+       
+       var verticalRect = new Kinetic.Rect({
+          x: sidelength*0.5 - sidelength*0.173/2 + thickness/2,
+          y: sidelength*0.5 - insetTop + thickness*2,
+          height: sidelength*0.5,
+          width: sidelength*0.173,
+          fill: 'black'
        });
+       
+       var horizontalRect = new Kinetic.Rect({
+          x: insetSide+thickness/2,
+          y: insetTop+thickness*2,
+          //x: insetSide + thickness/2,
+          //y: insetTop + thickness/2,
+          height: sidelength*0.173,
+          width: sidelength*0.736,
+          fill: 'black'
+       });
+       
+       var tIconCircle = new Kinetic.Circle({
+           x: radius,
+           y: radius,
+           radius: radius,
+           stroke: 'black',
+           strokeWidth: thickness
+       });
+       
+       
+       tIcon.add(tIconCircle);
+       tIcon.add(horizontalRect);
+       tIcon.add(verticalRect);
+       
          return tIcon; 
-  };
+       }
+       
+       
+var createBusIcon = function(x,y, sidelength, color, number){
+      var busIcon = new Kinetic.Group();
+      
+      var inset = sidelength/6;
+      var lightInset = sidelength/5;
+      var lightRadius = sidelength*0.05;
+      var arcInset = sidelength*0.25;
+      var wheelWidth = sidelength*0.2;
+      var wheelInset = sidelength*0.15;
+      var radius = sidelength/2;
+      
+      busIcon.setPosition(x,y);
+      
+      var busNumber = new Kinetic.Text({
+          x: 0,
+          y: sidelength,
+          text: number,
+          fontSize: 20,
+          fontFamily: "Calibri",
+          fontStyle: 'bold',
+          align: 'center',
+          textFill: "white",
+          padding: inset
+       });
+       
+      var iconbg = new Kinetic.Rect({
+        x: 0,
+        y: 0,
+        height: sidelength*2,
+        width: busNumber.getWidth(),
+        fill: color,
+        cornerRadius: 5
+       });
+       
+      var busBg = new Kinetic.Rect({
+        x: (busNumber.getWidth() - (sidelength-inset*2))/2,
+        y: inset,
+        height: sidelength-inset*2,
+        width: sidelength-inset*2,
+        fill: 'white',
+        cornerRadius: 2, 
+      });
+      
+      var busWindow = new Kinetic.Shape({
+        drawFunc: function(context) {
+        context.beginPath();
+        context.arc(busNumber.getWidth()/2, radius, radius-arcInset, 0, Math.PI, true);
+        context.closePath();
+        context.fillStyle = color;
+        context.fill();
+      }
+      });
+      
+      var lightLeft = new Kinetic.Circle({
+        x: busNumber.getWidth()/2 - busBg.getWidth()/2 + lightInset,
+        y: sidelength/2+lightInset,
+        radius: lightRadius,
+        fill: color
+      });
+    
+      var lightRight = new Kinetic.Circle({
+        x: busNumber.getWidth()/2 + busBg.getWidth()/2 - lightInset,
+        y: sidelength/2+lightInset,
+        radius: lightRadius,
+        fill: color
+      });
+      
+      var wheelRight = new Kinetic.Shape({
+        drawFunc: function(context) {
+        context.beginPath();
+        context.arc(busNumber.getWidth()/2 + busBg.getWidth()/2 - wheelInset, sidelength-inset, wheelWidth/2, 0, Math.PI, false);
+        context.closePath();
+        context.fillStyle = 'white';
+        context.fill();
+      }
+      });
+      
+      var wheelLeft = new Kinetic.Shape({
+        drawFunc: function(context) {
+        context.beginPath();
+        context.arc(busNumber.getWidth()/2 - busBg.getWidth()/2 + wheelInset, sidelength-inset, wheelWidth/2, 0, Math.PI, false);
+        context.closePath();
+        context.fillStyle = 'white';
+        context.fill();
+      }
+      });
+      
+      busIcon.add(iconbg);
+      busIcon.add(busBg);
+      busIcon.add(busWindow);
+      busIcon.add(lightLeft);
+      busIcon.add(lightRight);
+      busIcon.add(wheelLeft);
+      busIcon.add(wheelRight);
+      busIcon.add(busNumber);
+      return busIcon;
+      
+}
 
-  var createWalkingIcon = function (x, y, sideLength) {
-    /*TODO: Rewrite to be appropriate function*/
-    var iconGroup = new Kinetic.Group();
-    iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
-    return iconGroup;
-  };
+var createWalkingIcon = function (x, y, sideLength) {
+    //TODO: Fix scaling
+    //var iconGroup = new Kinetic.Group();
+    //var iconBg = createRoundedIconBg(x, y, sideLength, 'red');
+    //iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
+    var walkingIcon = new Kinetic.Shape({
+        drawFunc: function(context) {
+          //head+body
+          context.moveTo(x+(0.588*sideLength)/*(sideLength-35)*/,y+(0.0588*sideLength));//y+(sideLength-80));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.3125*sideLength));//(sideLength-60));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
+          //legs
+          context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,y+(0.941*sideLength));//(sideLength-5));
+          context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.588*sideLength));//(sideLength-30));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.765*sideLength));//(sideLength-20));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,y+(0.941*sideLength));//(sideLength-5));
+          //arms
+          context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,1*sideLength);
+          context.lineTo(x+(0.412*sideLength)/*(sideLength-50)*/,y+(0.235*sideLength));//(sideLength-65));
+          context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,1*sideLength);
+          context.lineCap = 'round';
+          this.stroke(context);
+        },
+        stroke: 'black',
+        strokeWidth: 5.25,
+        lineJoin: 'round',
+        });
+    //iconGroup.add(iconBg);
+    return walkingIcon;
+  }
 
-  var createMessageBubble = function (text, anchorX, anchorY, height, color, bubbleAbove, bubbleRight) {
+  var createMessageBubble = function (anchorX, anchorY, height, color, text) {
+    var offset = 0;
+    var l = height;
     var bubbleGroup = new Kinetic.Group();
     var bg = new Kinetic.Shape({
       //TODO: Fill this out
-      drawFunc: function (context) {
+      drawFunc: function (ctx) {
         ctx.beginPath();
-
-        var flagHeight = height/5;
-        var flagWidth = height/5;
-        var bubbleHeight = height-flagHeight;
-        var bubbleWidth = width;
-        var radius = 3;
-
-        var origin = {
-          x: anchorX,
-          y: anchorY
-        };
-
-        ctx.moveTo(origin.x, origin.y);
-        ctx.lineTo(origin.x, origin.y-flagHeight-height+radius);
-
-        ctx.arc(origin.x-radius, origin.y-flagHeight-height+radius,
-                    radius, 0.0, M_PI*3.0/2.0, true);//Top Right Radius
-    
-        ctx.lineTo(origin.x-width+radius, origin.y-flagHeight-height); //Top Left
-        ctx.arc(origin.x-width+radius, origin.y-flagHeight-height+radius,
-                    radius, -M_PI/2.0, M_PI, true); //Top Left Radius
-
-        ctx.lineTo(origin.x-width, origin.y-flagHeight-radius); //Bottom Left
-        ctx.arc(origin.x-width+radius, origin.y-flagHeight-radius,
-                    radius, M_PI, M_PI/2.0, true);
-    
-        ctx.lineTo(origin.x, origin.y);
-
-        cx.fill();
+        ctx.moveTo(0, .692*l);
+        ctx.lineTo(offset, .427*l);
+        ctx.arc(.077*l+offset, .077*l, .077*l, Math.PI, 1.5*Math.PI, false)
+        ctx.arc(.923*l+offset, .077*l, .077*l, 1.5*Math.PI, 0, false);
+        ctx.arc(.923*l+offset, .4*l, .077*l, 0, 0.5*Math.PI, false);
+        ctx.lineTo(.154*l+offset, .477*l);
+        ctx.lineTo(0, .692*l);
+        ctx.lineWidth = 1;
+        ctx.closePath();
+        this.fill(ctx);        
       },
-      fill: color
+      fill: color,
+   
     });
+
+    var textInset = 0.1 * height;
+    var bubbleText = new Kinetic.Text({
+      x: 0,
+      y: 0,
+      text: text,
+      fontSize: 11,
+      fontFamily: "HelveticaNeue-Medium",
+      textFill: "white",
+      padding: textInset,
+      align: "left"
+    });
+
     bubbleGroup.add(bg);
+    bubbleGroup.add(bubbleText);
+    bubbleGroup.setPosition(anchorX, anchorY - height * 2);
     return bubbleGroup;
   };
 
@@ -648,6 +813,10 @@ $(function() {
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
   Application.from_route = getFirstRouteWithMatch('Here');
+
+  if (demoTime != null) {
+    Application.departure_time = demoTime;
+  }
 
   $('#to-field').focus();
 
