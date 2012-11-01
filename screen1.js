@@ -376,14 +376,14 @@ $(function() {
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
           var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
-          var flag = createMessageBubble(stepStart, y+height/2, 30, stepColor, firstTransitTime);
+          var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
           routeGroup.add(flag);
           startFlagExists = true;
         }
       }
       if (isEnd) {
         var endTime = direction.arrival_time.text;
-        var flag = createMessageBubble(stepEnd, y+height/2, 30, stepColor, endTime);
+        var flag = createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
           routeGroup.add(flag);
       }
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);
@@ -397,7 +397,7 @@ $(function() {
         y: y+height/2+4
       };
       var iconSideLength = 30;
-      var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue');
+      var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue');
 
       routeGroup.add(icon);
     }
@@ -452,11 +452,11 @@ $(function() {
        var tIcon = new Kinetic.Group();
        var radius = sidelength/2;
        var tIconText = new Kinetic.Text({
-           x: x-radius,
-           y: y-radius+5,
-           text: ' T',
+           x: x-(0.4*radius),
+           y: y-(0.75*radius),
+           text: 'T',
            fontSize: 20,
-           fontFamily: 'Calibri',
+           fontFamily: 'Calibri ',
            textFill: 'black',
            padding: 15
        });
@@ -466,7 +466,7 @@ $(function() {
            y: y+radius,
            radius: radius,
            stroke: 'black',
-           strokeWidth: 1,
+           strokeWidth: 3,
            padding: 15
        });
        
@@ -588,16 +588,15 @@ var createWalkingIcon = function (x, y, sideLength) {
     var l = height;
     var bubbleGroup = new Kinetic.Group();
     var bg = new Kinetic.Shape({
-      //TODO: Fill this out
       drawFunc: function (ctx) {
         ctx.beginPath();
-        ctx.moveTo(0, .692*l);
-        ctx.lineTo(offset, .427*l);
-        ctx.arc(.077*l+offset, .077*l, .077*l, Math.PI, 1.5*Math.PI, false)
-        ctx.arc(.923*l+offset, .077*l, .077*l, 1.5*Math.PI, 0, false);
-        ctx.arc(.923*l+offset, .4*l, .077*l, 0, 0.5*Math.PI, false);
-        ctx.lineTo(.154*l+offset, .477*l);
-        ctx.lineTo(0, .692*l);
+        ctx.moveTo(0, l);
+        ctx.lineTo(0-offset, .422*l);
+        ctx.arc(-.11*l-offset, .11*l, .11*l, 0, 1.5*Math.PI, true);
+        ctx.arc(-1.33*l-offset, .11*l, .11*l, 1.5*Math.PI, Math.PI, true);
+        ctx.arc(-1.33*l-offset, .577*l, .11*l, Math.PI, 0.5*Math.PI, true);
+        ctx.lineTo(-.11*l-offset, .688*l);
+        ctx.lineTo(0, l);
         ctx.lineWidth = 1;
         ctx.closePath();
         this.fill(ctx);        
@@ -606,12 +605,12 @@ var createWalkingIcon = function (x, y, sideLength) {
    
     });
 
-    var textInset = 0.1 * height;
+    var textInset = 0.125 * height;
     var bubbleText = new Kinetic.Text({
-      x: 0,
+      x: -60,
       y: 0,
       text: text,
-      fontSize: 11,
+      fontSize: 18,
       fontFamily: "HelveticaNeue-Medium",
       textFill: "white",
       padding: textInset,
