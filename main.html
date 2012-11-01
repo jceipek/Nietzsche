@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>Nietzsche Transit</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="base.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBncfToxvHsv7gRXmALIPA8i_5GYLaKB60&sensor=false"> 
+     <!-- sensor = true later! --></script>
+    <script src="kinetic-v4.0.3.js"></script>
+    <script src="routeData.js"></script>
+    <script src="graphicsCreationFunctions.js"></script>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div id='screen-wrapper'>
+      <div id='top-bar'>
+        <form class="field-container">
+          <label>
+            From:</label>
+            <input id='from-field' type="text" class="input-medium from-field-small" placeholder="Place or Address" value='Here'/>
+           
+       
+          <label>
+            To:</label>
+            <input id='to-field'  type="text" class="input-medium to-field-small" placeholder="Place or Address"/>
+          
+        </form>
+      </div>
+      <div id='screenContainer'></div>
+    </div>
+  </body>
+</html>
