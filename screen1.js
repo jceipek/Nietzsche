@@ -1,5 +1,6 @@
 // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
-
+var demoTime = null;
+demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
 $(function() {
 
   var Application = {
@@ -238,7 +239,9 @@ $(function() {
           routeSelectionScreen.mainLayer.draw();
         }, Application.SHORT_DELAY);
         //Start Generating Routes
-        Application.departure_time = new Date();
+        if (demoTime == null) {
+          Application.departure_time = new Date();
+        }
         computeDirections();
         transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
         console.log('NEXT SCREEN!');
@@ -397,7 +400,7 @@ $(function() {
         y: y+height/2+4
       };
       var iconSideLength = 30;
-      var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', '400');
+      var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', '6');
       //var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
     
       routeGroup.add(icon);
@@ -488,8 +491,9 @@ $(function() {
        
          return tIcon; 
        }
+       
+       
 var createBusIcon = function(x,y, sidelength, color, number){
-      //TODO: Add the bus number
       var busIcon = new Kinetic.Group();
       
       var inset = sidelength/6;
@@ -497,11 +501,14 @@ var createBusIcon = function(x,y, sidelength, color, number){
       var lightRadius = sidelength*0.05;
       var arcInset = sidelength*0.25;
       var wheelWidth = sidelength*0.2;
+      var wheelInset = sidelength*0.15;
       var radius = sidelength/2;
       
+      busIcon.setPosition(x,y);
+      
       var busNumber = new Kinetic.Text({
-          x: x,
-          y: y+sidelength*1.1,
+          x: 0,
+          y: sidelength,
           text: number,
           fontSize: 20,
           fontFamily: "Calibri",
@@ -512,17 +519,17 @@ var createBusIcon = function(x,y, sidelength, color, number){
        });
        
       var iconbg = new Kinetic.Rect({
-        x: x,
-        y: y,
+        x: 0,
+        y: 0,
         height: sidelength*2,
-        width: busNumber.getTextWidth() + inset,
+        width: busNumber.getWidth(),
         fill: color,
         cornerRadius: 5
        });
        
       var busBg = new Kinetic.Rect({
-        x: x+inset,
-        y: y+inset,
+        x: (busNumber.getWidth() - (sidelength-inset*2))/2,
+        y: inset,
         height: sidelength-inset*2,
         width: sidelength-inset*2,
         fill: 'white',
@@ -532,7 +539,7 @@ var createBusIcon = function(x,y, sidelength, color, number){
       var busWindow = new Kinetic.Shape({
         drawFunc: function(context) {
         context.beginPath();
-        context.arc(x+radius, y+radius, radius-arcInset, 0, Math.PI, true);
+        context.arc(busNumber.getWidth()/2, radius, radius-arcInset, 0, Math.PI, true);
         context.closePath();
         context.fillStyle = color;
         context.fill();
@@ -540,25 +547,23 @@ var createBusIcon = function(x,y, sidelength, color, number){
       });
       
       var lightLeft = new Kinetic.Circle({
-        x: x+sidelength/2-lightInset,
-        y: y+sidelength/2+lightInset,
+        x: busNumber.getWidth()/2 - busBg.getWidth()/2 + lightInset,
+        y: sidelength/2+lightInset,
         radius: lightRadius,
-        fill: color,
-        padding: 15
+        fill: color
       });
     
       var lightRight = new Kinetic.Circle({
-        x: x+sidelength/2+lightInset,
-        y: y+sidelength/2+lightInset,
+        x: busNumber.getWidth()/2 + busBg.getWidth()/2 - lightInset,
+        y: sidelength/2+lightInset,
         radius: lightRadius,
-        fill: color,
-        padding: 15
+        fill: color
       });
       
       var wheelRight = new Kinetic.Shape({
         drawFunc: function(context) {
         context.beginPath();
-        context.arc(x+radius+lightInset, y+sidelength-inset, wheelWidth/2, 0, Math.PI, false);
+        context.arc(busNumber.getWidth()/2 + busBg.getWidth()/2 - wheelInset, sidelength-inset, wheelWidth/2, 0, Math.PI, false);
         context.closePath();
         context.fillStyle = 'white';
         context.fill();
@@ -568,7 +573,7 @@ var createBusIcon = function(x,y, sidelength, color, number){
       var wheelLeft = new Kinetic.Shape({
         drawFunc: function(context) {
         context.beginPath();
-        context.arc(x+radius-lightInset, y+sidelength-inset, wheelWidth/2, 0, Math.PI, false);
+        context.arc(busNumber.getWidth()/2 - busBg.getWidth()/2 + wheelInset, sidelength-inset, wheelWidth/2, 0, Math.PI, false);
         context.closePath();
         context.fillStyle = 'white';
         context.fill();
@@ -742,6 +747,10 @@ var createWalkingIcon = function (x, y, sideLength) {
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
   Application.from_route = getFirstRouteWithMatch('Here');
+
+  if (demoTime != null) {
+    Application.departure_time = demoTime;
+  }
 
   $('#to-field').focus();
 
