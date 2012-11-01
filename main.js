@@ -47,7 +47,7 @@ $(function() {
       y: 0,
       width: Application.stage.getWidth(),
       height: Application.stage.getHeight(),
-      fill: '#e00'
+      fill: '#eee'
     })
   };
   Application.stage.add(graphicalComparisonScreen.mainLayer);
@@ -222,7 +222,7 @@ $(function() {
     });
   };
 
-  var generateRouteIconSelectedFunction = function (button, route) {
+  var generateRouteIconSelectedFunction = function (button, direction) {
     return function () {
       transitionScreen(graphicalComparisonScreen, detailedDirectionsScreen, 'SLIDE LEFT', Application.SHORT_DELAY);
       console.log('To the detailed directions screen!');
@@ -447,6 +447,8 @@ $(function() {
                                    directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, 
                                    graphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                    graphicalComparisonScreen.portraitData.routeItemHeight);
+      
+      graphicalRouteButton.on('click touchend', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
       graphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
       graphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
     }
