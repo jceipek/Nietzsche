@@ -470,7 +470,8 @@ $(function() {
         if (direction.steps[stepIdx].transit.line !== undefined && direction.steps[stepIdx].transit.line.vehicle !== undefined) {
           var line = direction.steps[stepIdx].transit.line;
           var vehicleName = line.vehicle.name;
-          if (vehicleName === "Train" || vehicleName === "Subway") {
+          console.log(vehicleName);
+          if (vehicleName === "Train" || vehicleName === "Subway" || vehicleName === "Light rail") {
             icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
           } else if (vehicleName === "Bus") {
             icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', line.short_name);
