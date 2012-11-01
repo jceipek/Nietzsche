@@ -76,6 +76,7 @@ $(function() {
   detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.background);
   detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.routeItemsGroup);
   detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.routeButtonsGroup);
+  detailedDirectionsScreen.mainLayer.hide();
 
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
