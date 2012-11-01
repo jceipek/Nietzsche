@@ -465,7 +465,8 @@ $(function() {
       };
       var iconSideLength = 30;
       //var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', '6');
-      var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+      //var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+      var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
     
       routeGroup.add(icon);
     }
@@ -517,7 +518,6 @@ $(function() {
    };
 
    var createTIcon = function (x, y, sidelength) {
-    //TODO: Make it that it looks like a real T icon
        var tIcon = new Kinetic.Group();
        var radius = sidelength/2;
        var insetSide = sidelength*0.13;
