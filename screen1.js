@@ -459,15 +459,35 @@ $(function() {
 
       routeGroup.add(stepLine);
 
+      var icon = null;
       var iconMid = {
         x: stepStart+(stepEnd - stepStart)/2,
         y: y+height/2+4
       };
       var iconSideLength = 30;
-      //var icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', '6');
-      //var icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
-      var icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
-    
+      // Adding the icon
+      if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
+        if (direction.steps[stepIdx].transit.line !== undefined && direction.steps[stepIdx].transit.line.vehicle !== undefined) {
+          var line = direction.steps[stepIdx].transit.line;
+          var vehicleName = line.vehicle.name;
+          if (vehicleName === "Train" || vehicleName === "Subway") {
+            icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+          } else if (vehicleName === "Bus") {
+            icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'blue', line.short_name);
+          }
+        } else if (direction.steps[stepIdx].travel_mode !== "WALKING"){
+          console.log("What");
+          console.log(direction.steps[stepIdx]);
+        }
+      } else if (direction.steps[stepIdx].travel_mode === "WALKING") {
+        icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+      }
+      
+      if (icon == null) {
+        // This means that an appropriate icon doesn't exist yet
+        // TODO: We need to make icons for the most common missing things
+        icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'black', "?");
+      }
       routeGroup.add(icon);
     }
 
@@ -564,11 +584,11 @@ $(function() {
 var createBusIcon = function(x,y, sidelength, color, number){
       var busIcon = new Kinetic.Group();
       
-      var inset = sidelength/6;
-      var lightInset = sidelength/5;
+      var inset = sidelength/5;
+      var lightInset = sidelength*0.15;
       var lightRadius = sidelength*0.05;
-      var arcInset = sidelength*0.25;
-      var wheelWidth = sidelength*0.2;
+      var arcInset = sidelength*0.3;
+      var wheelWidth = sidelength*0.15;
       var wheelInset = sidelength*0.15;
       var radius = sidelength/2;
       
@@ -578,9 +598,8 @@ var createBusIcon = function(x,y, sidelength, color, number){
           x: 0,
           y: sidelength,
           text: number,
-          fontSize: 20,
+          fontSize: 15,
           fontFamily: "Calibri",
-          fontStyle: 'bold',
           align: 'center',
           textFill: "white",
           padding: inset
@@ -589,7 +608,7 @@ var createBusIcon = function(x,y, sidelength, color, number){
       var iconbg = new Kinetic.Rect({
         x: 0,
         y: 0,
-        height: sidelength*2,
+        height: sidelength*2-inset,
         width: busNumber.getWidth(),
         fill: color,
         cornerRadius: 5
@@ -658,15 +677,15 @@ var createBusIcon = function(x,y, sidelength, color, number){
       busIcon.add(busNumber);
       return busIcon;
       
-}
+};
 
 var createWalkingIcon = function (x, y, sideLength) {
     //TODO: Fix scaling
-    //var iconGroup = new Kinetic.Group();
-    //var iconBg = createRoundedIconBg(x, y, sideLength, 'red');
-    //iconGroup.add(createRoundedIconBg(x,y,sideLength,'red'));
-    var walkingIcon = new Kinetic.Shape({
+    var walkingIcon = new Kinetic.Group();
+    var iconBg = createRoundedIconBg(x, y, sideLength, 'red'); //TODO: Change color
+    var person = new Kinetic.Shape({
         drawFunc: function(context) {
+          context.beginPath();
           //head+body
           context.moveTo(x+(0.588*sideLength)/*(sideLength-35)*/,y+(0.0588*sideLength));//y+(sideLength-80));
           context.lineTo(x+(0.471*sideLength)/*(sideLength-45)*/,y+(0.3125*sideLength));//(sideLength-60));
@@ -680,6 +699,7 @@ var createWalkingIcon = function (x, y, sideLength) {
           context.moveTo(x+(0.235*sideLength)/*(sideLength-65)*/,1*sideLength);
           context.lineTo(x+(0.412*sideLength)/*(sideLength-50)*/,y+(0.235*sideLength));//(sideLength-65));
           context.lineTo(x+(0.706*sideLength)/*(sideLength-25)*/,1*sideLength);
+          context.closePath();
           context.lineCap = 'round';
           this.stroke(context);
         },
@@ -687,9 +707,10 @@ var createWalkingIcon = function (x, y, sideLength) {
         strokeWidth: 5.25,
         lineJoin: 'round',
         });
-    //iconGroup.add(iconBg);
+    walkingIcon.add(iconBg);
+    walkingIcon.add(person);
     return walkingIcon;
-  }
+  };
 
   var createMessageBubble = function (anchorX, anchorY, height, color, text) {
     var offset = 0;
