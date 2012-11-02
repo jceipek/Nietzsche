@@ -41,7 +41,7 @@ $(function() {
   var GraphicalComparisonScreen = {
     portraitData: {
       routeItemHeight: 150,
-      routeSelectionButtonWidth: 88
+      routeSelectionButtonWidth: 88,
     },
     mainLayer: new Kinetic.Layer(),
     routeItemsGroup: new Kinetic.Group(),
@@ -392,9 +392,14 @@ $(function() {
     });
     routeGroup.add(background);
 
-    var scalingFactor = 0.2;
+    var arrivalTime = new Date(direction.arrival_time.value);
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
+    var scalingFactor = (Application.stage.getWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth)/((arrivalTime-(new Date()))/1000); 
+    console.log("arrival time: " + arrivalTime);
+    console.log("departure time: " + departureTime);
+    console.log("difference in times: " + (arrivalTime-departureTime));
+    console.log("scaling factor: " + scalingFactor); //0.2;
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
     var timeOffset = departureTime;
