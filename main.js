@@ -9,6 +9,7 @@ $(function() {
     active_screen: null,
     departure_time: new Date(),
     directions: [],
+    chosen_direction: null,
     SHORT_DELAY: 200,
     MEDIUM_DELAY: 300,
     stage: new Kinetic.Stage({
@@ -72,9 +73,11 @@ $(function() {
       width: Application.stage.getWidth(),
       height: Application.stage.getHeight(),
       fill: '#e00'
-    })
+    }),
+    staticImage: new Image()
   };
   
+  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeItemsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeButtonsGroup);
@@ -85,7 +88,7 @@ $(function() {
   Application.stage.add(RouteSelectionScreen.mainLayer);
 
 
-  // Given a route and a search string, indicates whether the route is
+  // Given a route and a search string, indicates whether the route
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
     string = string.toLowerCase()
@@ -179,6 +182,8 @@ $(function() {
       var anim = new Kinetic.Animation({
         func: function(frame) {
           var fractionComplete = frame.time/time;
+          fractionComplete = Math.min(fractionComplete, 1);
+          fractionComplete = Math.max(fractionComplete, 0);
           var width = Application.stage.getWidth();
 
           endScreen.mainLayer.setPosition(
@@ -247,6 +252,8 @@ $(function() {
 
   var generateRouteIconSelectedFunction = function (button, direction) {
     return function () {
+      Application.chosen_direction = direction;
+      displayDetailedDirections();
       transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', Application.MEDIUM_DELAY);
       console.log('To the detailed directions screen!');
     }
@@ -495,6 +502,21 @@ $(function() {
     GraphicalComparisonScreen.mainLayer.draw();
   };
 
+  var displayDetailedDirections = function () {
+    console.log("display detailed directions screen");
+    var staticImage = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: DetailedDirectionsScreen.staticImage
+          });
+    DetailedDirectionsScreen.mainLayer.add(staticImage);
+    var direction = Application.chosen_direction;
+    for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
+      var step = direction.steps[stepIdx];
+    }
+    DetailedDirectionsScreen.mainLayer.draw();
+  };
+
   var getFirstRouteWithMatch = function (string) {
     for (var routeIdx = 0; routeIdx < PossibleRoutes.length; routeIdx++)
     {
@@ -503,7 +525,6 @@ $(function() {
       }
     }
   };
-
 
   $('#screen-wrapper').bind('touchmove', function (e) {
     e.preventDefault();
