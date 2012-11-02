@@ -51,6 +51,7 @@ $(function() {
     portraitData: {
       routeItemHeight: 150,
       routeSelectionButtonWidth: 88,
+      timeBarHeight: 40
     },
     mainLayer: new Kinetic.Layer(),
     routeItemsGroup: new Kinetic.Group(),
@@ -406,10 +407,7 @@ $(function() {
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var scalingFactor = (Application.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth)/((arrivalTime-(new Date()))/1000); 
-    console.log("arrival time: " + arrivalTime);
-    console.log("departure time: " + departureTime);
-    console.log("difference in times: " + (arrivalTime-departureTime));
-    console.log("scaling factor: " + scalingFactor); //0.2;
+  
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
     var timeOffset = departureTime;
@@ -495,9 +493,33 @@ $(function() {
 
   var displayGraphicalRoutes = function () {
     console.log(Application.directions);
-    var timeBarHeight = 40; // L TODO: LINK TO GLOBAL
-    var barStartTime = 0; // L TODO: MAKE THIS THE EARLIEST TIME
-    var barEndTime = 200; // L TODO: MAKE THIS THE LATEST TIME
+    var timeBarHeight = GraphicalComparisonScreen.portraitData.timeBarHeight;
+    
+    var barStartTime; 
+    var earliestDepartureTime = Application.directions[0].departure_time;
+    for (var i = 0; i < Application.directions.length; i++) {
+      if (Application.directions[i].departure_time < earliestDepartureTime) {
+         console.log("leave time for route " + i + ": " + Application.directions[i].departure_time.text);
+         console.log("current earliestDepartureTime: " + earliestDepartureTime.text);
+         earliestDepartureTime = Application.directions[i].departure_time;
+      }
+      barStartTime = earliestDepartureTime;
+    }
+    console.log("bar start time: " + barStartTime.text);
+    
+    var barEndTime;
+    var latestArrivalTime = Application.directions[0].arrival_time;
+    for (var i = 0; i < Application.directions.length; i++) {
+      console.log("looking at route: " + i);
+      if (Application.directions[i].arrival_time >= latestArrivalTime) {
+         console.log("arrival time for route " + i + ": " + Application.directions[i].arrival_time.text);
+         console.log("current latest arrival time: " + latestArrivalTime.text);
+         latestArrivalTime = Application.directions[i].arrival_time;
+      }
+      barEndTime = latestArrivalTime;
+    }
+    console.log("bar end time: " + barEndTime.text);
+
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
       var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix

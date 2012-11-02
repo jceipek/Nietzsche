@@ -432,7 +432,7 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   var bubbleGroup = new Kinetic.Group();
     var textInset = 0.125 * height;
   var bubbleText = new Kinetic.Text({
-    x: -60,
+    x: 0,
     y: 0,
     text: text,
     fontSize: 18,
@@ -441,17 +441,17 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
     padding: textInset,
     align: "left"
   });
+  var textwidth = bubbleText.getWidth();
   var bg = new Kinetic.Shape({
-
     drawFunc: function (ctx) {
       ctx.beginPath();
-      ctx.moveTo(0, l);
-      ctx.lineTo(0-offset, .422*l);
-      ctx.arc(-.11*l-offset, .11*l, .11*l, 0, 1.5*Math.PI, true);
-      ctx.arc(-1.33*l-offset, .11*l, .11*l, 1.5*Math.PI, Math.PI, true);
-      ctx.arc(-1.33*l-offset, .577*l, .11*l, Math.PI, 0.5*Math.PI, true);
-      ctx.lineTo(-.11*l-offset, .688*l);
-      ctx.lineTo(0, l);
+      ctx.moveTo(textwidth, l);
+      ctx.lineTo(textwidth, .422*l);
+      ctx.arc(textwidth -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true);
+      ctx.arc(.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true);
+      ctx.arc(.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true);
+      ctx.lineTo(textwidth-.11*l, .688*l);
+      ctx.lineTo(textwidth, l);
       ctx.lineWidth = 1;
       ctx.closePath();
       this.fill(ctx);        
@@ -461,27 +461,52 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
 
   bubbleGroup.add(bg);
   bubbleGroup.add(bubbleText);
-  bubbleGroup.setPosition(anchorX, anchorY - height * 2);
+  bubbleGroup.setPosition(anchorX - textwidth, anchorY - height * 2);
   return bubbleGroup;
 };
 
 var createGraphicalRouteButton = function (x, y, width, height, direction) {
+  var color = "#999999";
+  var strokewidth = 3;
   var buttonGroup = new Kinetic.Group();
   var selectionButton = new Kinetic.Rect({
     x: x,
-    y: y,
-    width: width,
-    height: height,
-    fill: 'black',
-    cornerRadius: 20
+    y: y+strokewidth,
+    width: width+15,
+    height: height-strokewidth*2,
+    fill: '#777777',
+    strokeWidth: strokewidth,
+    stroke: "#424242",
+    cornerRadius: 20,
+  });
+  var selectionButtonGrabLeft = new Kinetic.Line({
+    points: [x+width/4, y+0.1*height, x+width/4, y+0.9*height],
+    stroke: color,
+    strokeWidth: 8,
+    lineCap: "round",
+  });
+   var selectionButtonGrabRight = new Kinetic.Line({
+    points: [x+2*width/4, y+0.1*height, x+2*width/4, y+0.9*height],
+    stroke: color,
+    strokeWidth: 8,
+    lineCap: "round",
+  });
+    var selectionButtonGrabMiddle = new Kinetic.Line({
+    points: [x+3*width/4, y+0.1*height, x+3*width/4, y+0.9*height],
+    stroke: color,
+    strokeWidth: 8,
+    lineCap: "round",
   });
 
   buttonGroup.add(selectionButton);
+  buttonGroup.add(selectionButtonGrabMiddle);
+  buttonGroup.add(selectionButtonGrabRight);
+  buttonGroup.add(selectionButtonGrabLeft);
   return buttonGroup;
 };
 
 var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scaleFactor) {
-  //Prolly add in group...
+  var timeBarGroup = new Kinetic.Group();
   var bar = new Kinetic.Rect({
     x: 0,
     y: 0,
@@ -489,7 +514,8 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
     height: height,
     fill: 'black'
   });
-  return bar;  
+  timeBarGroup.add(bar);
+  return timeBarGroup;  
 }
 
 var createArrivalBar = function (width, height, y, timeString) {
