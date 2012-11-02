@@ -427,8 +427,7 @@ $(function() {
       
       if (icon == null) {
         // This means that an appropriate icon doesn't exist yet
-        // TODO: We need to make icons for the most common missing things
-        icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'black', "?");
+        icon = createCarIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
       }
       routeGroup.add(icon);
     }
