@@ -481,7 +481,7 @@ var createGraphicalRouteButton = function (x, y, width, height, direction) {
 };
 
 var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scaleFactor) {
-  //Prolly add in group...
+  var timeBarGroup = new Kinetic.Group();
   var bar = new Kinetic.Rect({
     x: 0,
     y: 0,
@@ -489,5 +489,6 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
     height: height,
     fill: 'black'
   });
-  return bar;  
+  timeBarGroup.add(bar);
+  return timeBarGroup;  
 }
