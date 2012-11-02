@@ -274,7 +274,7 @@ var createBusIcon = function(x,y, sidelength, color, number){
 };
 
 
-var createCarIcon = function(x,y, sidelength){    
+var createCarIcon = function(x,y, sidelength, color){    
   var carIcon = new Kinetic.Group();
   
   var inset = sidelength/5;
@@ -292,7 +292,7 @@ var createCarIcon = function(x,y, sidelength){
        y: 0,
        height: sidelength,
        width: sidelength,
-       fill: 'blue',
+       fill: color,
        cornerRadius: 5
    });
   
@@ -326,7 +326,7 @@ var createCarIcon = function(x,y, sidelength){
       context.closePath();
       this.fill(context);
     },
-    fill: 'blue',
+    fill: color,
     x: 0,
     y: 0
   });
@@ -344,14 +344,14 @@ var createCarIcon = function(x,y, sidelength){
     x: sidelength/2 + lightInset,
     y: sidelength/2 +lightInset,
     radius: lightRadius,
-    fill: 'blue'
+    fill: color
   });
 
   var lightRight = new Kinetic.Circle({
     x: sidelength/2 - lightInset,
     y: sidelength/2+lightInset,
     radius: lightRadius,
-    fill: 'blue'
+    fill: color
   });
   
   var wheelRight = new Kinetic.Shape({
@@ -391,10 +391,10 @@ var createCarIcon = function(x,y, sidelength){
 };
 
 
-var createWalkingIcon = function (x, y, sideLength) {
+var createWalkingIcon = function (x, y, sideLength, color) {
     var inset = sideLength/5;
     var walkingIcon = new Kinetic.Group();
-    var iconBg = createRoundedIconBg(x, y, sideLength, '#00CED1'); //TODO: Change color
+    var iconBg = createRoundedIconBg(x, y, sideLength, color);
     var person = new Kinetic.Shape({
         drawFunc: function(context) {
           context.beginPath();
@@ -430,6 +430,17 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   var offset = 0;
   var l = height;
   var bubbleGroup = new Kinetic.Group();
+    var textInset = 0.125 * height;
+  var bubbleText = new Kinetic.Text({
+    x: -60,
+    y: 0,
+    text: text,
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: "white",
+    padding: textInset,
+    align: "left"
+  });
   var bg = new Kinetic.Shape({
 
     drawFunc: function (ctx) {
@@ -446,18 +457,6 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
       this.fill(ctx);        
     },
     fill: color
-  });
-
-  var textInset = 0.125 * height;
-  var bubbleText = new Kinetic.Text({
-    x: -60,
-    y: 0,
-    text: text,
-    fontSize: 18,
-    fontFamily: "HelveticaNeue-Medium",
-    textFill: "white",
-    padding: textInset,
-    align: "left"
   });
 
   bubbleGroup.add(bg);
