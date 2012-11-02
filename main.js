@@ -1,11 +1,12 @@
 // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
 var demoTime = null;
-demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
+//demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
 $(function() {
 
   var Application = {
     from_route: null,
     to_route: null,
+    active_screen: null,
     departure_time: new Date(),
     directions: [],
     SHORT_DELAY: 200,
@@ -16,7 +17,7 @@ $(function() {
       height: 940})
   };
 
-  var routeSelectionScreen = {
+  var RouteSelectionScreen = {
     portraitData: {
       listHeaderHeight: 40,
       listItemHeight: 150
@@ -31,11 +32,12 @@ $(function() {
       fill: '#eee'
     })
   };
-  Application.stage.add(routeSelectionScreen.mainLayer);
-  routeSelectionScreen.mainLayer.add(routeSelectionScreen.background);
-  routeSelectionScreen.mainLayer.add(routeSelectionScreen.listItemsGroup);
+  Application.stage.add(RouteSelectionScreen.mainLayer);
+  RouteSelectionScreen.mainLayer.add(RouteSelectionScreen.background);
+  RouteSelectionScreen.mainLayer.add(RouteSelectionScreen.listItemsGroup);
+  Application.active_screen = RouteSelectionScreen;
 
-  var graphicalComparisonScreen = {
+  var GraphicalComparisonScreen = {
     portraitData: {
       routeItemHeight: 150,
       routeSelectionButtonWidth: 88
@@ -51,13 +53,13 @@ $(function() {
       fill: '#eee'
     })
   };
-  Application.stage.add(graphicalComparisonScreen.mainLayer);
-  graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.background);
-  graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeItemsGroup);
-  graphicalComparisonScreen.mainLayer.add(graphicalComparisonScreen.routeButtonsGroup);
+  Application.stage.add(GraphicalComparisonScreen.mainLayer);
+  GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.background);
+  GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.routeItemsGroup);
+  GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.routeButtonsGroup);
 
 // TODO: Think about actual implementation for this
-  var detailedDirectionsScreen = {
+  var DetailedDirectionsScreen = {
     portraitData: {
       routeItemHeight: 150,
       routeSelectionButtonWidth: 88
@@ -73,11 +75,11 @@ $(function() {
       fill: '#e00'
     })
   };
-  Application.stage.add(detailedDirectionsScreen.mainLayer);
-  detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.background);
-  detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.routeItemsGroup);
-  detailedDirectionsScreen.mainLayer.add(detailedDirectionsScreen.routeButtonsGroup);
-  detailedDirectionsScreen.mainLayer.hide();
+  Application.stage.add(DetailedDirectionsScreen.mainLayer);
+  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
+  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeItemsGroup);
+  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeButtonsGroup);
+  DetailedDirectionsScreen.mainLayer.hide();
 
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
@@ -101,14 +103,28 @@ $(function() {
   // Transitions from one screen to another using mainLayer
   // POSSIBLE_TRANSITIONS: 'SWAP', 'SCALE TOP'
   var transitionScreen = function (startScreen, endScreen, transition, time) {
+    var finalize = function () {
+      Application.active_screen = endScreen;
+    };
+
     if (time === undefined) {
       time = 0; // Default transition time
     }
+
+    if (Application.active_screen === RouteSelectionScreen) {
+      $('#from-field').addClass('from-field-small');
+      $('#to-field').addClass('to-field-small');
+    } else {
+      $('#from-field').removeClass('from-field-small');
+      $('#to-field').removeClass('to-field-small');
+    }
+
     if (transition === 'SWAP') {
       startScreen.mainLayer.hide();
       endScreen.mainLayer.show();
       endScreen.mainLayer.draw();
       startScreen.mainLayer.draw();
+      finalize();
     }
 
     if (transition === 'SCALE TOP') {
@@ -147,6 +163,7 @@ $(function() {
         startScreen.mainLayer.hide();
         startScreen.mainLayer.draw();
         endScreen.mainLayer.draw();
+        finalize();
         /* END RESET */
       }, time);
     } else if (transition === 'SLIDE LEFT') {
@@ -181,6 +198,7 @@ $(function() {
         startScreen.mainLayer.hide();
         startScreen.mainLayer.draw();
         endScreen.mainLayer.draw();
+        finalize();
         /* END RESET */
       }, time);
     }
@@ -225,60 +243,70 @@ $(function() {
 
   var generateRouteIconSelectedFunction = function (button, direction) {
     return function () {
-      transitionScreen(graphicalComparisonScreen, detailedDirectionsScreen, 'SLIDE LEFT', Application.MEDIUM_DELAY);
+      transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', Application.MEDIUM_DELAY);
       console.log('To the detailed directions screen!');
     }
   };
 
   var generateSearchFieldFunction = function (fieldId) {
     return function () {
+      console.log("Should do stuff!");
       var currentValue = $(fieldId).val();
       var screenWidth = Application.stage.getWidth();
       var screenHeight = Application.stage.getHeight();
-      var itemHeight = routeSelectionScreen.portraitData.listItemHeight;
-      var headerHeight = routeSelectionScreen.portraitData.listHeaderHeight;
-      var listGroup = routeSelectionScreen.listItemsGroup;
+      var itemHeight = RouteSelectionScreen.portraitData.listItemHeight;
+      var headerHeight = RouteSelectionScreen.portraitData.listHeaderHeight;
+      var listGroup = RouteSelectionScreen.listItemsGroup;
 
-      console.log(currentValue);
-      listGroup.removeChildren(); // Clear the list
+      
+        listGroup.removeChildren(); // Clear the list
 
-      listGroup.setDraggable('true');
-      listGroup.setPosition(0,0);
+        listGroup.setDraggable('true');
+        listGroup.setPosition(0,0);
 
-      var currYOffset = 0;
-      for (var routeTypeIdx=0; routeTypeIdx < ROUTE_TYPES.length; routeTypeIdx++) {
-        var headerString = ROUTE_TYPES[routeTypeIdx];
-        var matches = 0;
-        for (var i=0; (i < PossibleRoutes.length); i++) {
-          if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString)) {
-            if (matches === 0) {
-              var item = createRouteHeader(currYOffset, screenWidth, headerHeight, headerString);
+        var currYOffset = 0;
+        for (var routeTypeIdx=0; routeTypeIdx < ROUTE_TYPES.length; routeTypeIdx++) {
+          var headerString = ROUTE_TYPES[routeTypeIdx];
+          var matches = 0;
+          for (var i=0; (i < PossibleRoutes.length); i++) {
+            if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString)) {
+              if (matches === 0) {
+                var item = createRouteHeader(currYOffset, screenWidth, headerHeight, headerString);
+                listGroup.add(item);
+                currYOffset += headerHeight;
+                matches++;
+              }
+              var item = createRouteItem(currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
+              item.on('click touchend', generateListItemSelectedFunction(item, fieldId, PossibleRoutes[i]));
               listGroup.add(item);
-              currYOffset += headerHeight;
-              matches++;
+              currYOffset += itemHeight;
             }
-            var item = createRouteItem(currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
-            item.on('click touchend', generateListItemSelectedFunction(item, fieldId, PossibleRoutes[i]));
-            listGroup.add(item);
-            currYOffset += itemHeight;
           }
         }
+        listGroup.setDragBoundFunc(function (pos) {
+          var y = pos.y;
+          y = Math.min(y,0);
+          return {
+            x: 0,
+            y: y
+          };
+        });
+        RouteSelectionScreen.mainLayer.draw();
+      if (Application.active_screen !== RouteSelectionScreen) {
+        console.log(Application.active_screen);
+        console.log(RouteSelectionScreen);
+
+        Application.directions = [];
+
+        transitionScreen(Application.active_screen, RouteSelectionScreen, 'SCALE TOP', Application.SHORT_DELAY);
+        console.log("Go back to screen 1");
       }
-      listGroup.setDragBoundFunc(function (pos) {
-        var y = pos.y;
-        y = Math.min(y,0);
-        return {
-          x: 0,
-          y: y
-        };
-      });
-      routeSelectionScreen.mainLayer.draw();
     };
   };
 
   var generateListItemSelectedFunction = function (item, fieldId, route) {
   return function () {
-    var listGroup = routeSelectionScreen.listItemsGroup;
+    var listGroup = RouteSelectionScreen.listItemsGroup;
     var fromFieldValue = $('#from-field').val();
     var toFieldValue = $('#to-field').val();
     $(fieldId).val(route.nickname);
@@ -289,9 +317,9 @@ $(function() {
     }
     if(fromFieldValue !== '' && toFieldValue !== '') {
       setTimeout(function () {
-        var listGroup = routeSelectionScreen.listItemsGroup;
+        var listGroup = RouteSelectionScreen.listItemsGroup;
         listGroup.removeChildren();
-        routeSelectionScreen.mainLayer.draw();
+        RouteSelectionScreen.mainLayer.draw();
       }, Application.SHORT_DELAY);
         //Start Generating Routes
         if (demoTime == null) {
@@ -299,15 +327,15 @@ $(function() {
         }
         computeDirections();
         $(fieldId).blur();
-        transitionScreen(routeSelectionScreen, graphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
+        transitionScreen(RouteSelectionScreen, GraphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
         console.log('To the graphical comparison screen!');
       }
 
       if (fieldId == '#from-field') {
         setTimeout(function () {
-          var listGroup = routeSelectionScreen.listItemsGroup;
+          var listGroup = RouteSelectionScreen.listItemsGroup;
           listGroup.removeChildren();
-          routeSelectionScreen.mainLayer.draw();
+          RouteSelectionScreen.mainLayer.draw();
         }, Application.SHORT_DELAY);
         $('#to-field').focus()
       }
@@ -336,7 +364,7 @@ $(function() {
         txt.setTextFill(txt.getAttrs().swapTextFill);
         txt.setAttrs({swapTextFill: tempTextFill});
       }
-      routeSelectionScreen.mainLayer.draw();
+      RouteSelectionScreen.mainLayer.draw();
     };
   };
 
@@ -417,15 +445,11 @@ $(function() {
         if (direction.steps[stepIdx].transit.line !== undefined && direction.steps[stepIdx].transit.line.vehicle !== undefined) {
           var line = direction.steps[stepIdx].transit.line;
           var vehicleName = line.vehicle.name;
-          console.log(vehicleName);
           if (vehicleName === "Train" || vehicleName === "Subway" || vehicleName === "Light rail") {
             icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
           } else if (vehicleName === "Bus") {
             icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor, line.short_name);
           }
-        } else if (direction.steps[stepIdx].travel_mode !== "WALKING"){
-          console.log("What");
-          console.log(direction.steps[stepIdx]);
         }
       } else if (direction.steps[stepIdx].travel_mode === "WALKING") {
         icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
@@ -448,18 +472,18 @@ $(function() {
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
       var graphicalRouteItem = 
-        createGraphicalRouteItem(directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, Application.stage.getWidth(), 
-                                 graphicalComparisonScreen.portraitData.routeItemHeight, direction);
-      var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-graphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
-                                   directionIdx*graphicalComparisonScreen.portraitData.routeItemHeight, 
-                                   graphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
-                                   graphicalComparisonScreen.portraitData.routeItemHeight);
+        createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight, Application.stage.getWidth(), 
+                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction);
+      var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+                                   directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight, 
+                                   GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
+                                   GraphicalComparisonScreen.portraitData.routeItemHeight);
       
       graphicalRouteButton.on('click touchend', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
-      graphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
-      graphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
+      GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
+      GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
     }
-    graphicalComparisonScreen.mainLayer.draw();
+    GraphicalComparisonScreen.mainLayer.draw();
   };
 
   var getFirstRouteWithMatch = function (string) {
