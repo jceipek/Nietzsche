@@ -25,22 +25,22 @@ form {
 }
 
 .field-container label {
- //text-align: right;
   font-size: 22px;
   padding-top: 10px;
   margin-right: 1em;
   margin-left: .5em;  
-  display:inline;
+  display:inline-block;
 }
 
 #from-field, #to-field {
-  width: 70%;
+  width: 78%;
   height: 1.5em;
   margin-bottom: 5px;
-  margin-top: 0px;
+  margin-top: 10px;
   font-size: 30px;
   padding: 3px;
   line-height: 1em;
+  display: inline;
 }
 
 #from-field.from-field-small {
@@ -73,7 +73,8 @@ label {
   margin-top: 0px;
   padding-top: 0px;
   width: 2em;
-  display:inline;
+  display:block;
+  text-align: right;
 }
 
 canvas {
