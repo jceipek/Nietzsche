@@ -32,7 +32,7 @@ $(function() {
       fill: '#eee'
     })
   };
-  Application.stage.add(RouteSelectionScreen.mainLayer);
+  
   RouteSelectionScreen.mainLayer.add(RouteSelectionScreen.background);
   RouteSelectionScreen.mainLayer.add(RouteSelectionScreen.listItemsGroup);
   Application.active_screen = RouteSelectionScreen;
@@ -53,7 +53,6 @@ $(function() {
       fill: '#eee'
     })
   };
-  Application.stage.add(GraphicalComparisonScreen.mainLayer);
   GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.background);
   GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.routeItemsGroup);
   GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.routeButtonsGroup);
@@ -75,11 +74,16 @@ $(function() {
       fill: '#e00'
     })
   };
-  Application.stage.add(DetailedDirectionsScreen.mainLayer);
+  
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeItemsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeButtonsGroup);
   DetailedDirectionsScreen.mainLayer.hide();
+
+  Application.stage.add(DetailedDirectionsScreen.mainLayer);
+  Application.stage.add(GraphicalComparisonScreen.mainLayer);
+  Application.stage.add(RouteSelectionScreen.mainLayer);
+
 
   // Given a route and a search string, indicates whether the route is
   //   matches the string.
@@ -111,12 +115,12 @@ $(function() {
       time = 0; // Default transition time
     }
 
-    if (Application.active_screen === RouteSelectionScreen) {
-      $('#from-field').addClass('from-field-small');
-      $('#to-field').addClass('to-field-small');
-    } else {
+    if (endScreen === RouteSelectionScreen) {
       $('#from-field').removeClass('from-field-small');
       $('#to-field').removeClass('to-field-small');
+    } else {
+      $('#from-field').addClass('from-field-small');
+      $('#to-field').addClass('to-field-small');
     }
 
     if (transition === 'SWAP') {
