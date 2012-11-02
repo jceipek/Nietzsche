@@ -480,17 +480,22 @@ $(function() {
 
   var displayGraphicalRoutes = function () {
     console.log(Application.directions);
+    var timeBarHeight = 40; // L TODO: LINK TO GLOBAL
+    var barStartTime = 0; // L TODO: MAKE THIS THE EARLIEST TIME
+    var barEndTime = 200; // L TODO: MAKE THIS THE LATEST TIME
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
+      var graphicalTimeBar = createGraphicalTimeBar(Application.stage.getWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
       var graphicalRouteItem = 
-        createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight, Application.stage.getWidth(), 
+        createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction);
       var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
-                                   directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight, 
+                                   directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                    GraphicalComparisonScreen.portraitData.routeItemHeight);
       
       graphicalRouteButton.on('click touchend', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+      GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
       GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
     }
