@@ -504,3 +504,15 @@ var createGraphicalRouteButton = function (x, y, width, height, direction) {
   buttonGroup.add(selectionButtonGrabLeft);
   return buttonGroup;
 };
+
+var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scaleFactor) {
+  //Prolly add in group...
+  var bar = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
+    fill: 'black'
+  });
+  return bar;  
+}
