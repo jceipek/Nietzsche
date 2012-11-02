@@ -353,7 +353,7 @@ $(function() {
     });
     routeGroup.add(background);
 
-    var scalingFactor = 0.1;
+    var scalingFactor = 0.2;
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
@@ -368,10 +368,14 @@ $(function() {
           var line = direction.steps[stepIdx].transit.line;
           var vehicleName = line.vehicle.name;
           if (vehicleName === "Bus") {
-            stepColor = '#D3D15F' // TODO: Change to be better yellow?
+            stepColor = '#D3D15F'; // TODO: Change to be better yellow?
           }
         }
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
+      } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
+        stepColor = 'black';
+      } else if (direction.steps[stepIdx].travel_mode === "WALKING") { 
+        stepColor = '#00CED1'; // TODO: Change color
       }
 
       var firstRounded = (stepIdx === 0);
@@ -424,12 +428,14 @@ $(function() {
           console.log(direction.steps[stepIdx]);
         }
       } else if (direction.steps[stepIdx].travel_mode === "WALKING") {
-        icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+        icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
+      } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
+        icon = createCarIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
       }
       
       if (icon == null) {
         // This means that an appropriate icon doesn't exist yet
-        icon = createCarIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+        icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'black', "?");
       }
       routeGroup.add(icon);
     }
