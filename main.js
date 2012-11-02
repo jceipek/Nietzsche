@@ -41,7 +41,7 @@ $(function() {
   var GraphicalComparisonScreen = {
     portraitData: {
       routeItemHeight: 150,
-      routeSelectionButtonWidth: 88
+      routeSelectionButtonWidth: 88,
     },
     mainLayer: new Kinetic.Layer(),
     routeItemsGroup: new Kinetic.Group(),
