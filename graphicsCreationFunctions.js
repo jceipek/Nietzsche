@@ -491,3 +491,33 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
   });
   return bar;  
 }
+
+var createArrivalBar = function (width, height, y, timeString) {
+  var textInset = height*0.25;
+  var arrivalBarGroup = new Kinetic.Group();
+  arrivalBarGroup.setPosition(0,y);
+  console.log("LOCATION: "+y);
+  var background = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
+    fill: 'black',
+    stroke: 'white',
+    strokeWidth: 2
+  });
+  var arrivalText = "Estimated Arrival Time: "+timeString;
+  var text = new Kinetic.Text({
+    x: 0,
+    y: 0,
+    text: arrivalText,
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: "white",
+    padding: textInset,
+    align: "left"
+  });
+  arrivalBarGroup.add(background);
+  arrivalBarGroup.add(text);
+  return arrivalBarGroup;
+}
