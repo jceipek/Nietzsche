@@ -12,10 +12,19 @@ $(function() {
     chosen_direction: null,
     SHORT_DELAY: 200,
     MEDIUM_DELAY: 300,
+    heightOffset: 0,
     stage: new Kinetic.Stage({
       container: 'screenContainer',
       width: 640,
       height: 940})
+  };
+
+  Application.getCanvasWidth = function () {
+    return Application.stage.getWidth();
+  };
+
+  Application.getCanvasHeight = function () {
+    return Application.stage.getHeight() - Application.heightOffset;
   };
 
   var RouteSelectionScreen = {
@@ -28,7 +37,7 @@ $(function() {
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
-      width: Application.stage.getWidth(),
+      width: Application.getCanvasWidth(),
       height: Application.stage.getHeight(),
       fill: '#eee'
     })
@@ -50,7 +59,7 @@ $(function() {
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
-      width: Application.stage.getWidth(),
+      width: Application.getCanvasWidth(),
       height: Application.stage.getHeight(),
       fill: '#eee'
     })
@@ -62,26 +71,26 @@ $(function() {
 // TODO: Think about actual implementation for this
   var DetailedDirectionsScreen = {
     portraitData: {
-      routeItemHeight: 150,
-      routeSelectionButtonWidth: 88
+      directionItemHeight: 150,
+      arrivalBarHeight: 40
     },
     mainLayer: new Kinetic.Layer(),
-    routeItemsGroup: new Kinetic.Group(),
-    routeButtonsGroup: new Kinetic.Group(),
-    background: new Kinetic.Rect({
+    arrivalTimeGroup: new Kinetic.Group(),
+    directionsGroup: new Kinetic.Group(),
+    staticImage: new Image(),
+    background: new Kinetic.Image({ // TODO: Change to normal background when all elements are dynamic
       x: 0,
-      y: 0,
-      width: Application.stage.getWidth(),
-      height: Application.stage.getHeight(),
-      fill: '#e00'
-    }),
-    staticImage: new Image()
+      y: 0
+    })
   };
-  
+
   DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
+  DetailedDirectionsScreen.staticImage.onload = function () {
+    DetailedDirectionsScreen.background.setImage(DetailedDirectionsScreen.staticImage);
+  };
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
-  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeItemsGroup);
-  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.routeButtonsGroup);
+  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
+  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
   DetailedDirectionsScreen.mainLayer.hide();
 
   Application.stage.add(DetailedDirectionsScreen.mainLayer);
@@ -112,6 +121,7 @@ $(function() {
   // POSSIBLE_TRANSITIONS: 'SWAP', 'SCALE TOP'
   var transitionScreen = function (startScreen, endScreen, transition, time) {
     var finalize = function () {
+      Application.heightOffset = $('#top-bar').height();
       Application.active_screen = endScreen;
     };
 
@@ -146,11 +156,11 @@ $(function() {
           var scale = Math.cos(frame.time * Math.PI / time / 2) + 0.001;
           // scale x and y
           startScreen.mainLayer.setPosition(
-            Application.stage.getWidth()/2,
+            Application.getCanvasWidth()/2,
             Application.stage.getHeight()/2            
           );
           startScreen.mainLayer.setOffset(
-            Application.stage.getWidth()/2,
+            Application.getCanvasWidth()/2,
             Application.stage.getHeight()/2
           );
           startScreen.mainLayer.setScale(scale);
@@ -177,7 +187,7 @@ $(function() {
     } else if (transition === 'SLIDE LEFT') {
       endScreen.mainLayer.moveToTop();
       startScreen.mainLayer.moveToBottom();
-      endScreen.mainLayer.setPosition(Application.stage.getWidth(), 0);
+      endScreen.mainLayer.setPosition(Application.getCanvasWidth(), 0);
       endScreen.mainLayer.show();
 
       var anim = new Kinetic.Animation({
@@ -185,7 +195,7 @@ $(function() {
           var fractionComplete = frame.time/time;
           fractionComplete = Math.min(fractionComplete, 1);
           fractionComplete = Math.max(fractionComplete, 0);
-          var width = Application.stage.getWidth();
+          var width = Application.getCanvasWidth();
 
           endScreen.mainLayer.setPosition(
             width-fractionComplete*width,
@@ -264,7 +274,7 @@ $(function() {
     return function () {
       console.log("Should do stuff!");
       var currentValue = $(fieldId).val();
-      var screenWidth = Application.stage.getWidth();
+      var screenWidth = Application.getCanvasWidth();
       var screenHeight = Application.stage.getHeight();
       var itemHeight = RouteSelectionScreen.portraitData.listItemHeight;
       var headerHeight = RouteSelectionScreen.portraitData.listHeaderHeight;
@@ -397,6 +407,7 @@ $(function() {
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var scalingFactor = scalingFactor;
+
   
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
@@ -517,11 +528,11 @@ $(function() {
     
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
-      var graphicalTimeBar = createGraphicalTimeBar(Application.stage.getWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
+      var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
-      var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+      var graphicalRouteButton = createGraphicalRouteButton(Application.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
                                    directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                    GraphicalComparisonScreen.portraitData.routeItemHeight);
@@ -536,16 +547,17 @@ $(function() {
 
   var displayDetailedDirections = function () {
     console.log("display detailed directions screen");
-    var staticImage = new Kinetic.Image({
-            x: 0,
-            y: 0,
-            image: DetailedDirectionsScreen.staticImage
-          });
-    DetailedDirectionsScreen.mainLayer.add(staticImage);
     var direction = Application.chosen_direction;
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var step = direction.steps[stepIdx];
     }
+    var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
+    var barY = Application.getCanvasHeight()-barHeight;
+    console.log("HEIGHT: "+Application.getCanvasHeight());
+    var barWidth = Application.getCanvasWidth();
+    var arrivalBar = createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
+    DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
+
     DetailedDirectionsScreen.mainLayer.draw();
   };
 
@@ -574,6 +586,8 @@ $(function() {
   }
 
   $('#to-field').focus();
+
+  Application.heightOffset = $('#top-bar').height();
 
   //$('#to-field').bind('click', focus-to-field());
 
