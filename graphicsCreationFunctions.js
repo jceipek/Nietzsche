@@ -634,3 +634,51 @@ var createArrivalBar = function (width, height, y, timeString) {
   arrivalBarGroup.add(text);
   return arrivalBarGroup;
 }
+
+var createDirectionWaitItem = function (y, width, height, msWaitTime) {
+  var textInset = height*0.25;
+  var waitGroup = new Kinetic.Group();
+  waitGroup.setPosition(0,y);
+  var background = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
+    fill: 'black',
+    stroke: 'white',
+    strokeWidth: 2
+  });
+  var waitText = "(" + millisecondsToHumanString(msWaitTime) + ")";
+  var text = new Kinetic.Text({
+    x: 0,
+    y: 0,
+    text: waitText,
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: "white",
+    padding: textInset,
+    align: "left"
+  });
+  waitGroup.add(background);
+  waitGroup.add(text);
+  return waitGroup;
+}
+
+var createDirectionStepItem = function (y, width, height, step) {
+
+  var stepGroup = new Kinetic.Group();
+  stepGroup.setPosition(0,y);
+  var background = new Kinetic.Rect({
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
+    fill: 'red',
+    stroke: 'black',
+    strokeWidth: 2
+  });
+
+  stepGroup.add(background);
+
+  return stepGroup;
+}

@@ -10,6 +10,7 @@ $(function() {
     departure_time: new Date(),
     directions: [],
     chosen_direction: null,
+    CONSIDER_THIS_WAIT_TIME_MS: 5000,
     SHORT_DELAY: 200,
     MEDIUM_DELAY: 300,
     heightOffset: 0,
@@ -71,7 +72,8 @@ $(function() {
 // TODO: Think about actual implementation for this
   var DetailedDirectionsScreen = {
     portraitData: {
-      directionItemHeight: 150,
+      moveDirectionItemHeight: 150,
+      waitDirectionItemHeight: 40,
       arrivalBarHeight: 40
     },
     mainLayer: new Kinetic.Layer(),
@@ -222,12 +224,6 @@ $(function() {
         /* END RESET */
       }, time);
     }
-  };
-
-  // Given a time, what is the x position on the canvas that corresponds to it?
-  var posFromTime = function (time, initialTime, scalingFactor) {
-    // Convert to seconds and scale by scalingFactor
-    return (time - initialTime)/1000 * scalingFactor;
   };
 
   var computeDirections = function () {
@@ -547,7 +543,7 @@ $(function() {
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                    GraphicalComparisonScreen.portraitData.routeItemHeight);
       
-      graphicalRouteButton.on('click touchend', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+      graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
       GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
@@ -558,8 +554,36 @@ $(function() {
   var displayDetailedDirections = function () {
     console.log("display detailed directions screen");
     var direction = Application.chosen_direction;
+    var heightOffset = 0;
+    var departureTime = new Date(direction.departure_time.value);
+    var stepStartTime = departureTime;
+    var stepEndTime = new Date(departureTime);
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var step = direction.steps[stepIdx];
+
+      if (step.travel_mode === "TRANSIT") {
+        stepStartTime = new Date(step.transit.departure_time.value);
+      }
+
+      var diff_ms = stepStartTime - stepEndTime;
+
+      var width = Application.getCanvasWidth();
+
+      if (diff_ms > Application.CONSIDER_THIS_WAIT_TIME_MS) {
+        var height = DetailedDirectionsScreen.portraitData.waitDirectionItemHeight;
+        var waitStepItem = createDirectionWaitItem(heightOffset, width, height, diff_ms);
+        heightOffset += height;
+        DetailedDirectionsScreen.directionsGroup.add(waitStepItem);
+      } 
+
+      var height = DetailedDirectionsScreen.portraitData.moveDirectionItemHeight;
+      var stepItem = createDirectionStepItem(heightOffset, width, height, step);
+      heightOffset += height;
+
+      stepEndTime = new Date(stepStartTime);
+      stepEndTime.setSeconds(stepEndTime.getSeconds()+step.duration.value);
+      
+      DetailedDirectionsScreen.directionsGroup.add(stepItem);
     }
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
     var barY = Application.getCanvasHeight()-barHeight;
