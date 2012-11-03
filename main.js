@@ -1,6 +1,10 @@
 // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
 var demoTime = null;
 //demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
+
+var ROUTE_SELECTION_SCREEN_BG_COLOR = '#eee';
+var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
+
 $(function() {
 
   var Application = {
@@ -40,7 +44,7 @@ $(function() {
       y: 0,
       width: Application.getCanvasWidth(),
       height: Application.stage.getHeight(),
-      fill: '#eee'
+      fill: ROUTE_SELECTION_SCREEN_BG_COLOR
     })
   };
   
@@ -62,7 +66,7 @@ $(function() {
       y: 0,
       width: Application.getCanvasWidth(),
       height: Application.stage.getHeight(),
-      fill: '#eee'
+      fill: GRAPHICAL_COMPARISON_SCREEN_BG_COLOR
     })
   };
   GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.background);
@@ -72,9 +76,10 @@ $(function() {
 // TODO: Think about actual implementation for this
   var DetailedDirectionsScreen = {
     portraitData: {
-      moveDirectionItemHeight: 150,
+      moveDirectionItemHeight: 250,
       waitDirectionItemHeight: 40,
-      arrivalBarHeight: 40
+      arrivalBarHeight: 40,
+      pathBlockWidth: 50
     },
     mainLayer: new Kinetic.Layer(),
     arrivalTimeGroup: new Kinetic.Group(),
@@ -268,7 +273,6 @@ $(function() {
 
   var generateSearchFieldFunction = function (fieldId) {
     return function () {
-      console.log("Should do stuff!");
       var currentValue = $(fieldId).val();
       var screenWidth = Application.getCanvasWidth();
       var screenHeight = Application.stage.getHeight();
@@ -311,13 +315,10 @@ $(function() {
         });
         RouteSelectionScreen.mainLayer.draw();
       if (Application.active_screen !== RouteSelectionScreen) {
-        console.log(Application.active_screen);
-        console.log(RouteSelectionScreen);
 
         Application.directions = [];
 
         transitionScreen(Application.active_screen, RouteSelectionScreen, 'SCALE TOP', Application.SHORT_DELAY);
-        console.log("Go back to screen 1");
       }
     };
   };
@@ -346,7 +347,6 @@ $(function() {
         computeDirections();
         $(fieldId).blur();
         transitionScreen(RouteSelectionScreen, GraphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
-        console.log('To the graphical comparison screen!');
       }
 
       if (fieldId == '#from-field') {
@@ -370,7 +370,7 @@ $(function() {
             x: 0,
             y: 50
           },
-          colorStops: [0, 'rgb(5,138,245)', 1, 'rgb(1,93,230)']
+          colorStops: LIST_SELECTED_GRADIENT
         });
       }
 
@@ -410,21 +410,21 @@ $(function() {
     var timeOffset = departureTime;
     var startFlagExists = false;
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
-      var stepColor = 'black';
+      var stepColor = UNKNOWN_STEP_COLOR;
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         stepColor = direction.steps[stepIdx].transit.line.color;
         if (direction.steps[stepIdx].transit.line !== undefined && direction.steps[stepIdx].transit.line.vehicle !== undefined) {
           var line = direction.steps[stepIdx].transit.line;
           var vehicleName = line.vehicle.name;
           if (vehicleName === "Bus") {
-            stepColor = '#D3D15F'; // TODO: Change to be better yellow?
+            stepColor = BUS_STEP_COLOR;
           }
         }
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
-        stepColor = 'black';
+        stepColor = DRIVING_STEP_COLOR;
       } else if (direction.steps[stepIdx].travel_mode === "WALKING") { 
-        stepColor = '#00CED1'; // TODO: Change color
+        stepColor = WALKING_STEP_COLOR;
       }
 
       var firstRounded = (stepIdx === 0);
@@ -490,7 +490,7 @@ $(function() {
       
       if (icon == null) {
         // This means that an appropriate icon doesn't exist yet
-        icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, 'black', "?");
+        icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, UNKNOWN_STEP_COLOR, "?");
       }
       routeGroup.add(icon);
     }
@@ -506,31 +506,23 @@ $(function() {
     var earliestDepartureTime = Application.directions[0].departure_time;
     for (var i = 0; i < Application.directions.length; i++) {
       if (Application.directions[i].departure_time < earliestDepartureTime) {
-         console.log("leave time for route " + i + ": " + Application.directions[i].departure_time.text);
-         console.log("current earliestDepartureTime: " + earliestDepartureTime.text);
          earliestDepartureTime = Application.directions[i].departure_time;
       }
       barStartTime = earliestDepartureTime;
     }
-    console.log("bar start time: " + barStartTime.text);
     
     var barEndTime;
     var latestArrivalTime = Application.directions[0].arrival_time;
     for (var i = 0; i < Application.directions.length; i++) {
-      console.log("looking at route: " + i);
       if (Application.directions[i].arrival_time >= latestArrivalTime) {
-         console.log("arrival time for route " + i + ": " + Application.directions[i].arrival_time.text);
-         console.log("current latest arrival time: " + latestArrivalTime.text);
          latestArrivalTime = Application.directions[i].arrival_time;
       }
       barEndTime = latestArrivalTime;
     }
-    console.log("bar end time: " + barEndTime.text);
 
     var firstArrivalTime = new Date(Application.directions[0].arrival_time.value);
     var availableScreenSpace = Application.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
     var scalingFactor = availableScreenSpace/((firstArrivalTime-(new Date()))/1000); 
-    console.log("scalingFactor: " + scalingFactor);
     
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
@@ -552,7 +544,6 @@ $(function() {
   };
 
   var displayDetailedDirections = function () {
-    console.log("display detailed directions screen");
     var direction = Application.chosen_direction;
     var heightOffset = 0;
     var departureTime = new Date(direction.departure_time.value);
@@ -577,7 +568,8 @@ $(function() {
       } 
 
       var height = DetailedDirectionsScreen.portraitData.moveDirectionItemHeight;
-      var stepItem = createDirectionStepItem(heightOffset, width, height, step);
+      var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
+      var stepItem = createDirectionStepItem(heightOffset, width, height, pathBlockWidth, step);
       heightOffset += height;
 
       stepEndTime = new Date(stepStartTime);
@@ -587,7 +579,6 @@ $(function() {
     }
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
     var barY = Application.getCanvasHeight()-barHeight;
-    console.log("HEIGHT: "+Application.getCanvasHeight());
     var barWidth = Application.getCanvasWidth();
     var arrivalBar = createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
