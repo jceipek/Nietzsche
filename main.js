@@ -439,7 +439,6 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-console.log(stepStart);
 
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
@@ -511,7 +510,7 @@ console.log(stepStart);
     var timeBarHeight = GraphicalComparisonScreen.portraitData.timeBarHeight;
     
     var barStartTime; 
-    var earliestDepartureTime = Application.directions[0].departure_time;
+    var earliestDepartureTime = new Date(Application.directions[0].departure_time.value);
     for (var i = 0; i < Application.directions.length; i++) {
       if (Application.directions[i].departure_time < earliestDepartureTime) {
          earliestDepartureTime = Application.directions[i].departure_time;
@@ -520,7 +519,7 @@ console.log(stepStart);
     }
     
     var barEndTime;
-    var latestArrivalTime = Application.directions[0].arrival_time;
+    var latestArrivalTime = new Date(Application.directions[0].arrival_time.value);
     for (var i = 0; i < Application.directions.length; i++) {
       if (Application.directions[i].arrival_time >= latestArrivalTime) {
          latestArrivalTime = Application.directions[i].arrival_time;
@@ -534,7 +533,7 @@ console.log(stepStart);
     
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
-      var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
+      var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);

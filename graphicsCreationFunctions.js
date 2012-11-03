@@ -621,15 +621,16 @@ var createGraphicalRouteButton = function (x, y, width, height, direction) {
   return buttonGroup;
 };
 
-var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scaleFactor) {
+var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scalingFactor) {
   var timeBarGroup = new Kinetic.Group();
-  var bar = new Kinetic.Rect({
+  var bg = new Kinetic.Rect({
     x: 0,
     y: 0,
     width: width,
     height: height,
     fill: "black"
   });
+  /*
   var startTime = new Kinetic.Text({
     text: barStartTime,
     textFill: "white",
@@ -643,10 +644,33 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
      fontSize: 18,
      align: "right",
      offset: [-530,0]
-  });
-  timeBarGroup.add(bar);
-  timeBarGroup.add(startTime);
-  timeBarGroup.add(endTime);
+  });*/
+
+  timeBarGroup.add(bg);
+  
+  var currTime = new Date(barStartTime);
+  while (currTime < barEndTime) {
+    var timeTxt = formatTime(currTime);
+    /*console.log("WHAT START: ");
+    console.log(barStartTime);
+    console.log("WHAT END: ");
+    console.log(barEndTime);
+    console.log("NEW TIME ITEM: " + timeTxt);*/
+    console.log(scalingFactor);
+    //console.log(posFromTime(currTime, barStartTime, scalingFactor));
+    var timeItem = new Kinetic.Text({
+      x: posFromTime(currTime, barStartTime, scalingFactor),
+      y: 2,
+      text: timeTxt,
+      textFill: 'white',
+      padding: 0,
+      fontSize: 18,
+      fontFamily: "HelveticaNeue-Medium"
+    });
+    timeBarGroup.add(timeItem);
+    currTime.setMinutes(currTime.getMinutes()+15);
+  }
+
   return timeBarGroup;  
 }
 
@@ -668,7 +692,7 @@ var drawTenMinuteIntervalLines = function(startX, startY, endYTime) {
       stroke: "black",
       strokeWidth: 8
     });
-  return tenMinLines
+  return tenMinLines;
   }
 }
 

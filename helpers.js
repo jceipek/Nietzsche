@@ -1,3 +1,20 @@
+   // Given a Date object, returns a string in a standard format such as "3:00 PM"
+  var formatTime = function (time) {
+    var amPM = 'AM';
+    if (hours >= 12) {
+      amPM = 'PM';
+    }
+    var hours = (time.getHours()%12);
+    if (hours === 0) {
+      hours = 12;
+    }
+    var minutes = time.getMinutes();
+    if (minutes === 0) {
+      minutes = '00';
+    }
+    return hours+':'+minutes+' '+amPM;
+  };
+
   // Given a time, what is the x position on the canvas that corresponds to it?
   var posFromTime = function (time, initialTime, scalingFactor) {
     // Convert to seconds and scale by scalingFactor
