@@ -392,7 +392,7 @@ $(function() {
     };
   };
 
-  var createGraphicalRouteItem = function (y, width, height, direction) {
+  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor) {
 
     var routeGroup = new Kinetic.Group();
     var background = new Kinetic.Rect({
@@ -408,7 +408,8 @@ $(function() {
     var arrivalTime = new Date(direction.arrival_time.value);
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
-    var scalingFactor = (Application.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth)/((arrivalTime-(new Date()))/1000); 
+    var scalingFactor = scalingFactor;
+
   
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
@@ -444,14 +445,24 @@ $(function() {
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
           var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
-          var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+          if (stepStart < 75){
+            var flag = createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            }
+          else {
+            var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            }
           routeGroup.add(flag);
           startFlagExists = true;
         }
       }
       if (isEnd) {
         var endTime = direction.arrival_time.text;
-        var flag = createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+        if (stepEnd > (Application.stage.getWidth()-88)){
+          var flag = createHiddenEndMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+          }
+        else{
+          var flag = createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+          }
         routeGroup.add(flag);
       }
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);
@@ -522,12 +533,17 @@ $(function() {
     }
     console.log("bar end time: " + barEndTime.text);
 
+    var firstArrivalTime = new Date(Application.directions[0].arrival_time.value);
+    var availableScreenSpace = Application.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
+    var scalingFactor = availableScreenSpace/((firstArrivalTime-(new Date()))/1000); 
+    console.log("scalingFactor: " + scalingFactor);
+    
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
       var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
       var graphicalRouteItem = 
-      createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.getCanvasWidth(), 
-                               GraphicalComparisonScreen.portraitData.routeItemHeight, direction);
+        createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
+                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
       var graphicalRouteButton = createGraphicalRouteButton(Application.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
                                    directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
