@@ -643,7 +643,7 @@ var createDirectionWaitItem = function (y, width, height, msWaitTime) {
     stroke: 'white',
     strokeWidth: 2
   });
-  var waitText = "Wait: "+msWaitTime;
+  var waitText = "(" + millisecondsToHumanString(msWaitTime) + ")";
   var text = new Kinetic.Text({
     x: 0,
     y: 0,
