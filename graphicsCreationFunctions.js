@@ -638,7 +638,6 @@ var createArrivalBar = function (width, height, y, timeString) {
   var textInset = height*0.25;
   var arrivalBarGroup = new Kinetic.Group();
   arrivalBarGroup.setPosition(0,y);
-  console.log("LOCATION: "+y);
   var background = new Kinetic.Rect({
     x: 0,
     y: 0,
@@ -673,18 +672,18 @@ var createDirectionWaitItem = function (y, width, height, msWaitTime) {
     y: 0,
     width: width,
     height: height,
-    fill: 'black',
-    stroke: 'white',
+    fill: WAIT_ITEM_BG_COLOR,
+    stroke: WAIT_ITEM_BORDER_COLOR,
     strokeWidth: 2
   });
-  var waitText = "(" + millisecondsToHumanString(msWaitTime) + ")";
+  var waitText = "wait " + millisecondsToHumanString(msWaitTime);
   var text = new Kinetic.Text({
     x: 0,
     y: 0,
     text: waitText,
     fontSize: 18,
     fontFamily: "HelveticaNeue-Medium",
-    textFill: "white",
+    textFill: WAIT_ITEM_TEXT_COLOR,
     padding: textInset,
     align: "left"
   });
@@ -693,7 +692,7 @@ var createDirectionWaitItem = function (y, width, height, msWaitTime) {
   return waitGroup;
 }
 
-var createDirectionStepItem = function (y, width, height, step) {
+var createDirectionStepItem = function (y, width, height, pathBlockWidth, step) {
 
   var stepGroup = new Kinetic.Group();
   stepGroup.setPosition(0,y);
@@ -702,12 +701,59 @@ var createDirectionStepItem = function (y, width, height, step) {
     y: 0,
     width: width,
     height: height,
-    fill: 'red',
-    stroke: 'black',
+    fill: DIRECTION_STEP_ITEM_BG_COLOR,
+    stroke: DIRECTION_STEP_ITEM_BORDER_COLOR,
     strokeWidth: 2
   });
 
+  var instructionsTextString = step.instructions;
+  var instructionsText = new Kinetic.Text({
+    x: pathBlockWidth,
+    y: 0,
+    text: instructionsTextString,
+    fontSize: 30,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: DIRECTION_STEP_ITEM_INSTR_COLOR,
+    width: width-pathBlockWidth,
+    padding: 5,
+    align: "left"
+  });
+
+
+  var pathColor = UNKNOWN_STEP_COLOR;
+
+  if (step.travel_mode === "TRANSIT") {
+    pathColor = step.transit.line.color;
+    if (step.transit.line !== undefined && step.transit.line.vehicle !== undefined) {
+      var line = step.transit.line;
+      var vehicleName = line.vehicle.name;
+      if (vehicleName === "Bus") {
+        pathColor = BUS_STEP_COLOR;
+      }
+    }
+  } else if (step.travel_mode === "DRIVING") {
+    pathColor = DRIVING_STEP_COLOR;
+  } else if (step.travel_mode === "WALKING") { 
+    pathColor = WALKING_STEP_COLOR;
+  }
+  
+  console.log(pathBlockWidth/2);
+  var pathItem = createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
+
   stepGroup.add(background);
+  stepGroup.add(instructionsText);
+  stepGroup.add(pathItem);
 
   return stepGroup;
+}
+
+var createDirectionStepPathItem = function (xMid, height, thickness, color) {
+  var pathRect = new Kinetic.Rect({
+    x: xMid-thickness/2,
+    y: 0,
+    width: thickness,
+    height: height,
+    fill: color
+  });
+  return pathRect;
 }
