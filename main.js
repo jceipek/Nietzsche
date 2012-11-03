@@ -436,12 +436,17 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
+console.log(stepStart);
+
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
           var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
           if (stepStart < 75){
             var flag = createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
             }
+          else if (stepStart >(Application.stage.getWidth()-88)){
+            var flag = createHiddenMiddleBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+          }
           else {
             var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
             }
