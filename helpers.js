@@ -26,7 +26,7 @@
       human = "1 min";
     } else {
       if(minutes <=10 && minutes >=1){
-        human = minutes + " min";
+        human = Math.round(minutes) + " min";
       } else {
         if(minutes >= 60){
           human = Math.floor(minutes/60) + checkHour(Math.floor(minutes/60));
