@@ -44,10 +44,8 @@
           { 
             if(roundNumber(Math.round(minutes%60)) === 60){
               human = Math.floor(minutes/60)+1 + " h ";
-              console.log(roundNumber(Math.round(minutes%60)));
             } else {
               human += roundNumber(Math.round(minutes%60)) + " min";
-              console.log(roundNumber(Math.round(minutes%60)));
             }
           } 
         } else {
@@ -55,6 +53,5 @@
           }
         }
       }
-    console.log(human);
     return human;
   }
