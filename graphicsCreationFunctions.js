@@ -427,7 +427,7 @@ var createWalkingIcon = function (x, y, sideLength, color) {
   }
 
 
-
+//This is the time flag
 var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   var offset = 0;
   var l = height;
@@ -466,6 +466,7 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   bubbleGroup.setPosition(anchorX - textwidth, anchorY - height * 2);
   return bubbleGroup;
 };
+//Time flag when start point is too close too screen to display time
 var createHiddenStartMessageBubble = function (anchorX, anchorY, height, color, text) {
   var offset = 0;
   var l = height;
@@ -505,6 +506,7 @@ var createHiddenStartMessageBubble = function (anchorX, anchorY, height, color, 
   bubbleGroup.setPosition(0, anchorY - height * 2);
   return bubbleGroup;
 };
+//Time flag when end point is off the screen
 var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, text) {
   var offset = 0;
   var l = height;
@@ -525,11 +527,11 @@ var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, te
     drawFunc: function (ctx) {
       ctx.beginPath();
       ctx.moveTo(anchorX, l); //point of the triangle
-      ctx.lineTo(500, .422*l); //top connection of triangle
-      ctx.arc(500 -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
-      ctx.arc(450+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
-      ctx.arc(450+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
-      ctx.lineTo(500-.11*l, .688*l); //lower connector to triangle
+      ctx.lineTo(552, .422*l); //top connection of triangle
+      ctx.arc(552 -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
+      ctx.arc(552-textwidth+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
+      ctx.arc(552-textwidth+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
+      ctx.lineTo(552-.11*l, .688*l); //lower connector to triangle
       ctx.lineTo(anchorX, l); //back to anchor point
       ctx.lineWidth = 1;
       ctx.closePath();
