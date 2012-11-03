@@ -4,6 +4,7 @@ var demoTime = null;
 
 var ROUTE_SELECTION_SCREEN_BG_COLOR = '#eee';
 var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
+var DETAILED_DIRECTIONS_SCREEN_BG_COLOR = '#eee';
 
 $(function() {
 
@@ -84,17 +85,19 @@ $(function() {
     mainLayer: new Kinetic.Layer(),
     arrivalTimeGroup: new Kinetic.Group(),
     directionsGroup: new Kinetic.Group(),
-    staticImage: new Image(),
-    background: new Kinetic.Image({ // TODO: Change to normal background when all elements are dynamic
+    background: new Kinetic.Rect({
       x: 0,
-      y: 0
+      y: 0,
+      width: Application.getCanvasWidth(),
+      height: Application.stage.getHeight(),
+      fill: DETAILED_DIRECTIONS_SCREEN_BG_COLOR
     })
   };
 
-  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
+/*  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
   DetailedDirectionsScreen.staticImage.onload = function () {
     DetailedDirectionsScreen.background.setImage(DetailedDirectionsScreen.staticImage);
-  };
+  };*/
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
