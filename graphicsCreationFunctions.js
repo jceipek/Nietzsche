@@ -96,11 +96,6 @@ var createRouteItem = function (y, width, height, route) {
   //and this is the actual colored line segment
   var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
     var radius = thickness/2;
-    var stepBorder = new Kinetic.Line({
-      points:[xStart+radius, yMid+radius, xEnd-radius, yMid+radius, xEnd-radius, yMid-radius, xStart+radius, yMid-radius],
-      stroke: "black",
-      strokeWidth: 2,
-    });
     var stepShape = new Kinetic.Shape({
       drawFunc: function(context) {
 
@@ -125,8 +120,7 @@ var createRouteItem = function (y, width, height, route) {
       },
       fill: color
     });
-    return stepBorder;
-    return stepShape;
+    return stepShape
   };
   //this makes the icon backgrounds for each segment
   var createRoundedIconBg = function (x, y, sideLength, color) {
