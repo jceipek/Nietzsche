@@ -851,11 +851,28 @@ var createDirectionStepItem = function (y, width, height, pathBlockWidth, step) 
     pathColor = WALKING_STEP_COLOR;
   }
   
+  
+  
+  console.log(pathBlockWidth/2);
   var pathItem = createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
+  
+  var duration = millisecondsToHumanString(step.duration.value * 1000);
+
+  var durationTxt = new Kinetic.Text({
+    x: pathBlockWidth,
+    y: height/2,
+    text: "(" + duration + ")",
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: DIRECTION_STEP_ITEM_DURATION_COLOR,
+    padding: 5,
+    align: "left"
+  });
 
   stepGroup.add(background);
   stepGroup.add(instructionsText);
   stepGroup.add(pathItem);
+  stepGroup.add(durationTxt);
 
   return stepGroup;
 }
