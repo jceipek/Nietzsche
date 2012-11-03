@@ -649,6 +649,10 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
   timeBarGroup.add(bg);
   
   var currTime = new Date(barStartTime);
+
+  var divCount = ((barEndTime - currTime)/1000/60/5);
+  //console.log("Div Count: " + divCount);
+
   while (currTime < barEndTime) {
     var timeTxt = formatTime(currTime);
     /*console.log("WHAT START: ");
@@ -656,15 +660,16 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
     console.log("WHAT END: ");
     console.log(barEndTime);
     console.log("NEW TIME ITEM: " + timeTxt);*/
-    console.log(scalingFactor);
     //console.log(posFromTime(currTime, barStartTime, scalingFactor));
+
+
     var timeItem = new Kinetic.Text({
-      x: posFromTime(currTime, barStartTime, scalingFactor),
+      x: posFromTime(currTime, barStartTime, scalingFactor), // XXX: THIS FUNCTION IS NOT CALLED CORRECTLY. TIMES WILL BE OFFSET A BIT
       y: 2,
       text: timeTxt,
       textFill: 'white',
       padding: 0,
-      fontSize: 18,
+      fontSize: 15,
       fontFamily: "HelveticaNeue-Medium"
     });
     timeBarGroup.add(timeItem);
