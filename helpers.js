@@ -15,7 +15,6 @@
       return number;
     };
     
-    console.log(minutes);
     if(minutes < 1){
       human = "1 min";
     } else {
