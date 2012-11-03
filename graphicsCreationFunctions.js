@@ -114,14 +114,13 @@ var createRouteItem = function (y, width, height, route) {
           context.lineTo(xEnd, yMid-radius);
         }
         context.lineTo(xEnd, yMid+radius);
-        
         context.closePath();
         
         this.fill(context);
       },
       fill: color
     });
-    return stepShape;
+    return stepShape
   };
   //this makes the icon backgrounds for each segment
   var createRoundedIconBg = function (x, y, sideLength, color) {
@@ -469,7 +468,6 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
 };
 //Time flag when start point is too close too screen to display time
 var createHiddenStartMessageBubble = function (anchorX, anchorY, height, color, text) {
-  var offset = 0;
   var l = height;
   var bubbleGroup = new Kinetic.Group();
     var textInset = 0.125 * height;
@@ -509,7 +507,6 @@ var createHiddenStartMessageBubble = function (anchorX, anchorY, height, color, 
 };
 //Time flag when end point is off the screen
 var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, text) {
-  var offset = 0;
   var l = height;
   var bubbleGroup = new Kinetic.Group();
     var textInset = 0.125 * height;
@@ -533,6 +530,43 @@ var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, te
       ctx.arc(465+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
       ctx.arc(465+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
       ctx.lineTo(552-.11*l, .688*l); //lower connector to triangle
+      ctx.lineTo(anchorX, l); //back to anchor point
+      ctx.lineWidth = 1;
+      ctx.closePath();
+      this.fill(ctx);        
+    },
+    fill: color
+  });
+
+  bubbleGroup.add(bg);
+  bubbleGroup.add(bubbleText);
+  bubbleGroup.setPosition(0, anchorY - height * 2);
+  return bubbleGroup;
+};
+var createHiddenMiddleBubble = function (anchorX, anchorY, height, color, text) {
+  var l = height;
+  var bubbleGroup = new Kinetic.Group();
+    var textInset = 0.125 * height;
+  var bubbleText = new Kinetic.Text({
+    x: 376,
+    y: 0,
+    text: text,
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: "white",
+    padding: textInset,
+    align: "left"
+  });
+  var textwidth = bubbleText.getWidth();
+  var bg = new Kinetic.Shape({
+    drawFunc: function (ctx) {
+      ctx.beginPath();
+      ctx.moveTo(anchorX, l); //point of the triangle
+      ctx.lineTo(465, .422*l); //top connection of triangle
+      ctx.arc(465 -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
+      ctx.arc(376+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
+      ctx.arc(376+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
+      ctx.lineTo(465-.11*l, .688*l); //lower connector to triangle
       ctx.lineTo(anchorX, l); //back to anchor point
       ctx.lineWidth = 1;
       ctx.closePath();
