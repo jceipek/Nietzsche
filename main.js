@@ -442,7 +442,7 @@ $(function() {
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
           var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
-          if (stepStart < 88){
+          if (stepStart < 75){
             var flag = createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
             }
           else {

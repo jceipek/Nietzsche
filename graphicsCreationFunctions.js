@@ -488,12 +488,12 @@ var createHiddenStartMessageBubble = function (anchorX, anchorY, height, color, 
     drawFunc: function (ctx) {
       ctx.beginPath();
       ctx.moveTo(anchorX, l); //point of the triangle
-      ctx.lineTo(textwidth-.11*l, .422*l); //top connection of triangle
+      ctx.lineTo(textwidth-.11*l, .687*l); //top connection of triangle
       ctx.arc(textwidth-.11*l, .577*l, .11*l, 0.5*Math.PI, 0, true); //bottom right arc
       ctx.arc(textwidth -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
       ctx.arc(.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
       ctx.arc(.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
-      ctx.lineTo(anchorX, .688*l); //lower connector to triangle
+      ctx.lineTo(anchorX, .687*l); //lower connector to triangle
       ctx.lineTo(anchorX, l); //back to anchor point
       ctx.lineWidth = 1;
       ctx.closePath();
@@ -514,7 +514,7 @@ var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, te
   var bubbleGroup = new Kinetic.Group();
     var textInset = 0.125 * height;
   var bubbleText = new Kinetic.Text({
-    x: 450+textInset,
+    x: 465,
     y: 0,
     text: text,
     fontSize: 18,
@@ -530,8 +530,8 @@ var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, te
       ctx.moveTo(anchorX, l); //point of the triangle
       ctx.lineTo(552, .422*l); //top connection of triangle
       ctx.arc(552 -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
-      ctx.arc(552-textwidth+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
-      ctx.arc(552-textwidth+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
+      ctx.arc(465+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
+      ctx.arc(465+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
       ctx.lineTo(552-.11*l, .688*l); //lower connector to triangle
       ctx.lineTo(anchorX, l); //back to anchor point
       ctx.lineWidth = 1;
