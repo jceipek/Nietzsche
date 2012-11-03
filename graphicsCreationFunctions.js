@@ -741,9 +741,9 @@ var createDirectionStepItem = function (y, width, height, pathBlockWidth, step) 
   
   console.log(pathBlockWidth/2);
   var pathItem = createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
-  console.log("GOOGLE: " +step.duration.value * 1000);
+  
   var duration = millisecondsToHumanString(step.duration.value * 1000);
-  console.log("HUMAN: " + duration);
+
   var durationTxt = new Kinetic.Text({
     x: pathBlockWidth,
     y: height/2,
@@ -756,11 +756,9 @@ var createDirectionStepItem = function (y, width, height, pathBlockWidth, step) 
   });
 
   stepGroup.add(background);
- 
   stepGroup.add(instructionsText);
-  
   stepGroup.add(pathItem);
-   stepGroup.add(durationTxt);
+  stepGroup.add(durationTxt);
 
   return stepGroup;
 }
