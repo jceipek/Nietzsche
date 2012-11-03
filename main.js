@@ -380,7 +380,7 @@ $(function() {
     };
   };
 
-  var createGraphicalRouteItem = function (y, width, height, direction) {
+  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor) {
 
     var routeGroup = new Kinetic.Group();
     var background = new Kinetic.Rect({
@@ -396,7 +396,7 @@ $(function() {
     var arrivalTime = new Date(direction.arrival_time.value);
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
-    var scalingFactor = (Application.stage.getWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth)/((arrivalTime-(new Date()))/1000); 
+    var scalingFactor = scalingFactor;
   
     var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
 
@@ -510,12 +510,17 @@ $(function() {
     }
     console.log("bar end time: " + barEndTime.text);
 
+    var firstArrivalTime = new Date(Application.directions[0].arrival_time.value);
+    var availableScreenSpace = Application.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
+    var scalingFactor = availableScreenSpace/((firstArrivalTime-(new Date()))/1000); 
+    console.log("scalingFactor: " + scalingFactor);
+    
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
       var graphicalTimeBar = createGraphicalTimeBar(Application.stage.getWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
-                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction);
+                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
       var graphicalRouteButton = createGraphicalRouteButton(Application.stage.getWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
                                    directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
