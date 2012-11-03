@@ -703,7 +703,6 @@ var createDirectionStepItem = function (y, width, height, pathBlockWidth, step) 
     pathColor = WALKING_STEP_COLOR;
   }
   
-  console.log(pathBlockWidth/2);
   var pathItem = createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
 
   stepGroup.add(background);
