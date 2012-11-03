@@ -427,6 +427,7 @@ var createWalkingIcon = function (x, y, sideLength, color) {
   }
 
 
+//TODO: Make the Hidden Bubbles use the width of the canvas, to allow for scrolling
 //This is the time flag
 var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   var offset = 0;
