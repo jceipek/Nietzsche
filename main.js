@@ -434,14 +434,24 @@ $(function() {
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
           var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
-          var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+          if (stepStart < 88){
+            var flag = createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            }
+          else {
+            var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            }
           routeGroup.add(flag);
           startFlagExists = true;
         }
       }
       if (isEnd) {
         var endTime = direction.arrival_time.text;
-        var flag = createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+        if (stepEnd > (Application.stage.getWidth()-88)){
+          var flag = createHiddenEndMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+          }
+        else{
+          var flag = createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+          }
         routeGroup.add(flag);
       }
       var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);

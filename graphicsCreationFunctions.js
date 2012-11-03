@@ -1,3 +1,4 @@
+ //This is what we're typing into
  var createRouteHeader = function (y, width, height, headerTitle) {
   var group = new Kinetic.Group();
   var routeHeader = new Kinetic.Text({
@@ -38,6 +39,7 @@
   return group;
 };
 
+//This is the background for each graphical line
 var createRouteItem = function (y, width, height, route) {
   var group = new Kinetic.Group();
   var background = new Kinetic.Rect({
@@ -91,7 +93,7 @@ var createRouteItem = function (y, width, height, route) {
   group.add(routeDetails);
   return group;
 };
-
+  //and this is the actual colored line segment
   var createStepLine = function (xStart, xEnd, yMid, thickness, color, startRounded, endRounded) {
     var radius = thickness/2;
     var stepShape = new Kinetic.Shape({
@@ -121,7 +123,7 @@ var createRouteItem = function (y, width, height, route) {
     });
     return stepShape;
   };
-
+  //this makes the icon backgrounds for each segment
   var createRoundedIconBg = function (x, y, sideLength, color) {
    var iconbg = new Kinetic.Rect({
      x: x,
@@ -445,13 +447,13 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   var bg = new Kinetic.Shape({
     drawFunc: function (ctx) {
       ctx.beginPath();
-      ctx.moveTo(textwidth, l);
-      ctx.lineTo(textwidth, .422*l);
-      ctx.arc(textwidth -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true);
-      ctx.arc(.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true);
-      ctx.arc(.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true);
-      ctx.lineTo(textwidth-.11*l, .688*l);
-      ctx.lineTo(textwidth, l);
+      ctx.moveTo(textwidth, l); //point of the triangle
+      ctx.lineTo(textwidth, .422*l); //top connection of triangle
+      ctx.arc(textwidth -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
+      ctx.arc(.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
+      ctx.arc(.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
+      ctx.lineTo(textwidth-.11*l, .688*l); //lower connector to triangle
+      ctx.lineTo(textwidth, l); //back to anchor point
       ctx.lineWidth = 1;
       ctx.closePath();
       this.fill(ctx);        
@@ -464,7 +466,84 @@ var createMessageBubble = function (anchorX, anchorY, height, color, text) {
   bubbleGroup.setPosition(anchorX - textwidth, anchorY - height * 2);
   return bubbleGroup;
 };
+var createHiddenStartMessageBubble = function (anchorX, anchorY, height, color, text) {
+  var offset = 0;
+  var l = height;
+  var bubbleGroup = new Kinetic.Group();
+    var textInset = 0.125 * height;
+  var bubbleText = new Kinetic.Text({
+    x: 0,
+    y: 0,
+    text: text,
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: "white",
+    padding: textInset,
+    align: "left"
+  });
+  var textwidth = bubbleText.getWidth();
+  var bg = new Kinetic.Shape({
+    drawFunc: function (ctx) {
+      ctx.beginPath();
+      ctx.moveTo(anchorX, l); //point of the triangle
+      ctx.lineTo(textwidth-.11*l, .422*l); //top connection of triangle
+      ctx.arc(textwidth-.11*l, .577*l, .11*l, 0.5*Math.PI, 0, true); //bottom right arc
+      ctx.arc(textwidth -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
+      ctx.arc(.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
+      ctx.arc(.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
+      ctx.lineTo(anchorX, .688*l); //lower connector to triangle
+      ctx.lineTo(anchorX, l); //back to anchor point
+      ctx.lineWidth = 1;
+      ctx.closePath();
+      this.fill(ctx);        
+    },
+    fill: color
+  });
 
+  bubbleGroup.add(bg);
+  bubbleGroup.add(bubbleText);
+  bubbleGroup.setPosition(0, anchorY - height * 2);
+  return bubbleGroup;
+};
+var createHiddenEndMessageBubble = function (anchorX, anchorY, height, color, text) {
+  var offset = 0;
+  var l = height;
+  var bubbleGroup = new Kinetic.Group();
+    var textInset = 0.125 * height;
+  var bubbleText = new Kinetic.Text({
+    x: 450+textInset,
+    y: 0,
+    text: text,
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: "white",
+    padding: textInset,
+    align: "left"
+  });
+  var textwidth = bubbleText.getWidth();
+  var bg = new Kinetic.Shape({
+    drawFunc: function (ctx) {
+      ctx.beginPath();
+      ctx.moveTo(anchorX, l); //point of the triangle
+      ctx.lineTo(500, .422*l); //top connection of triangle
+      ctx.arc(500 -.11*l, .11*l, .11*l, 0, 1.5*Math.PI, true); //top right arc
+      ctx.arc(450+.11*l, .11*l, .11*l, 1.5*Math.PI, Math.PI, true); //top left arc
+      ctx.arc(450+.11*l, .577*l, .11*l, Math.PI, 0.5*Math.PI, true); //bottom left arc
+      ctx.lineTo(500-.11*l, .688*l); //lower connector to triangle
+      ctx.lineTo(anchorX, l); //back to anchor point
+      ctx.lineWidth = 1;
+      ctx.closePath();
+      this.fill(ctx);        
+    },
+    fill: color
+  });
+
+  bubbleGroup.add(bg);
+  bubbleGroup.add(bubbleText);
+  bubbleGroup.setPosition(0, anchorY - height * 2);
+  return bubbleGroup;
+};
+//This is the button that transitions from Screen 2 to Screen 3
 var createGraphicalRouteButton = function (x, y, width, height, direction) {
   var color = "#999999";
   var strokewidth = 3;
