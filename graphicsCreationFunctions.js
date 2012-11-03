@@ -628,12 +628,102 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
     y: 0,
     width: width,
     height: height,
-    fill: 'black'
+    fill: "black"
+  });
+  var startTime = new Kinetic.Text({
+    text: barStartTime,
+    textFill: "white",
+    padding: 16,
+    fontSize: 18
+  });
+  var endTime = new Kinetic.Text({
+     text: barEndTime,
+     textFill: "white",
+     padding: 16,
+     fontSize: 18,
+     align: "right",
+     offset: [-530,0]
   });
   timeBarGroup.add(bar);
+  timeBarGroup.add(startTime);
+  timeBarGroup.add(endTime);
   return timeBarGroup;  
 }
 
+/*var Comparison = {
+    ctx: null, // The graphical comparison canvas
+    initialTime: null, // Departure time
+    scalingFactor: 0.2, // How many seconds one pixel on the canvas represents
+    width: $(window).width(), // Width of the canvas. Starts at width of window.
+    height: $(window).height(), // Width of the canvas. Starts at width of window.
+    horizontalRouteOffset: 70
+  };*/
+
+var drawTenMinuteIntervalLines = function(startX, startY, endYTime) {
+  var tenMinOffset; //how many px is ten minutes?
+  var endYPos = posFromTime(endYTime);
+  for (var i = 0; i < endYPos; i+tenMinOffset) {
+    var tenMinLines = new Kinetic.Line({
+      points: [startX, startY, startX, i],
+      stroke: "black",
+      strokeWidth: 8
+    });
+  return tenMinLines
+  }
+}
+
+var drawFiveMinuteIntervalLines = function(startX, startY, endYTime) {
+  var fiveMinOffset; //how many px is five minutes?
+  var endYPos = posFromTime(endYTime);
+  for (var i = 0; i < endYPos; i+fiveMinOffset) {
+    var fiveMinLines = new Kinetic.Line({
+      points: [startX, startY, startX, i],
+      stroke: "rgb(200, 200, 200)",
+      strokeWidth: 4
+    });
+  return fiveMinLines;
+  }
+};
+
+/*var plotTimeIntervals = function (currTime, initialTime, scalingFactor) {
+    var initialIntervalTime = new Date(initialTime.value);
+    var currIntervalPos = new Date(currTime.value);
+    initialIntervalTime.setMinutes(0);
+    if ((initialIntervalTime.getMinutes() % 10) === 0) {
+        //addTime(initialIntervalTime,
+          //      currIntervalPos+4,
+            //    15); // The canvas version
+        drawTenMinuteIntervalLines(currIntervalPos, 0);
+    } else if ((initialIntervalTime.getMinutes() % 5) === 0) {
+         drawFiveMinuteIntervalLines(currIntervalPos, 15);
+    }
+  };*/
+
+/**
+var plotTimeIntervals = function () {
+    var currIntervalTime = new Date(Comparison.initialTime);
+    currIntervalTime.setMinutes(0);
+    var ctx = Comparison.ctx;
+    while (posFromTime(currIntervalTime) < Comparison.width) {
+      currIntervalPos = posFromTime(currIntervalTime);
+      var startY = 0;
+      ctx.beginPath();
+      if ((currIntervalTime.getMinutes() % 10) === 0) {
+        addTime(currIntervalTime,
+                currIntervalPos+4,
+                15); // The canvas version
+        ctx.strokeStyle = "rgb(0, 0, 0)";
+      } else if ((currIntervalTime.getMinutes() % 5) === 0) {
+        ctx.strokeStyle = "rgb(200, 200, 200)";
+        startY = 15;
+      }
+      ctx.moveTo(currIntervalPos, startY);
+      ctx.lineTo(currIntervalPos, document.height);
+      ctx.stroke();
+      currIntervalTime.setMinutes(currIntervalTime.getMinutes()+5);
+    }
+  };
+  **/
 var createArrivalBar = function (width, height, y, timeString) {
   var textInset = height*0.25;
   var arrivalBarGroup = new Kinetic.Group();
