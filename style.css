@@ -191,7 +191,7 @@ a:hover {
 }
 
 #menu {
-	overflow: hidden;
+	/*overflow: hidden;*/
 	height: 52px;
 }
 
@@ -209,8 +209,8 @@ a:hover {
 
 #menu a {
 	display: block;
-	padding: 0px 30px;
-	background: url(images/img10.png) no-repeat right 50%;
+	padding: 0px 15px;
+	/background: url(images/img10.png) no-repeat right 50%;
 	line-height: 52px;
 	text-decoration: none;
 	text-transform: lowercase;
@@ -288,6 +288,14 @@ a:hover {
 .links {
 	padding-top: 20px;
 	margin-bottom: 30px;
+}
+
+#iphone-border {
+	background-image: url("iPhone.png");
+}
+
+#iphone-screen {
+	align: center;
 }
 
 .more {
