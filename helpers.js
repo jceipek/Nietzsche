@@ -21,7 +21,6 @@
         return " hour ";
       }
     }
-    console.log("min" +minutes);
     if(minutes < 1){
       human = "1 min";
     } else {
@@ -34,10 +33,8 @@
           { 
             if(roundNumber(Math.round(minutes%60)) === 60){
               human = Math.floor(minutes/60)+ 1 + checkHour(Math.floor(minutes/60)+ 1);
-              console.log(roundNumber(Math.round(minutes%60)));
             } else {
               human += roundNumber(Math.round(minutes%60)) + " min";
-              console.log(roundNumber(Math.round(minutes%60)));
             }
           } 
         } else {
@@ -45,6 +42,5 @@
         }
       }
     }
-   console.log("human" + human);
     return human;
   }
