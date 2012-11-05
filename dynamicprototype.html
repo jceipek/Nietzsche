@@ -46,15 +46,61 @@ Released   : 20120818
 				<h2 class="introduction" id="welcome">Instructions</h2>
 				<div class="entry">
 					<ol>
-						<li>Our prototype works on your smartphone! If you have an iPhone, open up <a href="main.html">this page</a> and you’ll have an experience closer to what we intended and designed for.
+						<li>Our prototype works on your smartphone! If you have an iPhone, open this page on it and you’ll have an experience closer to what we intended and designed for.
 
                         If you don’t have an iPhone, you may have noticed this application looks pretty big – sorry about that. Zoom out to see the whole screen at once (For Mac, press “command” and “minus”; for Windows, press “ctrl” and “minus”).</li>
 
                         <li>This app actually uses realtime data from Google Maps. Depending on the time of day you’re looking at this, the MBTA might not be running, so the results will be very strange. We recommend that you use this app between 6 am EST and 9 pm EST for the best variety of results.</li>
 
                         <li>This is our first attempt at implementing this design in code. We have a lot of things we’d like to fix, but our apologies if things aren’t very pretty. If you have any comments or find any bugs, please email us at Nietzsche.mbta@gmail.com. Thanks!</li>
+                    </ol>		
+				</div>
+
+				<h2 class="introduction" id="usability">Usability Script</h2>
+				<div class="entry">
+					<h3>Introduction</h3>
+					<p>This document is supposed to help you (our heuristic evaluation team) understand our prototype. Our current prototype is functional in a very minimal way, but lacks many features that we feel make our design better than similar applications. As such, this document will guide you through our prototype and make sure you understand why we did certain things, what functionality the design should have, and what changes we are we need to make.  We think it might be helpful to take a look at our final mock-ups, since those give a very good picture of what we want this to ultimately look like.</p>
+
+					<h3>Design Rationale</h3>
+					<p>The basic idea of our design is that rather than making users navigate through 80 different screens to find their desired information, our application is layered so that individuals who are experienced with the MBTA system can quickly find a particular piece of information, whereas novice users "go deeper" to find more comprehensive instructions. As such, our scenarios do not require using the application in different ways, rather changing the level of information you need to find.</p>
+
+					<h3>Screen 1</h3>
+					<p>This screen lets users modify their start and end points. By default, the application assumes you want to get from your current location (please assume this is the case for all scenarios) and displays the keyboard to accept a destination. As the user types, the list will auto-populate itself based on your contact book, Google Maps results, and MBTA stations. Based on our user research, stations are never the ultimate start or end point for a journey, so we rank those results last.</p>
+
+					<h3>Screen 2</h3>
+					<p>Clicking on a result takes you to our comparison page. The animation is supposed to suggest that you have been taken to an entirely new screen, i.e. a screen that is not physically related by swiping, dragging, etc. This screen serves two major purposes.
+
+                    Firstly, for users who are familiar with the MBTA system, we found they are chiefly concerned with time, i.e. when does the next train leave, when will they get to their destination, etc. This view makes those times immediately available. 
+
+                    Secondly, for users who are not sure which route to take, this view helps them compare their options based on duration, number of connections, amount of walking, etc. Our user testing showed this graphical view was much more helpful than having to compare lists of numbers.
+
+                    Our application uses the Google Maps API, so this screen will change as a function of time. Getting the dynamic content to display correctly took some time, so we are aware that there are things to change:</p>
+
+                    <ol>
+                    	<li>The times in the black bar at the top should be readable</li>
+                        <li>There should be vertical lines connected with these times to help segment the screen, allowing for better comparison based on time.</li>
+                        <li>There are gaps between the colored transit lines that represent wait times. We need to outline the whole line to make it obvious that it is a single route option.</li>
+                        <li>The "canvas" that these routes sit needs to be scrollable. The user must be able to move about the screen to explore additional options, if they wish. In terms of the mental model, we are displaying a small part of an enormous canvas that graphically describes all possible route options. They are arranged horizontally by time and vertically by "goodness" (think of HipMunk's "agony" filter)</li>
+                        <li>General prettiness and spacing issues, such as icon overlaps.</li>
                     </ol>
-					
+
+                    <h3>Screen 3</h3>
+                    <p>When you swipe on a tab in screen 2, you are dragging information specific to that route onto the screen. Each step of your route (also taken by Google Maps, hence some of the funny wording and size issues) is color coded. At the bottom of the screen is an estimated time of arrival, viewable regardless of where you are in the route. There are many features that need to be added:</p>
+                    <ol>
+                        <li>Maps for walking directions</li>
+                        <li>An indicator for your current location that runs along the colored segments</li>
+                        <li>Auto-scrolling (the list will scroll to make sure your current and next steps are always viewable) and the ability to scroll in general</li>
+                        <li>"I missed the train!" button - a unique feature of our design is a button that will automatically update your directions if you miss a train or bus. This button will only be displayed for steps that are followed by a bus or train, so it is only an option when appropriate. Ideally, this button would glow if it detects you have been sitting at the end of a step for a while, but we are definitely not going to get GPS data into this thing anytime soon.</li>
+                    </ol>
+
+                    <h3>Other Things</h3>
+                    <ol>
+                    	<li>To get from screen 3 to screen 2, the final design should support a left-to-right swipe anywhere on the screen, a motion consistent with getting from screen 2 to screen 3.</li>
+                    	<li>Supporting landscape mode</li>
+                    	<li>Prettiness, obviously</li>
+                    </ol>
+
+
 				</div>
 
 				<h2 class="scenario1" id="proposal">Scenario 1</h2>
@@ -89,7 +135,7 @@ Released   : 20120818
 
 				<h2 class="title" id="proto">Prototype</h2>
 				<div class="entry">
-					<p>In order to view our prototype on your mobile phone, <a href="main.html">go here</a></p>
+					<p>This prototype is best used in a mobile browser</p>
 					<div id = "iphone-border">
 					        <iframe src="main.html" frameBorder="0" align="center" width="640px" height="960px"></iframe>
 				      
@@ -106,6 +152,7 @@ Released   : 20120818
 				<h2>Navigation</h2>
 				<ul class="list-style1">
 					<li><a href="#intro">Instructions</a></li>
+					<li><a href="#usability">Usability Script</a></li>
 					<li><a href="#scenario1">Scenario 1</a></li>
 					<li><a href="#scenario2">Scenario 2</a></li>
 					<li><a href="#scenario3">Scenario 3</a></li>
