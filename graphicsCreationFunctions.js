@@ -621,15 +621,16 @@ var createGraphicalRouteButton = function (x, y, width, height, direction) {
   return buttonGroup;
 };
 
-var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scaleFactor) {
+var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scalingFactor) {
   var timeBarGroup = new Kinetic.Group();
-  var bar = new Kinetic.Rect({
+  var bg = new Kinetic.Rect({
     x: 0,
     y: 0,
     width: width,
     height: height,
     fill: "black"
   });
+  /*
   var startTime = new Kinetic.Text({
     text: barStartTime,
     textFill: "white",
@@ -643,10 +644,38 @@ var createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, 
      fontSize: 18,
      align: "right",
      offset: [-530,0]
-  });
-  timeBarGroup.add(bar);
-  timeBarGroup.add(startTime);
-  timeBarGroup.add(endTime);
+  });*/
+
+  timeBarGroup.add(bg);
+  
+  var currTime = new Date(barStartTime);
+
+  var divCount = ((barEndTime - currTime)/1000/60/5);
+  //console.log("Div Count: " + divCount);
+
+  while (currTime < barEndTime) {
+    var timeTxt = formatTime(currTime);
+    /*console.log("WHAT START: ");
+    console.log(barStartTime);
+    console.log("WHAT END: ");
+    console.log(barEndTime);
+    console.log("NEW TIME ITEM: " + timeTxt);*/
+    //console.log(posFromTime(currTime, barStartTime, scalingFactor));
+
+
+    var timeItem = new Kinetic.Text({
+      x: posFromTime(currTime, barStartTime, scalingFactor), // XXX: THIS FUNCTION IS NOT CALLED CORRECTLY. TIMES WILL BE OFFSET A BIT
+      y: 2,
+      text: timeTxt,
+      textFill: 'white',
+      padding: 0,
+      fontSize: 15,
+      fontFamily: "HelveticaNeue-Medium"
+    });
+    timeBarGroup.add(timeItem);
+    currTime.setMinutes(currTime.getMinutes()+15);
+  }
+
   return timeBarGroup;  
 }
 
@@ -668,7 +697,7 @@ var drawTenMinuteIntervalLines = function(startX, startY, endYTime) {
       stroke: "black",
       strokeWidth: 8
     });
-  return tenMinLines
+  return tenMinLines;
   }
 }
 
@@ -827,12 +856,25 @@ var createDirectionStepItem = function (y, width, height, pathBlockWidth, step) 
     pathColor = WALKING_STEP_COLOR;
   }
   
-  console.log(pathBlockWidth/2);
   var pathItem = createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
+  
+  var duration = millisecondsToHumanString(step.duration.value * 1000);
+
+  var durationTxt = new Kinetic.Text({
+    x: pathBlockWidth,
+    y: height/2,
+    text: "(" + duration + ")",
+    fontSize: 18,
+    fontFamily: "HelveticaNeue-Medium",
+    textFill: DIRECTION_STEP_ITEM_DURATION_COLOR,
+    padding: 5,
+    align: "left"
+  });
 
   stepGroup.add(background);
   stepGroup.add(instructionsText);
   stepGroup.add(pathItem);
+  stepGroup.add(durationTxt);
 
   return stepGroup;
 }
