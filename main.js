@@ -22,7 +22,7 @@ $(function() {
     stage: new Kinetic.Stage({
       container: 'screenContainer',
       width: 640,
-      height: 940})
+      height: 920})
   };
 
   Application.getCanvasWidth = function () {

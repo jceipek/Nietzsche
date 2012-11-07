@@ -4,7 +4,7 @@ body, #screen-wrapper {
 
 #screen-wrapper {
   width: 640px;
-  height: 940px; /* (-20 for title bar) */
+  height: 920px; /* (-20 for title bar) */
   background-color: #eee;
 }
 
@@ -79,7 +79,7 @@ label {
 
 canvas {
   width: 640px;  
-  height: 940px;
+  height: 920px;
 }
 
 /*
