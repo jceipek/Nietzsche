@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name : TrendyBiz
+Description: A two-column, fixed-width design with dark color scheme.
+Version : 1.0
+Released : 20120818
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>HFID | Nietzsche | Design Refinement</title>
+    <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="menu-wrapper">
+	<div id="menu" class="container">
+	  <ul>
+	    <li><a href="index.html">Home</a></li>
+	    <li><a href="inspirations.html">Inspirations</a></li>
+	    <li><a href="needs.html">Needs Analysis</a></li>
+	    <li><a href="design.html">Design Development</a></li>
+	    <li><a href="testing.html">Usability Report</a></li>
+	    <li><a href="refinement.html">Design Refinement</a></li>
+	    <li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
+	    <li><a href="team.html">The Team</a></li>
+	  </ul>
+	</div>
+      </div>
+      <div id="logo" class="container">
+	<h1 id="top"><img src="images/NietzscheLogoSmall.png" alt="logo"/></h1>
+	<p>humanizing MBTA transit</p>
+      </div>
+      <!--<div class="divider">&nbsp;</div>-->
+      <div id="page" class="container">
+	<div id="content">
+	  <div class="post">
+	    <h2 class="title" id="changes">Changes From Prototype</h2>
+	    <div class="entry">
+	      <h3>Screen 1</h3>
+	      <p>Screen 1 remained largely the same - the majority of the feedback we received from user testing was confusion about what objects were “clickable”, something more likely due to the nature of the paper prototype than the design itself.</p>
+		<p><img src="images/screen1_comparison.png" alt="screen 1 comparison" width="100%"/></p>
+	      <p>(<a href="#top">top of page</a>)</p>
+	    </div>
+	    
+	    <div class="entry">
+	      <h3>Screen 2</h3>
+	      <p>After evaluating our user feedback, we decided that the graphical view was superior to the textual view for 3 key reasons:
+		<ul>
+		  <li>Users consistently pointed out that the number of connections is not as important as the type of connections - multiple train-to-train connections are preferred to even a single train-to-bus connection. The graphical view displays this information much more conveniently than the textual view.</li>
+		  <li>Other information such as walking is better compared graphically than numerically. “0.3 mi” did not mean as much as seeing the amount of time spent walking relative to the rest of the journey. This was also true in comparing routes overall - comparing lengths of a line is much quicker and easier than comparing several distinct numbers.</li>
+		  <li>The graphical view could be modified to make the information that users (such as our persona Peter) quickly accessible. For example, once Peter has selected an destination, he can immediately view when the journey starts and ends, allowing him to determine when he must leave his apartment. To look at later times, he only needs to scrub the time-bar at the top of the display, a much quicker interaction than tapping times and manually changing them.</li>
+	      </ul></p>
+	      <p>The biggest concern with this change is being able to present the graphical comparison on such a small screen without making it too cluttered to use. We also spent time discussing the mental model connecting screen 2 to screen 3. We developed “tabs” for each route. They can be tapped like a traditional button, but will slide across the screen to suggest to the user that swiping will achieve the same result. Each tab is attached to more information specific to that route. Swiping in the opposite direction on screen 3 will return the user to the comparison view.</p>
+		<p><img src = "images/screen2_comparison.png" alt="screen 2 comparison" width="100%"/></p>
+	      <p>(<a href="#top">top of page</a>)</p>
+	    </div>
+	    <div class="entry">
+	      <h3>Screen 3</h3>
+	      <p>Three major changes have been made to this page:
+		<ul>
+		  <li>Maps are integrated into relevant steps (e.g. walking directions). Users praised having this information immediately presented, rather than having to “click for more”.</li>
+		  <li>Moving the “I missed the train” button from the bottom of the screen to whatever step the user is currently in. Users were not sure whether the button could only be pressed at the end of the journey or what would happen if they pressed it. We believe this is because most users are not necessarily considering what to do if they miss their train until it has actually happened, so the button does not fit into a pre-constructed mental model. To help ease the confusion, the button’s appearance will change depending on where the user is. If they are currently on the train, the button will fade to suggest it is disabled. If the application believes the user has missed their train (based on GPS and timing data), the button will enlarge or glow to suggest the user should press it.
+		    
+		    This also allows the estimated arrival time display to mirror the time bar at the top of every iPhone display, building consistency into the user’s experience.</li>
+		  <li>Refining the vertical bar on the side of the display. Connections and transfers are now represented as a gap displaying the amount of time the user has to wait. The user’s current location is also prominently displayed and moves based on GPS and timing data.</li>
+		</ul>
+	      </p>
+		<p><img src="images/screen3_comparison.png" alt="screen 3 comparison" width="100%"/></p>
+	      <p>(<a href="#top">top of page</a>)</p>
+	    </div>
+	    
+	    <div class="entry">
+	      <h3>Screen 4</h3>
+	      <p>User feedback suggested that the “street-view” screen would be at best unhelpful or at worst confusing. We thus decided to remove that part of the design. We strove to make sure all necessary information was included in screen 3, negating the need for the user to progress to yet another screen.</p>
+	      <p>(<a href="#top">top of page</a>)</p>
+	    </div>
+	  </div>
+	  
+
+	<div class="post">
+	  <h2 class="title" id="walkthrough">Cognitive Walkthrough</h2>
+	  <div class="entry">
+	    <h3>Screen 1</h3>
+	    <p>Screen 1 is very simple, but we need to emphasize speed and utility</p>
+	    <p>With regards to speed, our design already used the user’s current location as the default start point, but we will also make sure the keyboard is automatically displayed and ready to type into the “To” field.</p>
+	    <p>In terms of utility, we will make use of many of the animations and other visual actions from iOS to help maximize screen space while the user is typing, enabling them to better view and use the contextual results list.</p>
+	    <p>We further refined the idea of how our application will “learn”. For example, if you are consistently going to the same destination, the application will automatically suggest that as a destination. We believe this is a great opportunity to help the user develop trust for the application, but want to be careful not to create something that is “too smart” and suggests options that are not actually wanted or correct.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	  
+	  <div class="entry">
+	    <h3>Screen 2</h3>
+	    <p>The graphical view has a lot of opportunity, but requires a lot of thought to execute effectively. Obviously making sure that information is clearly displayed and easy to see is critical, but the experience of scrolling through list of options and selecting a route must be carefully crafted.</p>
+	    <p>If we imagine the application as a physical object, the list of options is like a large piece of paper, although only a small part of it is viewable at any given time. Scrolling moves the entire piece of paper, allowing the user to either see later versions of the same route or alternative routes. Tapping on a route will select it, but we believe a swiping motion allows for a quicker and more natural progression between screen 2 and screen 3. We therefore developed the “tab” concept (described in our original changes) that give the user a specific object to interact with. Tapping the tab will cause the tab to move across the screen, dragging screen 3 with it. In this way, we are building an analog to the physical world, i.e. dragging another piece of paper (with more specific information) onto the top of the larger map. Swiping on the screen is the same as dragging or pushing a piece of paper.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	  
+	  <div class="entry">
+	    <h3>Screen 3</h3>
+	    <p>There are several technical challenges to address in screen 3 involving the use of GPS and timing data to accurately show where a user is in their journey and in also making “smart” corrections to the estimated arrival time.</p>
+	    <p>We also discussed how users can modify their start/to data. The physical analog seems powerful in building a mental model, but the “two pieces of paper on top of each other” model breaks down when tapping on a text field makes a keyboard magically appear. We decided that tapping on a text field will always bring the user back to screen 1 (i.e. no journey-specific content from the previous interaction is viewable) with the ability to cancel and leave the screen.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	  
+	  <div class="entry">
+	    <h3>Overall</h3>
+	    <p>Overall, we are very pleased with our design and believe it displays information in a useful way. Trying to provide so much information in so few screens is difficult and relies not only on good layout and graphic design decisions, but also on animations and other graphic elements to help build a strong mental model for the user.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	</div>
+      
+	
+	<div style="clear: both;">&nbsp;</div>
+      </div>
+      <!-- end #content -->
+      <div id="sidebar">
+	<div>
+	  <h2>Navigation</h2>
+	  <ul class="list-style1">
+	    <li><a href="#changes">Changes From Protoype</a></li>
+	    <li><a href="#walkthrough">Cognitive Walkthrough</a></li>
+	  </ul>
+	</div>
+      </div>
+      <!-- end #sidebar -->
+      <div style="clear: both;">&nbsp;</div>
+    </div>
+    <!-- end #page -->
+    
+    
+</div>
+
+<div id="footer">
+  <p>© 2012. All rights reserved. Design by <a href="http://www.freecsstemplates.org">FCT</a>. Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
