@@ -44,23 +44,27 @@ Released : 20120818
 	<div id="content">
 	  <div class="post">
 	    <h2 class="title" id="changes">Changes From Prototype</h2>
+	    <p>Based on the results of our usability testing, it was necessary to change and refine our original design idea. For the purpose of comparison, we have presented these changes by screen number</p>
 	    <div class="entry">
 	      <h3>Screen 1</h3>
-	      <p>Screen 1 remained largely the same - the majority of the feedback we received from user testing was confusion about what objects were “clickable”, something more likely due to the nature of the paper prototype than the design itself.</p>
-		<p><img src="images/screen1_comparison.png" alt="screen 1 comparison" width="100%"/></p>
+	      <p>Screen 1 remained largely the same - the majority of the feedback we received from user testing was confusion about which objects were "clickable". This concern is most likely related to the nature of the paper prototype rather than a flaw in the design itself.</p>
+		<p><img src="images/compare1.png" alt="screen 1 comparison" width="100%"/></p>
 	      <p>(<a href="#top">top of page</a>)</p>
 	    </div>
 	    
 	    <div class="entry">
 	      <h3>Screen 2</h3>
-	      <p>After evaluating our user feedback, we decided that the graphical view was superior to the textual view for 3 key reasons:
+	      <p>The biggest decision we had to make before iterating on our prototype was whether to make the screen for comparing routes primarily graphical or textual. We decided that the graphical view was superior to the textual view for 3 key reasons:
 		<ul>
-		  <li>Users consistently pointed out that the number of connections is not as important as the type of connections - multiple train-to-train connections are preferred to even a single train-to-bus connection. The graphical view displays this information much more conveniently than the textual view.</li>
-		  <li>Other information such as walking is better compared graphically than numerically. “0.3 mi” did not mean as much as seeing the amount of time spent walking relative to the rest of the journey. This was also true in comparing routes overall - comparing lengths of a line is much quicker and easier than comparing several distinct numbers.</li>
-		  <li>The graphical view could be modified to make the information that users (such as our persona Peter) quickly accessible. For example, once Peter has selected an destination, he can immediately view when the journey starts and ends, allowing him to determine when he must leave his apartment. To look at later times, he only needs to scrub the time-bar at the top of the display, a much quicker interaction than tapping times and manually changing them.</li>
+		  <li>Users consistently pointed out that the number of connections is not as important as the <em>type</em> of connections &ndash; multiple train-to-train connections are preferred to even a single train-to-bus connection. The textual view cannot represent this information as clearly and concisely as the graphical view.</li>
+		  <li>Some information such as walking distance is better compared visually rather than numerically. "0.3 mi" is just a number. However, seeing that a route requires walking for 5 minutes, taking a train, and then walking for 10 minutes provides users with a very clear idea of how much walking is involved. Similarly, testers found it difficult to compare route durations and departure times by comparing the relative size of multiple times; presenting this information spatially was an important decision.</li>
+		  <li>Our original concept for the graphical view had very little text for the sake of preventing clutter, but we decided that certain pieces of information could be made clear without making the interface hard to read. For example, our persona Peter doesn't need to compare different route options since he already knows his way, but he is deeply concerned with checking when trains leave and arrive. In our refined graphical view, he can immediately see when the journey starts and ends, just like in the textual view. As an added bonus, in order to look at later departure times, he only needs to scrub the time-bar at the top of the display, a much quicker interaction than tapping times and manually changing them.</li>
+		  <li>At first we were concerned that the graphical view would lose much of the functionality of the textual view (such as being able to manually set the departure/arrival times), but we feel as if the current design of the graphical view addresses this (being able to scroll to view later times, for example). We also went back to our personas and thought about what they would need from a graphical view to help them complete their tasks. This did not lead to any fundamental changes, but made sure that we had fully thought through the interaction and better justify our design choices.</li>
 	      </ul></p>
-	      <p>The biggest concern with this change is being able to present the graphical comparison on such a small screen without making it too cluttered to use. We also spent time discussing the mental model connecting screen 2 to screen 3. We developed “tabs” for each route. They can be tapped like a traditional button, but will slide across the screen to suggest to the user that swiping will achieve the same result. Each tab is attached to more information specific to that route. Swiping in the opposite direction on screen 3 will return the user to the comparison view.</p>
-		<p><img src = "images/screen2_comparison.png" alt="screen 2 comparison" width="100%"/></p>
+	      <p>The biggest challenge with the graphical view is being able to present all of the important information on such a small screen while limiting clutter, keeping text readable, and making touch targets large enough.</p>
+
+          <p>We also thought more about the mental model we were building for our users, specifically regarding the connection between screen 2 and screen 3. We developed "tabs" for each route: they can be tapped like a traditional button to summon the detailed route instructions, but will slide across the screen to suggest to the user that swiping on an individual route will achieve the same result. Similarly, swiping in the opposite direction on screen 3 will return the user to the screen 2.</p>
+		<p><img src = "images/compare2.png" alt="screen 2 comparison" width="100%"/></p>
 	      <p>(<a href="#top">top of page</a>)</p>
 	    </div>
 	    <div class="entry">
@@ -68,19 +72,20 @@ Released : 20120818
 	      <p>Three major changes have been made to this page:
 		<ul>
 		  <li>Maps are integrated into relevant steps (e.g. walking directions). Users praised having this information immediately presented, rather than having to “click for more”.</li>
-		  <li>Moving the “I missed the train” button from the bottom of the screen to whatever step the user is currently in. Users were not sure whether the button could only be pressed at the end of the journey or what would happen if they pressed it. We believe this is because most users are not necessarily considering what to do if they miss their train until it has actually happened, so the button does not fit into a pre-constructed mental model. To help ease the confusion, the button’s appearance will change depending on where the user is. If they are currently on the train, the button will fade to suggest it is disabled. If the application believes the user has missed their train (based on GPS and timing data), the button will enlarge or glow to suggest the user should press it.
-		    
-		    This also allows the estimated arrival time display to mirror the time bar at the top of every iPhone display, building consistency into the user’s experience.</li>
-		  <li>Refining the vertical bar on the side of the display. Connections and transfers are now represented as a gap displaying the amount of time the user has to wait. The user’s current location is also prominently displayed and moves based on GPS and timing data.</li>
+
+		  <li>The "I missed the train" button has been moved from the bottom of the screen to whatever step the user is currently in. User testing showed that users were not sure whether the button could only be pressed at the end of the journey or what would happen if they pressed it. We believe this is because most users are not thinking about what to do if they miss their train until they have actually missed it, so the button does not fit into their existing mental model. To reduce this confusion, the button will only be available in appropriate steps (i.e. steps that are followed by a transit line). If the application believes the user has missed their train (based on GPS and timing data), the button will glow to suggest that the user should press it.</li>
+
+		  <li>The vertical bar on the left has been refined slightly. Whilst users liked having segment lengths that were scaled based on the time each segment represented, this caused problems in displaying information concisely. Thus, we decided to make each segment the same size, maximizing the amount of information that can be displayed on the screen. Also, connections and transfers are now represented as a gap displaying the amount of time the user has to wait.</li>
 		</ul>
 	      </p>
-		<p><img src="images/screen3_comparison.png" alt="screen 3 comparison" width="100%"/></p>
+		<p><img src="images/compare3.png" alt="screen 3 comparison" width="100%"/></p>
 	      <p>(<a href="#top">top of page</a>)</p>
 	    </div>
 	    
 	    <div class="entry">
 	      <h3>Screen 4</h3>
-	      <p>User feedback suggested that the “street-view” screen would be at best unhelpful or at worst confusing. We thus decided to remove that part of the design. We strove to make sure all necessary information was included in screen 3, negating the need for the user to progress to yet another screen.</p>
+	      <p>User feedback suggested that the "street-view" screen would be at best unhelpful or at worst confusing. The underlying criticism was that trying to compare a picture on a phone with the surrounding environment is no easier than looking for signs (it is worth pointing out that this assumes stations are well-signed, something that might be worth investigating at a later date). Given this feedback, we have decided to remove Screen 4 from our design.</p>
+	      <p><img src="images/compare4.png" alt="screen 4 comparison" width="100%"/></p>
 	      <p>(<a href="#top">top of page</a>)</p>
 	    </div>
 	  </div>
@@ -88,26 +93,36 @@ Released : 20120818
 
 	<div class="post">
 	  <h2 class="title" id="walkthrough">Cognitive Walkthrough</h2>
+	  <p>To conduct a cognitive walkthrough of our design, we solicited the help of another student from within the class. Together, we completed the scenarios we conducted during user testing, making sure that all interactions, options, and design features were explained and discussed. The results of this exercise (both good and bad) are ordered by Screen number, but some of the more important discussions relate to the interaction between the screens.</p>
 	  <div class="entry">
 	    <h3>Screen 1</h3>
-	    <p>Screen 1 is very simple, but we need to emphasize speed and utility</p>
-	    <p>With regards to speed, our design already used the user’s current location as the default start point, but we will also make sure the keyboard is automatically displayed and ready to type into the “To” field.</p>
-	    <p>In terms of utility, we will make use of many of the animations and other visual actions from iOS to help maximize screen space while the user is typing, enabling them to better view and use the contextual results list.</p>
-	    <p>We further refined the idea of how our application will “learn”. For example, if you are consistently going to the same destination, the application will automatically suggest that as a destination. We believe this is a great opportunity to help the user develop trust for the application, but want to be careful not to create something that is “too smart” and suggests options that are not actually wanted or correct.</p>
+	    <p>Screen 1 is very simple in terms of function, but this means users should be able to navigate through this screen as quickly as possible. With regards to speed, our design already uses the user's current location as the default start point, but we will also make sure the keyboard is automatically displayed and ready to type into the "To" field.</p>
+
+        <p>An interesting point of discussion was how our application might "learn" over time. For example, if a user is consistently going to the same destination time after time, the application could automatically suggest load that destination upon opening. We believe this is a great opportunity to help the user develop trust for the application, but want to be careful not to create something that is "too smart" and suggests options that are not actually wanted or correct. Whilst this feature is beyond the scope of this class, we believe it is a powerful feature that merits future investigation.</p>
 	    <p>(<a href="#top">top of page</a>)</p>
 	  </div>
 	  
 	  <div class="entry">
 	    <h3>Screen 2</h3>
-	    <p>The graphical view has a lot of opportunity, but requires a lot of thought to execute effectively. Obviously making sure that information is clearly displayed and easy to see is critical, but the experience of scrolling through list of options and selecting a route must be carefully crafted.</p>
-	    <p>If we imagine the application as a physical object, the list of options is like a large piece of paper, although only a small part of it is viewable at any given time. Scrolling moves the entire piece of paper, allowing the user to either see later versions of the same route or alternative routes. Tapping on a route will select it, but we believe a swiping motion allows for a quicker and more natural progression between screen 2 and screen 3. We therefore developed the “tab” concept (described in our original changes) that give the user a specific object to interact with. Tapping the tab will cause the tab to move across the screen, dragging screen 3 with it. In this way, we are building an analog to the physical world, i.e. dragging another piece of paper (with more specific information) onto the top of the larger map. Swiping on the screen is the same as dragging or pushing a piece of paper.</p>
+	    <p>The graphical view has great potential to help users, but requires careful planning to execute effectively. Ensuring that information is clearly displayed and easy to read is critical, but the experience of scrolling through the list of options and selecting a route must be carefully crafted, too.</p>
+
+        <p>If we imagine the application as a physical object, the list of options is like a large piece of paper, only a small part of which is viewable at any given time. Scrolling moves the entire piece of paper, allowing the user to either see alternative routes or later runnings of the same route. Tapping on a route will select it, but we believe a swiping motion allows for a quicker and more natural progression between screen 2 and screen 3, hence why we developed the "tab" concept (described in our original changes) that gives the user a specific object to interact with. Tapping the tab will cause the tab to move across the screen, dragging screen 3 with it. In this way, we are building an analog to the physical world, i.e. dragging another piece of paper (with more specific information) onto the top of the larger map. Swiping on the screen is the same as dragging or pushing a piece of paper around a desk.</p>
+
+        <p>Whilst a seemingly straightforward concept, this was one of the most challenging parts of the walkthrough. When thinking about directions and maps, we found that many of our users still base their expectations on physical maps and media. Thus, our design needs to use animations and layouts that reflect that existing model, otherwise our entire design flow is compromised.</p>
 	    <p>(<a href="#top">top of page</a>)</p>
 	  </div>
 	  
 	  <div class="entry">
 	    <h3>Screen 3</h3>
-	    <p>There are several technical challenges to address in screen 3 involving the use of GPS and timing data to accurately show where a user is in their journey and in also making “smart” corrections to the estimated arrival time.</p>
-	    <p>We also discussed how users can modify their start/to data. The physical analog seems powerful in building a mental model, but the “two pieces of paper on top of each other” model breaks down when tapping on a text field makes a keyboard magically appear. We decided that tapping on a text field will always bring the user back to screen 1 (i.e. no journey-specific content from the previous interaction is viewable) with the ability to cancel and leave the screen.</p>
+	    <p>There are several technical challenges to address in screen 3 involving the use of GPS and timing data to accurately show where a user is in their journey and in also making "smart" corrections to the estimated arrival time. However, it is unlikely that we will reach this level of functionality during the class.</p>
+
+        <p>At this point a question was asked about how users will modify the "From/To" fields at the top of the screen. The physical analog of layers of paper seems powerful in building a mental model, but breaks down when tapping on a text field makes a keyboard magically appear. We decided that tapping on a text field will always bring the user _back_ to screen 1 (i.e. no journey-specific content from the previous interaction is viewable) with the ability to cancel and return to the previous screen in case the tap was an accident. We want users to think they are starting with a clean piece of paper, rather than layering a new piece of paper over an old one.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+
+	  <div class="entry">
+	    <h3>Overall</h3>
+	    <p>Overall, our team and our cognitive walkthrough partner were very pleased with the design. Trying to provide so much information in so few screens is difficult and relies not only on good layout and graphic design decisions, but also on animations and other graphic elements to help build a strong mental model for the user.</p>
 	    <p>(<a href="#top">top of page</a>)</p>
 	  </div>
 	  
@@ -118,6 +133,47 @@ Released : 20120818
 	  </div>
 	</div>
       
+    <div class="post">
+	  <h2 class="title" id="development">Prototype Development</h2>
+	  <p>To conduct a cognitive walkthrough of our design, we solicited the help of another student from within the class. Together, we completed the scenarios we conducted during user testing, making sure that all interactions, options, and design features were explained and discussed. The results of this exercise (both good and bad) are ordered by Screen number, but some of the more important discussions relate to the interaction between the screens.</p>
+	  <div class="entry">
+	    <h3>Screen 1</h3>
+	    <p>Screen 1 is very simple in terms of function, but this means users should be able to navigate through this screen as quickly as possible. With regards to speed, our design already uses the user's current location as the default start point, but we will also make sure the keyboard is automatically displayed and ready to type into the "To" field.</p>
+
+        <p>An interesting point of discussion was how our application might "learn" over time. For example, if a user is consistently going to the same destination time after time, the application could automatically suggest load that destination upon opening. We believe this is a great opportunity to help the user develop trust for the application, but want to be careful not to create something that is "too smart" and suggests options that are not actually wanted or correct. Whilst this feature is beyond the scope of this class, we believe it is a powerful feature that merits future investigation.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	  
+	  <div class="entry">
+	    <h3>Screen 2</h3>
+	    <p>The graphical view has great potential to help users, but requires careful planning to execute effectively. Ensuring that information is clearly displayed and easy to read is critical, but the experience of scrolling through the list of options and selecting a route must be carefully crafted, too.</p>
+
+        <p>If we imagine the application as a physical object, the list of options is like a large piece of paper, only a small part of which is viewable at any given time. Scrolling moves the entire piece of paper, allowing the user to either see alternative routes or later runnings of the same route. Tapping on a route will select it, but we believe a swiping motion allows for a quicker and more natural progression between screen 2 and screen 3, hence why we developed the "tab" concept (described in our original changes) that gives the user a specific object to interact with. Tapping the tab will cause the tab to move across the screen, dragging screen 3 with it. In this way, we are building an analog to the physical world, i.e. dragging another piece of paper (with more specific information) onto the top of the larger map. Swiping on the screen is the same as dragging or pushing a piece of paper around a desk.</p>
+
+        <p>Whilst a seemingly straightforward concept, this was one of the most challenging parts of the walkthrough. When thinking about directions and maps, we found that many of our users still base their expectations on physical maps and media. Thus, our design needs to use animations and layouts that reflect that existing model, otherwise our entire design flow is compromised.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	  
+	  <div class="entry">
+	    <h3>Screen 3</h3>
+	    <p>There are several technical challenges to address in screen 3 involving the use of GPS and timing data to accurately show where a user is in their journey and in also making "smart" corrections to the estimated arrival time. However, it is unlikely that we will reach this level of functionality during the class.</p>
+
+        <p>At this point a question was asked about how users will modify the "From/To" fields at the top of the screen. The physical analog of layers of paper seems powerful in building a mental model, but breaks down when tapping on a text field makes a keyboard magically appear. We decided that tapping on a text field will always bring the user _back_ to screen 1 (i.e. no journey-specific content from the previous interaction is viewable) with the ability to cancel and return to the previous screen in case the tap was an accident. We want users to think they are starting with a clean piece of paper, rather than layering a new piece of paper over an old one.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+
+	  <div class="entry">
+	    <h3>Overall</h3>
+	    <p>Overall, our team and our cognitive walkthrough partner were very pleased with the design. Trying to provide so much information in so few screens is difficult and relies not only on good layout and graphic design decisions, but also on animations and other graphic elements to help build a strong mental model for the user.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	  
+	  <div class="entry">
+	    <h3>Overall</h3>
+	    <p>Overall, we are very pleased with our design and believe it displays information in a useful way. Trying to provide so much information in so few screens is difficult and relies not only on good layout and graphic design decisions, but also on animations and other graphic elements to help build a strong mental model for the user.</p>
+	    <p>(<a href="#top">top of page</a>)</p>
+	  </div>
+	</div>  
 	
 	<div style="clear: both;">&nbsp;</div>
       </div>
