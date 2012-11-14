@@ -5,7 +5,7 @@ ROUTE_TYPES = ['CONTACTS', 'PLACES'];
 PossibleRoutes.push(
   {
     type: 'CONTACTS',
-    nickname: 'Jenna M. Home',
+    nickname: 'Jenna M.',
     name: 'Jenna Mitnick',
     address: '116 Jaques Street',
     location: 'Somerville, MA',
@@ -18,7 +18,7 @@ PossibleRoutes.push(
 PossibleRoutes.push(
   {
     type: 'CONTACTS',
-    nickname: 'Josh R. Home',
+    nickname: 'Josh R.',
     name: 'Josh Randall',
     address: '100 Marshall Street',
     location: 'Watertown, MA',

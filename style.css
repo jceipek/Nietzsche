@@ -210,7 +210,6 @@ a:hover {
 #menu a {
 	display: block;
 	padding: 0px 15px;
-	/background: url(images/img10.png) no-repeat right 50%;
 	line-height: 52px;
 	text-decoration: none;
 	text-transform: lowercase;
@@ -236,6 +235,7 @@ a:hover {
 	overflow: hidden;
 	width: 960px;
 	padding: 20px 20px 40px 20px;
+	position: relative;
 }
 
 /* Content */
@@ -248,6 +248,10 @@ a:hover {
 
 .post {
 	overflow: hidden;
+}
+
+.post h2 {
+	letter-spacing: -3px;
 }
 
 .post .title {
@@ -329,6 +333,9 @@ a:hover {
 	margin: 0px;
 	padding: 0px 0px 0px 0px;
 	color: #787878;
+	z-index: 1;
+	position: fixed;
+	margin-left: 640px;
 }
 
 #sidebar h2 {
