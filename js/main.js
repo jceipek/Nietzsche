@@ -1,8 +1,8 @@
-require(["routeData", 
+require(["app", "routeData", 
          "color-constants", 
          "helpers", 
          "graphicsCreationFunctions"], 
-function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
+function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
   var demoTime = null;
   //demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
@@ -11,30 +11,6 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
   var DETAILED_DIRECTIONS_SCREEN_BG_COLOR = '#eee';
 
-  var Application = {
-    from_route: null,
-    to_route: null,
-    active_screen: null,
-    departure_time: new Date(),
-    directions: [],
-    chosen_direction: null,
-    CONSIDER_THIS_WAIT_TIME_MS: 5000,
-    SHORT_DELAY: 200,
-    MEDIUM_DELAY: 300,
-    heightOffset: 0,
-    stage: new Kinetic.Stage({
-      container: 'screenContainer',
-      width: 640,
-      height: 920})
-  };
-
-  Application.getCanvasWidth = function () {
-    return Application.stage.getWidth();
-  };
-
-  Application.getCanvasHeight = function () {
-    return Application.stage.getHeight() - Application.heightOffset;
-  };
 
   var RouteSelectionScreen = {
     portraitData: {
@@ -46,15 +22,15 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
-      width: Application.getCanvasWidth(),
-      height: Application.stage.getHeight(),
+      width: App.getCanvasWidth(),
+      height: App.stage.getHeight(),
       fill: ROUTE_SELECTION_SCREEN_BG_COLOR
     })
   };
   
   RouteSelectionScreen.mainLayer.add(RouteSelectionScreen.background);
   RouteSelectionScreen.mainLayer.add(RouteSelectionScreen.listItemsGroup);
-  Application.active_screen = RouteSelectionScreen;
+  App.active_screen = RouteSelectionScreen;
 
   var GraphicalComparisonScreen = {
     portraitData: {
@@ -68,8 +44,8 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
-      width: Application.getCanvasWidth(),
-      height: Application.stage.getHeight(),
+      width: App.getCanvasWidth(),
+      height: App.stage.getHeight(),
       fill: GRAPHICAL_COMPARISON_SCREEN_BG_COLOR
     })
   };
@@ -91,8 +67,8 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
     background: new Kinetic.Rect({
       x: 0,
       y: 0,
-      width: Application.getCanvasWidth(),
-      height: Application.stage.getHeight(),
+      width: App.getCanvasWidth(),
+      height: App.stage.getHeight(),
       fill: DETAILED_DIRECTIONS_SCREEN_BG_COLOR
     })
   };
@@ -106,9 +82,9 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
   DetailedDirectionsScreen.mainLayer.hide();
 
-  Application.stage.add(DetailedDirectionsScreen.mainLayer);
-  Application.stage.add(GraphicalComparisonScreen.mainLayer);
-  Application.stage.add(RouteSelectionScreen.mainLayer);
+  App.stage.add(DetailedDirectionsScreen.mainLayer);
+  App.stage.add(GraphicalComparisonScreen.mainLayer);
+  App.stage.add(RouteSelectionScreen.mainLayer);
 
 
   // Given a route and a search string, indicates whether the route
@@ -134,8 +110,8 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   // POSSIBLE_TRANSITIONS: 'SWAP', 'SCALE TOP'
   var transitionScreen = function (startScreen, endScreen, transition, time) {
     var finalize = function () {
-      Application.heightOffset = $('#top-bar').height();
-      Application.active_screen = endScreen;
+      App.heightOffset = $('#top-bar').height();
+      App.active_screen = endScreen;
     };
 
     if (time === undefined) {
@@ -169,17 +145,17 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           var scale = Math.cos(frame.time * Math.PI / time / 2) + 0.001;
           // scale x and y
           startScreen.mainLayer.setPosition(
-            Application.getCanvasWidth()/2,
-            Application.stage.getHeight()/2            
+            App.getCanvasWidth()/2,
+            App.stage.getHeight()/2            
           );
           startScreen.mainLayer.setOffset(
-            Application.getCanvasWidth()/2,
-            Application.stage.getHeight()/2
+            App.getCanvasWidth()/2,
+            App.stage.getHeight()/2
           );
           startScreen.mainLayer.setScale(scale);
           startScreen.mainLayer.draw();
         },
-        node: Application.stage
+        node: App.stage
       });
 
       anim.start();
@@ -200,7 +176,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
     } else if (transition === 'SLIDE LEFT') {
       endScreen.mainLayer.moveToTop();
       startScreen.mainLayer.moveToBottom();
-      endScreen.mainLayer.setPosition(Application.getCanvasWidth(), 0);
+      endScreen.mainLayer.setPosition(App.getCanvasWidth(), 0);
       endScreen.mainLayer.show();
 
       var anim = new Kinetic.Animation({
@@ -208,7 +184,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           var fractionComplete = frame.time/time;
           fractionComplete = Math.min(fractionComplete, 1);
           fractionComplete = Math.max(fractionComplete, 0);
-          var width = Application.getCanvasWidth();
+          var width = App.getCanvasWidth();
 
           endScreen.mainLayer.setPosition(
             width-fractionComplete*width,
@@ -219,7 +195,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           endScreen.mainLayer.draw();
           startScreen.mainLayer.draw();
         },
-        node: Application.stage
+        node: App.stage
       });
 
       anim.start();
@@ -239,14 +215,14 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
 
   var computeDirections = function () {
     var router = new google.maps.DirectionsService();
-    var start = Application.from_route;
-    var end = Application.to_route;
+    var start = App.from_route;
+    var end = App.to_route;
     var request = {
       origin: start.mapsData.location,
       destination: end.mapsData.location,
       travelMode: google.maps.TravelMode.TRANSIT,
       transitOptions: {
-        departureTime: Application.departure_time,
+        departureTime: App.departure_time,
       },
       provideRouteAlternatives: true,
       unitSystem: google.maps.UnitSystem.IMPERIAL
@@ -257,7 +233,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           var legs = response.routes[routeIdx].legs;
           var leg = legs[0];
           if (leg) {
-            Application.directions.push(leg);
+            App.directions.push(leg);
           }
         }
         displayGraphicalRoutes();
@@ -270,9 +246,9 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
 
   var generateRouteIconSelectedFunction = function (button, direction) {
     return function () {
-      Application.chosen_direction = direction;
+      App.chosen_direction = direction;
       displayDetailedDirections();
-      transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', Application.MEDIUM_DELAY);
+      transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
       console.log('To the detailed directions screen!');
     }
   };
@@ -280,8 +256,8 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   var generateSearchFieldFunction = function (fieldId) {
     return function () {
       var currentValue = $(fieldId).val();
-      var screenWidth = Application.getCanvasWidth();
-      var screenHeight = Application.stage.getHeight();
+      var screenWidth = App.getCanvasWidth();
+      var screenHeight = App.stage.getHeight();
       var itemHeight = RouteSelectionScreen.portraitData.listItemHeight;
       var headerHeight = RouteSelectionScreen.portraitData.listHeaderHeight;
       var listGroup = RouteSelectionScreen.listItemsGroup;
@@ -320,11 +296,11 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           };
         });
         RouteSelectionScreen.mainLayer.draw();
-      if (Application.active_screen !== RouteSelectionScreen) {
+      if (App.active_screen !== RouteSelectionScreen) {
 
-        Application.directions = [];
+        App.directions = [];
 
-        transitionScreen(Application.active_screen, RouteSelectionScreen, 'SCALE TOP', Application.SHORT_DELAY);
+        transitionScreen(App.active_screen, RouteSelectionScreen, 'SCALE TOP', App.SHORT_DELAY);
       }
     };
   };
@@ -336,23 +312,23 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
     var toFieldValue = $('#to-field').val();
     $(fieldId).val(route.nickname);
     if (fieldId === '#from-field') {
-      Application.from_route = route;
+      App.from_route = route;
     } else if (fieldId === '#to-field') {
-      Application.to_route = route;
+      App.to_route = route;
     }
     if(fromFieldValue !== '' && toFieldValue !== '') {
       setTimeout(function () {
         var listGroup = RouteSelectionScreen.listItemsGroup;
         listGroup.removeChildren();
         RouteSelectionScreen.mainLayer.draw();
-      }, Application.SHORT_DELAY);
+      }, App.SHORT_DELAY);
         //Start Generating Routes
         if (demoTime == null) {
-          Application.departure_time = new Date();
+          App.departure_time = new Date();
         }
         computeDirections();
         $(fieldId).blur();
-        transitionScreen(RouteSelectionScreen, GraphicalComparisonScreen, 'SCALE TOP', Application.SHORT_DELAY);
+        transitionScreen(RouteSelectionScreen, GraphicalComparisonScreen, 'SCALE TOP', App.SHORT_DELAY);
       }
 
       if (fieldId == '#from-field') {
@@ -360,7 +336,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           var listGroup = RouteSelectionScreen.listItemsGroup;
           listGroup.removeChildren();
           RouteSelectionScreen.mainLayer.draw();
-        }, Application.SHORT_DELAY);
+        }, App.SHORT_DELAY);
         $('#to-field').focus()
       }
 
@@ -411,7 +387,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
     var scalingFactor = scalingFactor;
 
   
-    var start = posFromTime(departureTime, Application.departure_time, scalingFactor);
+    var start = posFromTime(departureTime, App.departure_time, scalingFactor);
 
     var timeOffset = departureTime;
     var startFlagExists = false;
@@ -436,11 +412,11 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
       var firstRounded = (stepIdx === 0);
       var isEnd = (stepIdx === direction.steps.length-1);
 
-      var stepStart = posFromTime(timeOffset, Application.departure_time, scalingFactor);
+      var stepStart = posFromTime(timeOffset, App.departure_time, scalingFactor);
 
       var stepEnd = new Date(timeOffset);
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
-      stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
+      stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
 
 
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
@@ -449,7 +425,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
           if (stepStart < 75){
             var flag = createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
             }
-          else if (stepStart >(Application.stage.getWidth()-88)){
+          else if (stepStart >(App.stage.getWidth()-88)){
             var flag = createHiddenMiddleBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
           }
           else {
@@ -461,7 +437,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
       }
       if (isEnd) {
         var endTime = direction.arrival_time.text;
-        if (stepEnd > (Application.stage.getWidth()-88)){
+        if (stepEnd > (App.stage.getWidth()-88)){
           var flag = createHiddenEndMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
           }
         else{
@@ -509,38 +485,38 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   };
 
   var displayGraphicalRoutes = function () {
-    console.log(Application.directions);
+    console.log(App.directions);
     var timeBarHeight = GraphicalComparisonScreen.portraitData.timeBarHeight;
     
     var barStartTime; 
-    var earliestDepartureTime = new Date(Application.directions[0].departure_time.value);
-    for (var i = 0; i < Application.directions.length; i++) {
-      if (Application.directions[i].departure_time < earliestDepartureTime) {
-         earliestDepartureTime = Application.directions[i].departure_time;
+    var earliestDepartureTime = new Date(App.directions[0].departure_time.value);
+    for (var i = 0; i < App.directions.length; i++) {
+      if (App.directions[i].departure_time < earliestDepartureTime) {
+         earliestDepartureTime = App.directions[i].departure_time;
       }
       barStartTime = earliestDepartureTime;
     }
     
     var barEndTime;
-    var latestArrivalTime = new Date(Application.directions[0].arrival_time.value);
-    for (var i = 0; i < Application.directions.length; i++) {
-      if (Application.directions[i].arrival_time >= latestArrivalTime) {
-         latestArrivalTime = Application.directions[i].arrival_time;
+    var latestArrivalTime = new Date(App.directions[0].arrival_time.value);
+    for (var i = 0; i < App.directions.length; i++) {
+      if (App.directions[i].arrival_time >= latestArrivalTime) {
+         latestArrivalTime = App.directions[i].arrival_time;
       }
       barEndTime = latestArrivalTime;
     }
 
-    var firstArrivalTime = new Date(Application.directions[0].arrival_time.value);
-    var availableScreenSpace = Application.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
+    var firstArrivalTime = new Date(App.directions[0].arrival_time.value);
+    var availableScreenSpace = App.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
     var scalingFactor = availableScreenSpace/((firstArrivalTime-(new Date()))/1000); 
     
-    for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
-      var direction = Application.directions[directionIdx];
-      var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
+    for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
+      var direction = App.directions[directionIdx];
+      var graphicalTimeBar = createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
-        createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
+        createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
-      var graphicalRouteButton = createGraphicalRouteButton(Application.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+      var graphicalRouteButton = createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
                                    directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                    GraphicalComparisonScreen.portraitData.routeItemHeight);
@@ -554,7 +530,7 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   };
 
   var displayDetailedDirections = function () {
-    var direction = Application.chosen_direction;
+    var direction = App.chosen_direction;
     var heightOffset = 0;
     var departureTime = new Date(direction.departure_time.value);
     var stepStartTime = departureTime;
@@ -568,9 +544,9 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
 
       var diff_ms = stepStartTime - stepEndTime;
 
-      var width = Application.getCanvasWidth();
+      var width = App.getCanvasWidth();
 
-      if (diff_ms > Application.CONSIDER_THIS_WAIT_TIME_MS) {
+      if (diff_ms > App.CONSIDER_THIS_WAIT_TIME_MS) {
         var height = DetailedDirectionsScreen.portraitData.waitDirectionItemHeight;
         var waitStepItem = createDirectionWaitItem(heightOffset, width, height, diff_ms);
         heightOffset += height;
@@ -588,8 +564,8 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
       DetailedDirectionsScreen.directionsGroup.add(stepItem);
     }
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
-    var barY = Application.getCanvasHeight()-barHeight;
-    var barWidth = Application.getCanvasWidth();
+    var barY = App.getCanvasHeight()-barHeight;
+    var barWidth = App.getCanvasWidth();
     var arrivalBar = createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
@@ -614,15 +590,15 @@ function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   $('#from-field').keyup(generateSearchFieldFunction('#from-field'));
   $('#to-field').keyup(generateSearchFieldFunction('#to-field'));
 
-  Application.from_route = getFirstRouteWithMatch('Here');
+  App.from_route = getFirstRouteWithMatch('Here');
 
   if (demoTime != null) {
-    Application.departure_time = demoTime;
+    App.departure_time = demoTime;
   }
 
   $('#to-field').focus();
 
-  Application.heightOffset = $('#top-bar').height();
+  App.heightOffset = $('#top-bar').height();
 
   //$('#to-field').bind('click', focus-to-field());
 
