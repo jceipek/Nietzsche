@@ -1,12 +1,15 @@
-// NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
-var demoTime = null;
-//demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
+require(["routeData", 
+         "color-constants", 
+         "helpers", 
+         "graphicsCreationFunctions"], 
+function(PossibleRoutes, color_constants, helpers, graphics_creation_functions){
+  // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
+  var demoTime = null;
+  //demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
 
-var ROUTE_SELECTION_SCREEN_BG_COLOR = '#eee';
-var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
-var DETAILED_DIRECTIONS_SCREEN_BG_COLOR = '#eee';
-
-$(function() {
+  var ROUTE_SELECTION_SCREEN_BG_COLOR = '#eee';
+  var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
+  var DETAILED_DIRECTIONS_SCREEN_BG_COLOR = '#eee';
 
   var Application = {
     from_route: null,
@@ -631,5 +634,4 @@ $(function() {
   //function focus-to-field() {
     //$('#to-field').focus();
   //}
-
 });
