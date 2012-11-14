@@ -334,7 +334,7 @@ a:hover {
 	padding: 0px 0px 0px 0px;
 	color: #787878;
 	z-index: 1;
-	position: fixed;
+	position: absolute;
 	margin-left: 640px;
 }
 
@@ -349,6 +349,11 @@ a:hover {
 
 #sidebar a:hover {
 	text-decoration: underline;
+}
+
+.sticky #sidebar {
+	position: fixed;
+	top: 0;
 }
 
 /* Calendar */
