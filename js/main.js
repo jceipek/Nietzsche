@@ -7,11 +7,6 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   var demoTime = null;
   //demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
 
-  var ROUTE_SELECTION_SCREEN_BG_COLOR = '#eee';
-  var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
-  var DETAILED_DIRECTIONS_SCREEN_BG_COLOR = '#eee';
-
-
   var RouteSelectionScreen = {
     portraitData: {
       listHeaderHeight: 40,
@@ -73,10 +68,6 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     })
   };
 
-/*  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
-  DetailedDirectionsScreen.staticImage.onload = function () {
-    DetailedDirectionsScreen.background.setImage(DetailedDirectionsScreen.staticImage);
-  };*/
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
