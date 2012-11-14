@@ -1,7 +1,7 @@
 require(["app", "routeData", 
          "color-constants", 
          "helpers", 
-         "graphicsCreationFunctions"], 
+         "drawing/graphicsCreationFunctions"], 
 function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functions){
   // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
   var demoTime = null;
