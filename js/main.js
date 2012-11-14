@@ -2,7 +2,7 @@ require(["app", "routeData",
          "color-constants", 
          "helpers", 
          "drawing/graphicsCreationFunctions"], 
-function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functions){
+function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
   var demoTime = null;
   //demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
@@ -275,12 +275,12 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
           for (var i=0; (i < PossibleRoutes.length); i++) {
             if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString)) {
               if (matches === 0) {
-                var item = createRouteHeader(currYOffset, screenWidth, headerHeight, headerString);
+                var item = DrawFns.createRouteHeader(currYOffset, screenWidth, headerHeight, headerString);
                 listGroup.add(item);
                 currYOffset += headerHeight;
                 matches++;
               }
-              var item = createRouteItem(currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
+              var item = DrawFns.createRouteItem(currYOffset, screenWidth, itemHeight, PossibleRoutes[i]);
               item.on('click touchend', generateListItemSelectedFunction(item, fieldId, PossibleRoutes[i]));
               listGroup.add(item);
               currYOffset += itemHeight;
@@ -423,13 +423,13 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
         if (startFlagExists === false) {
           var firstTransitTime = direction.steps[stepIdx].transit.departure_time.text;
           if (stepStart < 75){
-            var flag = createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            var flag = DrawFns.createHiddenStartMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
             }
           else if (stepStart >(App.stage.getWidth()-88)){
-            var flag = createHiddenMiddleBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            var flag = DrawFns.createHiddenMiddleBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
           }
           else {
-            var flag = createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
+            var flag = DrawFns.createMessageBubble(stepStart, y+(0.65*height), 40, stepColor, firstTransitTime);
             }
           routeGroup.add(flag);
           startFlagExists = true;
@@ -438,14 +438,14 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
       if (isEnd) {
         var endTime = direction.arrival_time.text;
         if (stepEnd > (App.stage.getWidth()-88)){
-          var flag = createHiddenEndMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+          var flag = DrawFns.createHiddenEndMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
           }
         else{
-          var flag = createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
+          var flag = DrawFns.createMessageBubble(stepEnd, y+(0.65*height), 40, stepColor, endTime);
           }
         routeGroup.add(flag);
       }
-      var stepLine = createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);
+      var stepLine = DrawFns.createStepLine(stepStart, stepEnd, y+height/2-10, 20, stepColor, firstRounded, isEnd);
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
@@ -463,20 +463,20 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
           var line = direction.steps[stepIdx].transit.line;
           var vehicleName = line.vehicle.name;
           if (vehicleName === "Train" || vehicleName === "Subway" || vehicleName === "Light rail") {
-            icon = createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
+            icon = DrawFns.createTIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength);
           } else if (vehicleName === "Bus") {
-            icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor, line.short_name);
+            icon = DrawFns.createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor, line.short_name);
           }
         }
       } else if (direction.steps[stepIdx].travel_mode === "WALKING") {
-        icon = createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
+        icon = DrawFns.createWalkingIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
       } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
-        icon = createCarIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
+        icon = DrawFns.createCarIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, stepColor);
       }
       
       if (icon == null) {
         // This means that an appropriate icon doesn't exist yet
-        icon = createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, UNKNOWN_STEP_COLOR, "?");
+        icon = DrawFns.createBusIcon(iconMid.x-iconSideLength/2, iconMid.y, iconSideLength, UNKNOWN_STEP_COLOR, "?");
       }
       routeGroup.add(icon);
     }
@@ -512,11 +512,11 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
     
     for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
       var direction = App.directions[directionIdx];
-      var graphicalTimeBar = createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
+      var graphicalTimeBar = DrawFns.createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
-      var graphicalRouteButton = createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+      var graphicalRouteButton = DrawFns.createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
                                    directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
                                    GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                    GraphicalComparisonScreen.portraitData.routeItemHeight);
@@ -548,14 +548,14 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
 
       if (diff_ms > App.CONSIDER_THIS_WAIT_TIME_MS) {
         var height = DetailedDirectionsScreen.portraitData.waitDirectionItemHeight;
-        var waitStepItem = createDirectionWaitItem(heightOffset, width, height, diff_ms);
+        var waitStepItem = DrawFns.createDirectionWaitItem(heightOffset, width, height, diff_ms);
         heightOffset += height;
         DetailedDirectionsScreen.directionsGroup.add(waitStepItem);
       } 
 
       var height = DetailedDirectionsScreen.portraitData.moveDirectionItemHeight;
       var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
-      var stepItem = createDirectionStepItem(heightOffset, width, height, pathBlockWidth, step);
+      var stepItem = DrawFns.createDirectionStepItem(heightOffset, width, height, pathBlockWidth, step);
       heightOffset += height;
 
       stepEndTime = new Date(stepStartTime);
@@ -566,7 +566,7 @@ function(App, PossibleRoutes, color_constants, helpers, graphics_creation_functi
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
     var barY = App.getCanvasHeight()-barHeight;
     var barWidth = App.getCanvasWidth();
-    var arrivalBar = createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
+    var arrivalBar = DrawFns.createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();
