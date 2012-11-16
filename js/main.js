@@ -255,12 +255,12 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   var generateSearchFieldFunction = function (fieldId) {
     return function () {
       var currentValue = $(fieldId).val();
+      $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
       var screenWidth = App.getCanvasWidth();
       var screenHeight = App.stage.getHeight();
       var itemHeight = RouteSelectionScreen.portraitData.listItemHeight;
       var headerHeight = RouteSelectionScreen.portraitData.listHeaderHeight;
       var listGroup = RouteSelectionScreen.listItemsGroup;
-
       
         listGroup.removeChildren(); // Clear the list
 
@@ -310,7 +310,15 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var fromFieldValue = $('#from-field').val();
     var toFieldValue = $('#to-field').val();
     $(fieldId).val(route.nickname);
-    $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
+   
+    
+    if($('#from-field').val() === 'Here'){
+      $('#from-field').css('color', CURRENT_LOCATION_COLOR);
+    }
+    else {
+      $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
+    }
+    
     if (fieldId === '#from-field') {
       App.from_route = route;
     } else if (fieldId === '#to-field') {
