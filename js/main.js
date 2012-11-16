@@ -260,7 +260,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       var itemHeight = RouteSelectionScreen.portraitData.listItemHeight;
       var headerHeight = RouteSelectionScreen.portraitData.listHeaderHeight;
       var listGroup = RouteSelectionScreen.listItemsGroup;
-      $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
+
       
         listGroup.removeChildren(); // Clear the list
 
@@ -310,8 +310,6 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var fromFieldValue = $('#from-field').val();
     var toFieldValue = $('#to-field').val();
     $(fieldId).val(route.nickname);
-    $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
-
     if (fieldId === '#from-field') {
       App.from_route = route;
     } else if (fieldId === '#to-field') {
@@ -339,10 +337,6 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
           RouteSelectionScreen.mainLayer.draw();
         }, App.SHORT_DELAY);
         $('#to-field').focus()
-      }
-      
-      if(route.is_special){
-        $(fieldId).css('color', CURRENT_LOCATION_COLOR);
       }
 
       // Make the item look selected
