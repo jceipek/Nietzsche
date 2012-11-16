@@ -310,6 +310,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var fromFieldValue = $('#from-field').val();
     var toFieldValue = $('#to-field').val();
     $(fieldId).val(route.nickname);
+    $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
     if (fieldId === '#from-field') {
       App.from_route = route;
     } else if (fieldId === '#to-field') {
