@@ -1,6 +1,7 @@
 define(function () {
 
   var App = {
+      designA: false,
       from_route: null,
       to_route: null,
       active_screen: null,
@@ -24,6 +25,14 @@ define(function () {
     App.getCanvasHeight = function () {
       return App.stage.getHeight() - App.heightOffset;
     };
+
+    App.isDesignA = function () {
+      return App.designA;
+    }
+
+    App.isDesignB = function () {
+      return !App.designA;
+    }
 
   return App;
 });

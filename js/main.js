@@ -72,10 +72,6 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     })
   };
 
-/*  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
-  DetailedDirectionsScreen.staticImage.onload = function () {
-    DetailedDirectionsScreen.background.setImage(DetailedDirectionsScreen.staticImage);
-  };*/
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
