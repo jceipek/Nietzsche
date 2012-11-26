@@ -246,15 +246,16 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
       if (App.simulate_delay) {
         var delay_time = App.MIN_TIME_UNTIL_SIMULATED_DELAY + Math.random() * (App.MAX_TIME_UNTIL_SIMULATED_DELAY - App.MIN_TIME_UNTIL_SIMULATED_DELAY);
-        console.log("DELAY IN " + delay_time);
+        console.log("SIMULATED DELAY IN " + delay_time);
         setTimeout(function () {
+          console.log("DELAY!");
           if (App.isDesignA()) {
             displayDelayDesignA();
           }
           if (App.isDesignB()) {
             displayDelayDesignB();
+            transitionScreen(DetailedDirectionsScreen, GraphicalComparisonScreen, 'SWAP', App.MEDIUM_DELAY);
           }
-          console.log("DELAY!");
         }, delay_time);
       }
       console.log('To the detailed directions screen!');
@@ -502,6 +503,8 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   };
 
   var displayGraphicalRoutes = function () {
+    GraphicalComparisonScreen.routeItemsGroup.removeChildren();
+    GraphicalComparisonScreen.routeButtonsGroup.removeChildren();
     console.log(App.directions);
     var timeBarHeight = GraphicalComparisonScreen.portraitData.timeBarHeight;
     
@@ -595,6 +598,9 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
 
   var displayDelayDesignB = function () {
     // TODO: IMPLEMENT ASAP
+    App.directions = [App.chosen_direction];
+    displayGraphicalRoutes();
+    
   };
 
   var getFirstRouteWithMatch = function (string) {
