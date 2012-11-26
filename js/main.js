@@ -78,6 +78,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
   DetailedDirectionsScreen.mainLayer.hide();
+  
 
   App.stage.add(DetailedDirectionsScreen.mainLayer);
   App.stage.add(GraphicalComparisonScreen.mainLayer);
@@ -252,10 +253,16 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
         setTimeout(function () {
           console.log("DELAY!");
           if (App.isDesignA()) {
-            displayDelayDesignA();
+              displayDelayDesignA();
+              //DrawFns.displayDelayDesignA(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
+              //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your train is running late");
+            
           }
           if (App.isDesignB()) {
             displayDelayDesignB();
+            //DrawFns.displayDelayDesignB(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
+            //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your train is running late");
+
             transitionScreen(DetailedDirectionsScreen, GraphicalComparisonScreen, 'SWAP', App.MEDIUM_DELAY);
           }
         }, delay_time);
@@ -622,6 +629,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var sideBar = DrawFns.createSideBar(width, height, y, App.chosen_direction);
     DetailedDirectionsScreen.arrivalTimeGroup.add(sideBar);
     DetailedDirectionsScreen.mainLayer.draw();
+    //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
   };
 
   var displayDelayDesignB = function () {
