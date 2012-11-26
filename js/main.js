@@ -23,7 +23,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     })
   };
 
- if($('#from-field').val() === 'Here'){
+  if($('#from-field').val() === 'Here'){
     $('#from-field').css('color', CURRENT_LOCATION_COLOR);
   }
 
@@ -72,10 +72,6 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     })
   };
 
-/*  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
-  DetailedDirectionsScreen.staticImage.onload = function () {
-    DetailedDirectionsScreen.background.setImage(DetailedDirectionsScreen.staticImage);
-  };*/
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
@@ -250,6 +246,20 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       App.chosen_direction = direction;
       displayDetailedDirections();
       transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
+      if (App.simulate_delay) {
+        var delay_time = App.MIN_TIME_UNTIL_SIMULATED_DELAY + Math.random() * (App.MAX_TIME_UNTIL_SIMULATED_DELAY - App.MIN_TIME_UNTIL_SIMULATED_DELAY);
+        console.log("SIMULATED DELAY IN " + delay_time);
+        setTimeout(function () {
+          console.log("DELAY!");
+          if (App.isDesignA()) {
+            displayDelayDesignA();
+          }
+          if (App.isDesignB()) {
+            displayDelayDesignB();
+            transitionScreen(DetailedDirectionsScreen, GraphicalComparisonScreen, 'SWAP', App.MEDIUM_DELAY);
+          }
+        }, delay_time);
+      }
       console.log('To the detailed directions screen!');
     }
   };
@@ -307,31 +317,31 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   };
 
   var generateListItemSelectedFunction = function (item, fieldId, route) {
-  return function () {
-    var listGroup = RouteSelectionScreen.listItemsGroup;
-    var fromFieldValue = $('#from-field').val();
-    var toFieldValue = $('#to-field').val();
-    $(fieldId).val(route.nickname);
-   
-    
-    if($('#from-field').val() === 'Here'){
-      $('#from-field').css('color', CURRENT_LOCATION_COLOR);
-    }
-    else {
-      $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
-    }
-    
-    if (fieldId === '#from-field') {
-      App.from_route = route;
-    } else if (fieldId === '#to-field') {
-      App.to_route = route;
-    }
-    if(fromFieldValue !== '' && toFieldValue !== '') {
-      setTimeout(function () {
-        var listGroup = RouteSelectionScreen.listItemsGroup;
-        listGroup.removeChildren();
-        RouteSelectionScreen.mainLayer.draw();
-      }, App.SHORT_DELAY);
+    return function () {
+      var listGroup = RouteSelectionScreen.listItemsGroup;
+      var fromFieldValue = $('#from-field').val();
+      var toFieldValue = $('#to-field').val();
+      $(fieldId).val(route.nickname);
+     
+      
+      if($('#from-field').val() === 'Here'){
+        $('#from-field').css('color', CURRENT_LOCATION_COLOR);
+      }
+      else {
+        $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
+      }
+      
+      if (fieldId === '#from-field') {
+        App.from_route = route;
+      } else if (fieldId === '#to-field') {
+        App.to_route = route;
+      }
+      if(fromFieldValue !== '' && toFieldValue !== '') {
+        setTimeout(function () {
+          var listGroup = RouteSelectionScreen.listItemsGroup;
+          listGroup.removeChildren();
+          RouteSelectionScreen.mainLayer.draw();
+        }, App.SHORT_DELAY);
         //Start Generating Routes
         if (demoTime == null) {
           App.departure_time = new Date();
@@ -378,7 +388,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     };
   };
 
-  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor) {
+  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor, is_viable) {
 
     var routeGroup = new Kinetic.Group();
     var background = new Kinetic.Rect({
@@ -491,10 +501,24 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       routeGroup.add(icon);
     }
 
+    if (!is_viable) {
+      var blind = new Kinetic.Rect({
+        x: 0,
+        y: y,
+        width: width,
+        height: height,
+        fill: 'black',
+        opacity: 0.3
+      }); 
+      routeGroup.add(blind);
+    }
+
     return routeGroup;
   };
 
   var displayGraphicalRoutes = function () {
+    GraphicalComparisonScreen.routeItemsGroup.removeChildren();
+    GraphicalComparisonScreen.routeButtonsGroup.removeChildren();
     console.log(App.directions);
     var timeBarHeight = GraphicalComparisonScreen.portraitData.timeBarHeight;
     
@@ -522,19 +546,27 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     
     for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
       var direction = App.directions[directionIdx];
+      if (direction.is_viable === undefined) {
+        direction.is_viable = true;
+      }
+
       var graphicalTimeBar = DrawFns.createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
-                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
-      var graphicalRouteButton = DrawFns.createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
-                                   directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
-                                   GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
-                                   GraphicalComparisonScreen.portraitData.routeItemHeight);
-      
-      graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor, direction.is_viable);
+      if (direction.is_viable) {
+        var graphicalRouteButton = DrawFns.createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+                                     directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
+                                     GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
+                                     GraphicalComparisonScreen.portraitData.routeItemHeight);
+        
+        graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+      }
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
-      GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
+      if (direction.is_viable) {
+        GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
+      }
     }
     GraphicalComparisonScreen.mainLayer.draw();
   };
@@ -580,6 +612,18 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();
+  };
+
+  var displayDelayDesignA = function () {
+    // TODO: IMPLEMENT ASAP
+  };
+
+  var displayDelayDesignB = function () {
+    // TODO: IMPLEMENT ASAP
+    App.chosen_direction.is_viable = false;
+    App.directions = [App.chosen_direction];
+    displayGraphicalRoutes();
+    
   };
 
   var getFirstRouteWithMatch = function (string) {
