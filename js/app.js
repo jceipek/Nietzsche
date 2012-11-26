@@ -1,7 +1,8 @@
 define(function () {
 
   var App = {
-      designA: false,
+      design_A: false, // Do we use Design A? if not, use Design B
+      simulate_delay: true, // Whether to simulate route change introducing delay
       from_route: null,
       to_route: null,
       active_screen: null,
@@ -11,6 +12,8 @@ define(function () {
       CONSIDER_THIS_WAIT_TIME_MS: 5000,
       SHORT_DELAY: 200,
       MEDIUM_DELAY: 300,
+      MIN_TIME_UNTIL_SIMULATED_DELAY: 5000,
+      MAX_TIME_UNTIL_SIMULATED_DELAY: 7000,
       heightOffset: 0,
       stage: new Kinetic.Stage({
         container: 'screenContainer',
@@ -27,11 +30,11 @@ define(function () {
     };
 
     App.isDesignA = function () {
-      return App.designA;
+      return App.design_A;
     }
 
     App.isDesignB = function () {
-      return !App.designA;
+      return !App.design_A;
     }
 
   return App;

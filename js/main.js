@@ -23,7 +23,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     })
   };
 
- if($('#from-field').val() === 'Here'){
+  if($('#from-field').val() === 'Here'){
     $('#from-field').css('color', CURRENT_LOCATION_COLOR);
   }
 
@@ -244,6 +244,13 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       App.chosen_direction = direction;
       displayDetailedDirections();
       transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
+      if (App.simulate_delay) {
+        var delay_time = App.MIN_TIME_UNTIL_SIMULATED_DELAY + Math.random() * (App.MAX_TIME_UNTIL_SIMULATED_DELAY - App.MIN_TIME_UNTIL_SIMULATED_DELAY);
+        console.log("DELAY IN "+delay_time);
+        setTimeout(function () {
+          console.log("DELAY!");
+        }, delay_time);
+      }
       console.log('To the detailed directions screen!');
     }
   };
@@ -301,31 +308,31 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   };
 
   var generateListItemSelectedFunction = function (item, fieldId, route) {
-  return function () {
-    var listGroup = RouteSelectionScreen.listItemsGroup;
-    var fromFieldValue = $('#from-field').val();
-    var toFieldValue = $('#to-field').val();
-    $(fieldId).val(route.nickname);
-   
-    
-    if($('#from-field').val() === 'Here'){
-      $('#from-field').css('color', CURRENT_LOCATION_COLOR);
-    }
-    else {
-      $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
-    }
-    
-    if (fieldId === '#from-field') {
-      App.from_route = route;
-    } else if (fieldId === '#to-field') {
-      App.to_route = route;
-    }
-    if(fromFieldValue !== '' && toFieldValue !== '') {
-      setTimeout(function () {
-        var listGroup = RouteSelectionScreen.listItemsGroup;
-        listGroup.removeChildren();
-        RouteSelectionScreen.mainLayer.draw();
-      }, App.SHORT_DELAY);
+    return function () {
+      var listGroup = RouteSelectionScreen.listItemsGroup;
+      var fromFieldValue = $('#from-field').val();
+      var toFieldValue = $('#to-field').val();
+      $(fieldId).val(route.nickname);
+     
+      
+      if($('#from-field').val() === 'Here'){
+        $('#from-field').css('color', CURRENT_LOCATION_COLOR);
+      }
+      else {
+        $(fieldId).css('color', NORMAL_FIELD_TEXT_COLOR);
+      }
+      
+      if (fieldId === '#from-field') {
+        App.from_route = route;
+      } else if (fieldId === '#to-field') {
+        App.to_route = route;
+      }
+      if(fromFieldValue !== '' && toFieldValue !== '') {
+        setTimeout(function () {
+          var listGroup = RouteSelectionScreen.listItemsGroup;
+          listGroup.removeChildren();
+          RouteSelectionScreen.mainLayer.draw();
+        }, App.SHORT_DELAY);
         //Start Generating Routes
         if (demoTime == null) {
           App.departure_time = new Date();
