@@ -1,7 +1,7 @@
 define(function () {
 
   var App = {
-      design_A: false, // Do we use Design A? if not, use Design B
+      design_A: true, // Do we use Design A? if not, use Design B
       simulate_delay: true, // Whether to simulate route change introducing delay
       from_route: null,
       to_route: null,

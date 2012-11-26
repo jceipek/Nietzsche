@@ -465,6 +465,23 @@ define(["drawing/icons/bus-icon",
       }
     };
     **/
+
+  DrawFns.createSideBar = function (width, height, y, steps) {
+    var sideBarGroup = new Kinetic.Group();
+    sideBarGroup.setPosition({x: 0, y: y});
+    var background = new Kinetic.Rect({
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+      fill: 'yellow',
+      stroke: 'black',
+      strokeWidth: 2
+    });
+    sideBarGroup.add(background);
+    return sideBarGroup
+  };
+
   DrawFns.createArrivalBar = function (width, height, y, timeString) {
     var textInset = height*0.25;
     var arrivalBarGroup = new Kinetic.Group();
@@ -492,7 +509,7 @@ define(["drawing/icons/bus-icon",
     arrivalBarGroup.add(background);
     arrivalBarGroup.add(text);
     return arrivalBarGroup;
-  }
+  };
 
   DrawFns.createDirectionWaitItem = function (y, width, height, msWaitTime) {
     var textInset = height*0.25;
@@ -521,7 +538,7 @@ define(["drawing/icons/bus-icon",
     waitGroup.add(background);
     waitGroup.add(text);
     return waitGroup;
-  }
+  };
 
   DrawFns.createDirectionStepItem = function (y, width, height, pathBlockWidth, step) {
 
@@ -589,7 +606,7 @@ define(["drawing/icons/bus-icon",
     stepGroup.add(durationTxt);
 
     return stepGroup;
-  }
+  };
 
   DrawFns.createDirectionStepPathItem = function (xMid, height, thickness, color) {
     var pathRect = new Kinetic.Rect({
@@ -600,7 +617,7 @@ define(["drawing/icons/bus-icon",
       fill: color
     });
     return pathRect;
-  }
+  };
 
   return DrawFns;
 });

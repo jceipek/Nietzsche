@@ -58,7 +58,9 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       moveDirectionItemHeight: 250,
       waitDirectionItemHeight: 40,
       arrivalBarHeight: 40,
-      pathBlockWidth: 50
+      pathBlockWidth: 50,
+      sideBarWidth: 40,
+      sideBarYOffset: 15
     },
     mainLayer: new Kinetic.Layer(),
     arrivalTimeGroup: new Kinetic.Group(),
@@ -614,6 +616,12 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
 
   var displayDelayDesignA = function () {
     // TODO: IMPLEMENT ASAP
+    var width = DetailedDirectionsScreen.portraitData.sideBarWidth;
+    var y = DetailedDirectionsScreen.portraitData.sideBarYOffset;
+    var height = App.getCanvasHeight() - DetailedDirectionsScreen.portraitData.arrivalBarHeight - y*2;
+    var sideBar = DrawFns.createSideBar(width, height, y, App.chosen_direction);
+    DetailedDirectionsScreen.arrivalTimeGroup.add(sideBar);
+    DetailedDirectionsScreen.mainLayer.draw();
   };
 
   var displayDelayDesignB = function () {
