@@ -246,8 +246,14 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
       if (App.simulate_delay) {
         var delay_time = App.MIN_TIME_UNTIL_SIMULATED_DELAY + Math.random() * (App.MAX_TIME_UNTIL_SIMULATED_DELAY - App.MIN_TIME_UNTIL_SIMULATED_DELAY);
-        console.log("DELAY IN "+delay_time);
+        console.log("DELAY IN " + delay_time);
         setTimeout(function () {
+          if (App.isDesignA()) {
+            displayDelayDesignA();
+          }
+          if (App.isDesignB()) {
+            displayDelayDesignB();
+          }
           console.log("DELAY!");
         }, delay_time);
       }
@@ -581,6 +587,14 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();
+  };
+
+  var displayDelayDesignA = function () {
+    // TODO: IMPLEMENT ASAP
+  };
+
+  var displayDelayDesignB = function () {
+    // TODO: IMPLEMENT ASAP
   };
 
   var getFirstRouteWithMatch = function (string) {
