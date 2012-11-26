@@ -386,7 +386,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     };
   };
 
-  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor) {
+  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor, is_viable) {
 
     var routeGroup = new Kinetic.Group();
     var background = new Kinetic.Rect({
@@ -499,6 +499,18 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       routeGroup.add(icon);
     }
 
+    if (!is_viable) {
+      var blind = new Kinetic.Rect({
+        x: 0,
+        y: y,
+        width: width,
+        height: height,
+        fill: 'black',
+        opacity: 0.3
+      }); 
+      routeGroup.add(blind);
+    }
+
     return routeGroup;
   };
 
@@ -532,19 +544,27 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     
     for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
       var direction = App.directions[directionIdx];
+      if (direction.is_viable === undefined) {
+        direction.is_viable = true;
+      }
+
       var graphicalTimeBar = DrawFns.createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
-                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);
-      var graphicalRouteButton = DrawFns.createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
-                                   directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
-                                   GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
-                                   GraphicalComparisonScreen.portraitData.routeItemHeight);
-      
-      graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+                                 GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor, direction.is_viable);
+      if (direction.is_viable) {
+        var graphicalRouteButton = DrawFns.createGraphicalRouteButton(App.getCanvasWidth()-GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth,
+                                     directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, 
+                                     GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
+                                     GraphicalComparisonScreen.portraitData.routeItemHeight);
+        
+        graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+      }
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
-      GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
+      if (direction.is_viable) {
+        GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
+      }
     }
     GraphicalComparisonScreen.mainLayer.draw();
   };
@@ -598,6 +618,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
 
   var displayDelayDesignB = function () {
     // TODO: IMPLEMENT ASAP
+    App.chosen_direction.is_viable = false;
     App.directions = [App.chosen_direction];
     displayGraphicalRoutes();
     
