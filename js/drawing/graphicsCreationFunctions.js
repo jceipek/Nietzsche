@@ -602,5 +602,51 @@ define(["drawing/icons/bus-icon",
     return pathRect;
   }
 
+  DrawFns.createDesignAModal = function (alertText) {
+    createModal(alertText);
+  }
+
+  DrawFns.createDesignBModal = function (alertText) {
+    createModal(alertText);
+  }
+
+  DrawFns.createModal = function (appWidth, appHeight, alertText) {
+    console.log("creating modal");
+    var modalGroup = new Kinetic.Group();
+    //grey out the background
+    var greyBg = new Kinetic.Rect({
+      x: 0,
+      y: 0,
+      color: GREYED_OUT_BACKGROUND_COLOR,
+      opacity: .4
+    });
+
+    //create the modal rectangle
+    var modalRect = new Kinetic.Rect({
+      x: appWidth/4,
+      y: appHeight/4,
+      width: appWidth/2,
+      height: appHeight/2,
+      color: MODAL_BOX_COLOR,
+      stroke: "white",
+      strokeWidth: 2,
+      cornerRadius: 3,
+      opacity: .7
+    });
+
+    //create the alert text
+    var text = new Kinetic.Text({
+      text: alertText,
+      fontFamily: 'HelveticaNeue-Light',
+      textFill: "white",
+      padding: 2
+    });
+
+    modalGroup.add(greyBg);
+    modalGroup.add(modalRect);
+    modalGroup.add(text);
+    return modalGroup;
+  }
+
   return DrawFns;
 });

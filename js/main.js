@@ -80,6 +80,8 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
   DetailedDirectionsScreen.mainLayer.hide();
+  
+  //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your train is running late");
 
   App.stage.add(DetailedDirectionsScreen.mainLayer);
   App.stage.add(GraphicalComparisonScreen.mainLayer);
