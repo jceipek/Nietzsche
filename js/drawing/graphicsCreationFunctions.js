@@ -602,12 +602,12 @@ define(["drawing/icons/bus-icon",
     return pathRect;
   }
 
-  DrawFns.createDesignAModal = function (alertText) {
-    createModal(alertText);
+  DrawFns.displayDelayDesignA = function (appWidth, appHeight, alertText) {
+    DrawFns.createModal(appWidth, appHeight, alertText);
   }
 
-  DrawFns.createDesignBModal = function (alertText) {
-    createModal(alertText);
+  DrawFns.displayDelayDesignB = function (appWidth, appHeight, alertText) {
+    DrawFns.createModal(appWidth, appHeight, alertText);
   }
 
   DrawFns.createModal = function (appWidth, appHeight, alertText) {
@@ -645,6 +645,7 @@ define(["drawing/icons/bus-icon",
     modalGroup.add(greyBg);
     modalGroup.add(modalRect);
     modalGroup.add(text);
+    console.log("added all elements");
     return modalGroup;
   }
 
