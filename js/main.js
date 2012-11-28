@@ -616,7 +616,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     DetailedDirectionsScreen.directionsGroup.setDraggable('true');
     DetailedDirectionsScreen.directionsGroup.setDragBoundFunc(function (pos) {
       var y = pos.y;
-      var max_y = heightOffset - App.getCanvasHeight();
+      var max_y = Math.max(heightOffset - App.getCanvasHeight(), 0);
       y = Math.max(Math.min(y,0), -max_y);
       return {
         x: 0,
