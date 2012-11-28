@@ -612,6 +612,18 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       
       DetailedDirectionsScreen.directionsGroup.add(stepItem);
     }
+
+    DetailedDirectionsScreen.directionsGroup.setDraggable('true');
+    DetailedDirectionsScreen.directionsGroup.setDragBoundFunc(function (pos) {
+      var y = pos.y;
+      var max_y = heightOffset - App.getCanvasHeight();
+      y = Math.max(Math.min(y,0), -max_y);
+      return {
+        x: 0,
+        y: y
+      };
+    });
+
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
     var barY = App.getCanvasHeight()-barHeight;
     var barWidth = App.getCanvasWidth();
