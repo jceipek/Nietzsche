@@ -466,6 +466,47 @@ define(["color-constants",
       }
     };
     **/
+    
+       DrawFns.createPopUpMessageBubble = function (x, y, height, text) {
+    var offset = 0;
+    var l = height;
+    var bubbleGroup = new Kinetic.Group();
+    var textInset = 0.125 * height;
+    var bubbleText = new Kinetic.Text({
+      x: x,
+      y: y-textInset*5,
+      text: text,
+      fontSize: 18,
+      fontFamily: "HelveticaNeue-Medium",
+      textFill: "black",
+      padding: textInset,
+      align: "left",
+    });
+    var textwidth = bubbleText.getWidth();
+    var bg = new Kinetic.Shape({
+      drawFunc: function (ctx) {
+        ctx.beginPath();
+        
+        ctx.moveTo(x, y); 
+        ctx.lineTo(x, y-l); 
+        ctx.lineTo(x+textwidth, y-l);
+        ctx.lineTo(x+textwidth, y+l*.2);
+        ctx.lineTo(x-textwidth*.3, y+l*.2);
+        ctx.lineTo(x, y);
+        
+        ctx.lineWidth = 1;
+        ctx.closePath();
+        this.fill(ctx);
+        
+      },
+      fill: 'yellow'
+    });
+
+    bubbleGroup.add(bg);
+    bubbleGroup.add(bubbleText);
+    //bubbleGroup.setPosition(x, y);
+    return bubbleGroup;
+  };
 
   DrawFns.createSideBar = function (width, height, y, steps) {
     var sideBarGroup = new Kinetic.Group();

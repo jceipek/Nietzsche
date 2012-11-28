@@ -642,6 +642,12 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var y = DetailedDirectionsScreen.portraitData.sideBarYOffset;
     var height = App.getCanvasHeight() - DetailedDirectionsScreen.portraitData.arrivalBarHeight - y*2;
     var sideBar = DrawFns.createSideBar(width, height, y, App.chosen_direction);
+    var barWidth = App.getCanvasWidth();
+    var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
+    var barY = App.getCanvasHeight()-barHeight;
+    var msgBubble = DrawFns.createPopUpMessageBubble(barWidth*0.15, barY*0.975, barHeight, "Your arrival time has changed!");
+
+    DetailedDirectionsScreen.arrivalTimeGroup.add(msgBubble);
     DetailedDirectionsScreen.arrivalTimeGroup.add(sideBar);
     DetailedDirectionsScreen.mainLayer.draw();
     //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
