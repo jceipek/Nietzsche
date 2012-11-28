@@ -242,6 +242,8 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     });
   };
 
+  
+
   var generateRouteIconSelectedFunction = function (button, direction) {
     return function () {
       App.chosen_direction = direction;

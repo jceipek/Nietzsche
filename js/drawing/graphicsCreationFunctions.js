@@ -600,11 +600,34 @@ define(["drawing/icons/bus-icon",
       align: "left"
     });
 
+    if (step.travel_mode === "WALKING") {
+      //make a google map :D
+      console.log("step is: " + step.instructions);
+      console.log("centering map on " + step.start_location.toString());
+      var displayWalkingMap = function() {
+        console.log("starting displayWalkingMap");
+        var directionsDisplay = new google.maps.DirectionsRenderer();  
+        var mapOptions = {
+          zoom: 7,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: step.start_location
+        }
+        map = new google.maps.Map(document.getElementById("screenContainer"), mapOptions);
+        
+        directionsDisplay.setMap(map);
+        console.log("did directionsDisplay.setMap");
+        
+      };
+      //var walkingMap = displayWalkingMap();
+      //stepGroup.add(walkingMap);
+      //console.log("added map to stepGroup");
+    }
+
     stepGroup.add(background);
     stepGroup.add(instructionsText);
     stepGroup.add(pathItem);
     stepGroup.add(durationTxt);
-
+    
     return stepGroup;
   };
 
