@@ -1,8 +1,9 @@
-define(["drawing/icons/bus-icon", 
+define(["color-constants",
+        "drawing/icons/bus-icon", 
         "drawing/icons/car-icon",
         "drawing/icons/t-icon",
         "drawing/icons/walking-icon"],
-  function (busicon, caricon, ticon, walkingicon) {
+  function (colorconstants, busicon, caricon, ticon, walkingicon) {
 
     var DrawFns = {
       createBusIcon: busicon,
@@ -12,7 +13,7 @@ define(["drawing/icons/bus-icon",
     };
 
 
-    //This is what we're typing into
+    //This is one of the headers like "Contacts", "Places", etc...
     DrawFns.createRouteHeader = function (y, width, height, headerTitle) {
     var group = new Kinetic.Group();
     var routeHeader = new Kinetic.Text({
@@ -21,7 +22,7 @@ define(["drawing/icons/bus-icon",
       text: headerTitle,
       fontSize: 20,
       fontFamily: 'HelveticaNeue-Light',
-      textFill: '#FFF',
+      textFill: LIST_HEADER_TEXT_COLOR,
       width: width,
       padding: 10,
       align: 'left',
@@ -41,7 +42,7 @@ define(["drawing/icons/bus-icon",
           x: 0,
           y: 50
         },
-        colorStops: [0, '#333', 1, '#555']
+        colorStops: LIST_HEADER_GRADIENT
       },
       stroke: '#555',
       strokeWidth: 4
@@ -482,8 +483,8 @@ define(["drawing/icons/bus-icon",
     return sideBarGroup
   };
 
-  DrawFns.createArrivalBar = function (width, height, y, timeString) {
-    var textInset = height*0.25;
+  DrawFns.createArrivalBar = function (width, height, y, timeString, pathBlockWidth) {
+    var textInset = height*0.27;
     var arrivalBarGroup = new Kinetic.Group();
     arrivalBarGroup.setPosition(0,y);
     var background = new Kinetic.Rect({
@@ -491,18 +492,37 @@ define(["drawing/icons/bus-icon",
       y: 0,
       width: width,
       height: height,
-      fill: 'black',
+      fill: {
+        start: {
+          x: 0,
+          y: -50
+        },
+        end: {
+          x: 0,
+          y: 50
+        },
+        colorStops: ARRIVAL_BAR_GRADIENT
+      },
+      opacity: 0.95,
       stroke: 'white',
       strokeWidth: 2
     });
     var arrivalText = "Estimated Arrival Time: "+timeString;
     var text = new Kinetic.Text({
-      x: 0,
+      x: pathBlockWidth,
       y: 0,
       text: arrivalText,
-      fontSize: 18,
+      fontSize: 25,
       fontFamily: "HelveticaNeue-Medium",
-      textFill: "white",
+      textFill: ARRIVAL_BAR_TEXT_COLOR,
+      shadow: {
+        color: ARRIVAL_BAR_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 3
+        },
+        blur: 3
+      },
       padding: textInset,
       align: "left"
     });

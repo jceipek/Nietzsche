@@ -57,7 +57,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     portraitData: {
       moveDirectionItemHeight: 250,
       waitDirectionItemHeight: 40,
-      arrivalBarHeight: 40,
+      arrivalBarHeight: 70,
       pathBlockWidth: 50,
       sideBarWidth: 40,
       sideBarYOffset: 15
@@ -614,10 +614,23 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       
       DetailedDirectionsScreen.directionsGroup.add(stepItem);
     }
+
+    DetailedDirectionsScreen.directionsGroup.setDraggable('true');
+    DetailedDirectionsScreen.directionsGroup.setDragBoundFunc(function (pos) {
+      var y = pos.y;
+      var max_y = Math.max(heightOffset - App.getCanvasHeight(), 0);
+      y = Math.max(Math.min(y,0), -max_y);
+      return {
+        x: 0,
+        y: y
+      };
+    });
+
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
     var barY = App.getCanvasHeight()-barHeight;
     var barWidth = App.getCanvasWidth();
-    var arrivalBar = DrawFns.createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
+    var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
+    var arrivalBar = DrawFns.createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text, pathBlockWidth);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();
