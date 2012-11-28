@@ -57,7 +57,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     portraitData: {
       moveDirectionItemHeight: 250,
       waitDirectionItemHeight: 40,
-      arrivalBarHeight: 40,
+      arrivalBarHeight: 70,
       pathBlockWidth: 50,
       sideBarWidth: 40,
       sideBarYOffset: 15
@@ -627,7 +627,8 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var barHeight = DetailedDirectionsScreen.portraitData.arrivalBarHeight;
     var barY = App.getCanvasHeight()-barHeight;
     var barWidth = App.getCanvasWidth();
-    var arrivalBar = DrawFns.createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text);
+    var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
+    var arrivalBar = DrawFns.createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text, pathBlockWidth);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();
