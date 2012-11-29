@@ -1,8 +1,8 @@
-require(["app", "routeData", 
+require(["app", "routeData", "googleMapsResponse",
          "color-constants", 
          "helpers", 
          "drawing/graphicsCreationFunctions"], 
-function(App, PossibleRoutes, color_constants, helpers, DrawFns){
+function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers, DrawFns){
   // NOTE: we have global access to all PossibleRoutes and ROUTE_TYPES
   var demoTime = null;
   //demoTime = new Date(1351774692398); // Comment this out if we want to use the current time.
@@ -211,7 +211,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     }
   };
 
-  var computeDirections = function () {
+  var computeDirectionsWithGoogleData = function () {
     var router = new google.maps.DirectionsService();
     var start = App.from_route;
     var end = App.to_route;
@@ -236,10 +236,32 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
         }
         displayGraphicalRoutes();
         console.log(response);
+        console.log(JSON.stringify(response));
       } else {
         console.log('Routing Failed!');
       }
     });
+  };
+
+  var computeDirectionsWithSavedData = function () {
+    console.log("Using simulated data without internet connection.");
+    var response = SAVED_DATA;
+    for (var routeIdx = 0; routeIdx < response.routes.length; routeIdx++) {
+      var legs = response.routes[routeIdx].legs;
+      var leg = legs[0];
+      if (leg) {
+        App.directions.push(leg);
+      }
+    }
+    displayGraphicalRoutes();
+  };
+
+  var computeDirections = function () {
+    if (App.use_simulated_data) {
+      computeDirectionsWithSavedData();
+    } else {
+      computeDirectionsWithGoogleData();
+    }
   };
 
   var generateRouteIconSelectedFunction = function (button, direction) {
@@ -350,9 +372,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
           RouteSelectionScreen.mainLayer.draw();
         }, App.SHORT_DELAY);
         //Start Generating Routes
-        if (demoTime == null) {
-          App.departure_time = new Date();
-        }
+        App.departure_time = App.getCurrentTimeForDeparture();
         computeDirections();
         $(fieldId).blur();
         transitionScreen(RouteSelectionScreen, GraphicalComparisonScreen, 'SCALE TOP', App.SHORT_DELAY);
@@ -395,9 +415,7 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     };
   };
 
-  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor, is_viable) {
-
-    var routeGroup = new Kinetic.Group();
+  var createGraphicalRouteItemBackground = function (y, width, height) {
     var background = new Kinetic.Rect({
       x: 0,
       y: y,
@@ -406,7 +424,12 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
       fill: 'white',
       stroke: 'black'
     });
-    routeGroup.add(background);
+    return background;  
+  }
+
+  var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor, is_viable) {
+
+    var routeGroup = new Kinetic.Group();
 
     var arrivalTime = new Date(direction.arrival_time.value);
     var departureTime = new Date(direction.departure_time.value);
@@ -532,8 +555,10 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var barStartTime; 
     var earliestDepartureTime = new Date(App.directions[0].departure_time.value);
     for (var i = 0; i < App.directions.length; i++) {
-      if (App.directions[i].departure_time < earliestDepartureTime) {
-         earliestDepartureTime = App.directions[i].departure_time;
+      var direction = App.directions[i];
+      var curr_dep_time = new Date(direction.departure_time.value);
+      if (curr_dep_time < earliestDepartureTime) {
+         earliestDepartureTime = curr_dep_time;
       }
       barStartTime = earliestDepartureTime;
     }
@@ -541,23 +566,43 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
     var barEndTime;
     var latestArrivalTime = new Date(App.directions[0].arrival_time.value);
     for (var i = 0; i < App.directions.length; i++) {
-      if (App.directions[i].arrival_time >= latestArrivalTime) {
-         latestArrivalTime = App.directions[i].arrival_time;
+      var direction = App.directions[i];
+      var curr_arr_time = new Date(direction.arrival_time.value);
+      if (curr_arr_time >= latestArrivalTime) {
+         latestArrivalTime = curr_arr_time;
       }
       barEndTime = latestArrivalTime;
     }
 
+    // Scaling factor is adjusted so that the first route shows up fully
     var firstArrivalTime = new Date(App.directions[0].arrival_time.value);
     var availableScreenSpace = App.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
-    var scalingFactor = availableScreenSpace/((firstArrivalTime-(new Date()))/1000); 
-    
+    var scalingFactor = availableScreenSpace/((firstArrivalTime-App.getCurrentTime())/1000); 
+    var graphicalTimeBar = DrawFns.createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor);
+
+    for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
+      var graphicalRouteItemBg = 
+        createGraphicalRouteItemBackground(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
+                                 GraphicalComparisonScreen.portraitData.routeItemHeight);
+        GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItemBg);
+    }
+
+    GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
+
+    // TODO: Add lines here
+    var linesYOverlapRatio = 1/3;
+    var linesY = timeBarHeight*linesYOverlapRatio;
+    var linesYOverlap = (1-linesYOverlapRatio)*timeBarHeight;
+    var linesHeight = linesYOverlap + App.directions.length * GraphicalComparisonScreen.portraitData.routeItemHeight;
+    var linesGroup = DrawFns.createGraphicalIntervalLines(linesY, linesHeight, linesYOverlap, barStartTime, barEndTime, scalingFactor);
+    GraphicalComparisonScreen.routeItemsGroup.add(linesGroup);
+
     for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
       var direction = App.directions[directionIdx];
       if (direction.is_viable === undefined) {
         direction.is_viable = true;
       }
 
-      var graphicalTimeBar = DrawFns.createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor, direction.is_viable);
@@ -569,12 +614,13 @@ function(App, PossibleRoutes, color_constants, helpers, DrawFns){
         
         graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
       }
-      GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
+      
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
       if (direction.is_viable) {
         GraphicalComparisonScreen.routeButtonsGroup.add(graphicalRouteButton);
       }
     }
+    
     GraphicalComparisonScreen.mainLayer.draw();
   };
 

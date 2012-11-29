@@ -1,10 +1,11 @@
    // Given a Date object, returns a string in a standard format such as "3:00 PM"
   var formatTime = function (time) {
-    var amPM = 'AM';
+    var hours = time.getHours();
+    var amPM = 'pm';
     if (hours >= 12) {
-      amPM = 'PM';
+      amPM = 'pm';
     }
-    var hours = (time.getHours()%12);
+    var hours = hours%12;
     if (hours === 0) {
       hours = 12;
     }
@@ -15,7 +16,7 @@
       if(minutes > 0 && minutes < 10)
         minutes = '0' + minutes;
     }
-    return hours+':'+minutes+' '+amPM;
+    return hours+':'+minutes+amPM;
   };
 
   // Given a time, what is the x position on the canvas that corresponds to it?

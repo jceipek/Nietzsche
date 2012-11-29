@@ -9,37 +9,38 @@ define(function () {
 
    tIcon.setPosition(x,y);
 
-  var verticalRect = new Kinetic.Rect({
-    x: sidelength*0.5 - sidelength*0.173/2 + thickness/2,
-    y: sidelength*0.5 - insetTop + thickness*2,
-    height: sidelength*0.5,
-    width: sidelength*0.173,
-    fill: 'black'
-  });
+    var verticalRect = new Kinetic.Rect({
+      x: sidelength*0.5 - sidelength*0.173/2 + thickness/2,
+      y: sidelength*0.5 - insetTop + thickness*2,
+      height: sidelength*0.5,
+      width: sidelength*0.173,
+      fill: 'black'
+    });
 
-  var horizontalRect = new Kinetic.Rect({
-    x: insetSide+thickness/2,
-    y: insetTop+thickness*2,
-          //x: insetSide + thickness/2,
-          //y: insetTop + thickness/2,
-          height: sidelength*0.173,
-          width: sidelength*0.736,
-          fill: 'black'
-  });
+    var horizontalRect = new Kinetic.Rect({
+      x: insetSide+thickness/2,
+      y: insetTop+thickness*2,
+      //x: insetSide + thickness/2,
+      //y: insetTop + thickness/2,
+      height: sidelength*0.173,
+      width: sidelength*0.736,
+      fill: 'black'
+    });
 
-   var tIconCircle = new Kinetic.Circle({
-     x: radius,
-     y: radius,
-     radius: radius,
-     stroke: 'black',
-     strokeWidth: thickness
-   });
+    var tIconCircle = new Kinetic.Circle({
+      x: radius,
+      y: radius,
+      radius: radius,
+      stroke: 'black',
+      fill: "white",
+      strokeWidth: thickness
+    });
 
-   tIcon.add(tIconCircle);
-   tIcon.add(horizontalRect);
-   tIcon.add(verticalRect);
+    tIcon.add(tIconCircle);
+    tIcon.add(horizontalRect);
+    tIcon.add(verticalRect);
 
-   return tIcon; 
+    return tIcon; 
   };
 
   return createTIcon;

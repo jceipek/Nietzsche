@@ -334,6 +334,16 @@ define(["color-constants",
     return buttonGroup;
   };
 
+  var getBigDivisionSize = function(scalingFactor) {
+    // XXX: Currently hardcodes fake width of time bar text
+    var hardcoded_width = 70;
+    var div_size = 5;
+    while (60*div_size*scalingFactor < hardcoded_width) {
+      div_size += 5;
+    }
+    return div_size;
+  };
+
   DrawFns.createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scalingFactor) {
     var timeBarGroup = new Kinetic.Group();
     var bg = new Kinetic.Rect({
@@ -343,42 +353,26 @@ define(["color-constants",
       height: height,
       fill: "black"
     });
-    /*
-    var startTime = new Kinetic.Text({
-      text: barStartTime,
-      textFill: "white",
-      padding: 16,
-      fontSize: 18
-    });
-    var endTime = new Kinetic.Text({
-       text: barEndTime,
-       textFill: "white",
-       padding: 16,
-       fontSize: 18,
-       align: "right",
-       offset: [-530,0]
-    });*/
 
     timeBarGroup.add(bg);
     
     var currTime = new Date(barStartTime);
+    currTime.setMinutes(0);
+    var finalTime = new Date(barEndTime);
+    finalTime.setMinutes(0);
+    finalTime.setHours(finalTime.getHours() + 1);
 
-    var divCount = ((barEndTime - currTime)/1000/60/5);
+    //var divCount = ((barEndTime - currTime)/1000/60/5);
     //console.log("Div Count: " + divCount);
 
-    while (currTime < barEndTime) {
-      var timeTxt = formatTime(currTime);
-      /*console.log("WHAT START: ");
-      console.log(barStartTime);
-      console.log("WHAT END: ");
-      console.log(barEndTime);
-      console.log("NEW TIME ITEM: " + timeTxt);*/
-      //console.log(posFromTime(currTime, barStartTime, scalingFactor));
+    var bigDivisionSize = getBigDivisionSize(scalingFactor);
 
+    while (currTime < finalTime) {
+      var timeTxt = formatTime(currTime);
 
       var timeItem = new Kinetic.Text({
-        x: posFromTime(currTime, barStartTime, scalingFactor), // XXX: THIS FUNCTION IS NOT CALLED CORRECTLY. TIMES WILL BE OFFSET A BIT
-        y: 2,
+        x: 2+posFromTime(currTime, barStartTime, scalingFactor),
+        y: 13,
         text: timeTxt,
         textFill: 'white',
         padding: 0,
@@ -386,86 +380,38 @@ define(["color-constants",
         fontFamily: "HelveticaNeue-Medium"
       });
       timeBarGroup.add(timeItem);
-      currTime.setMinutes(currTime.getMinutes()+15);
+      currTime.setMinutes(currTime.getMinutes() + bigDivisionSize);
     }
 
     return timeBarGroup;  
   }
 
-  /*var Comparison = {
-      ctx: null, // The graphical comparison canvas
-      initialTime: null, // Departure time
-      scalingFactor: 0.2, // How many seconds one pixel on the canvas represents
-      width: $(window).width(), // Width of the canvas. Starts at width of window.
-      height: $(window).height(), // Width of the canvas. Starts at width of window.
-      horizontalRouteOffset: 70
-    };*/
-
-  DrawFns.drawTenMinuteIntervalLines = function(startX, startY, endYTime) {
-    var tenMinOffset; //how many px is ten minutes?
-    var endYPos = posFromTime(endYTime);
-    for (var i = 0; i < endYPos; i+tenMinOffset) {
-      var tenMinLines = new Kinetic.Line({
-        points: [startX, startY, startX, i],
-        stroke: "black",
-        strokeWidth: 8
+  DrawFns.createGraphicalIntervalLines = function (y, height, linesYOverlap, lineStartTime, lineEndTime, scalingFactor) {
+    var timeIterator = new Date(lineStartTime);
+    timeIterator.setMinutes(0);
+    var linesGroup = new Kinetic.Group();
+    var bigDivisionSize = getBigDivisionSize(scalingFactor);
+    while (timeIterator < lineEndTime) {
+      timeIterator.setMinutes(timeIterator.getMinutes()+5);
+      var x = posFromTime(timeIterator, lineStartTime, scalingFactor);
+      var pt1 = {x: x, y: y+linesYOverlap};
+      var pt2 = {x: x, y: height+y};
+      var strokeWidth = 1;
+      var color = "rgb(200,200,200)";
+      if (timeIterator.getMinutes() % bigDivisionSize === 0) {
+        pt1 = {x: x, y: y};
+        strokeWidth = 3;
+        color = "rgb(150,150,150)";
+      }
+      var currLine = new Kinetic.Line({
+        points: [pt1, pt2],
+        stroke: color,
+        strokeWidth: strokeWidth
       });
-    return tenMinLines;
-    }
+      linesGroup.add(currLine);
+    }    
+    return linesGroup;
   }
-
-  DrawFns.drawFiveMinuteIntervalLines = function(startX, startY, endYTime) {
-    var fiveMinOffset; //how many px is five minutes?
-    var endYPos = posFromTime(endYTime);
-    for (var i = 0; i < endYPos; i+fiveMinOffset) {
-      var fiveMinLines = new Kinetic.Line({
-        points: [startX, startY, startX, i],
-        stroke: "rgb(200, 200, 200)",
-        strokeWidth: 4
-      });
-    return fiveMinLines;
-    }
-  };
-
-  /*var plotTimeIntervals = function (currTime, initialTime, scalingFactor) {
-      var initialIntervalTime = new Date(initialTime.value);
-      var currIntervalPos = new Date(currTime.value);
-      initialIntervalTime.setMinutes(0);
-      if ((initialIntervalTime.getMinutes() % 10) === 0) {
-          //addTime(initialIntervalTime,
-            //      currIntervalPos+4,
-              //    15); // The canvas version
-          drawTenMinuteIntervalLines(currIntervalPos, 0);
-      } else if ((initialIntervalTime.getMinutes() % 5) === 0) {
-           drawFiveMinuteIntervalLines(currIntervalPos, 15);
-      }
-    };*/
-
-  /**
-  var plotTimeIntervals = function () {
-      var currIntervalTime = new Date(Comparison.initialTime);
-      currIntervalTime.setMinutes(0);
-      var ctx = Comparison.ctx;
-      while (posFromTime(currIntervalTime) < Comparison.width) {
-        currIntervalPos = posFromTime(currIntervalTime);
-        var startY = 0;
-        ctx.beginPath();
-        if ((currIntervalTime.getMinutes() % 10) === 0) {
-          addTime(currIntervalTime,
-                  currIntervalPos+4,
-                  15); // The canvas version
-          ctx.strokeStyle = "rgb(0, 0, 0)";
-        } else if ((currIntervalTime.getMinutes() % 5) === 0) {
-          ctx.strokeStyle = "rgb(200, 200, 200)";
-          startY = 15;
-        }
-        ctx.moveTo(currIntervalPos, startY);
-        ctx.lineTo(currIntervalPos, document.height);
-        ctx.stroke();
-        currIntervalTime.setMinutes(currIntervalTime.getMinutes()+5);
-      }
-    };
-    **/
 
   DrawFns.createSideBar = function (width, height, y, steps) {
     var sideBarGroup = new Kinetic.Group();
