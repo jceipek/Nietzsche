@@ -415,16 +415,16 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     };
   };
 
-  var createGraphicalRouteItemBackground = function (y, width, height) {
+  var createGraphicalRouteItemBackground = function (x, y, width, height) {
     var background = new Kinetic.Rect({
-      x: 0,
+      x: x,
       y: y,
       width: width,
       height: height,
       fill: 'white',
       stroke: 'black'
     });
-    return background;  
+    return background;
   }
 
   var createGraphicalRouteItem = function (y, width, height, direction, scalingFactor, is_viable) {
@@ -547,6 +547,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   };
 
   var displayGraphicalRoutes = function () {
+    GraphicalComparisonScreen.routeItemsGroup.setPosition({x: 0, y: 0});
     GraphicalComparisonScreen.routeItemsGroup.removeChildren();
     GraphicalComparisonScreen.routeButtonsGroup.removeChildren();
     console.log(App.directions);
@@ -574,27 +575,38 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       barEndTime = latestArrivalTime;
     }
 
+    var earliestScrollTime = new Date(barStartTime);
+    earliestScrollTime.setMinutes(0);
+    var latestScrollTime = new Date(barEndTime);
+    latestScrollTime.setMinutes(0);
+    latestScrollTime.setHours(latestScrollTime.getHours() + 1);
+
     // Scaling factor is adjusted so that the first route shows up fully
     var firstArrivalTime = new Date(App.directions[0].arrival_time.value);
     var availableScreenSpace = App.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
     var scalingFactor = availableScreenSpace/((firstArrivalTime-App.getCurrentTime())/1000); 
-    var graphicalTimeBar = DrawFns.createGraphicalTimeBar(App.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor);
+    
+    var bg_x = posFromTime(earliestScrollTime, App.departure_time, scalingFactor);
+    var bg_end_x = posFromTime(latestScrollTime, App.departure_time, scalingFactor);
+    
+    var graphicalTimeBar = DrawFns.createGraphicalTimeBar(bg_x, bg_end_x, timeBarHeight,  earliestScrollTime, latestScrollTime, App.departure_time, scalingFactor);
 
+    var bg_width = bg_end_x - bg_x;
+    var bg_height = GraphicalComparisonScreen.portraitData.routeItemHeight;
     for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
+      var bg_y = directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight;
       var graphicalRouteItemBg = 
-        createGraphicalRouteItemBackground(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, App.stage.getWidth(), 
-                                 GraphicalComparisonScreen.portraitData.routeItemHeight);
+        createGraphicalRouteItemBackground(bg_x, bg_y, bg_width, bg_height);
         GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItemBg);
     }
 
     GraphicalComparisonScreen.routeItemsGroup.add(graphicalTimeBar);
 
-    // TODO: Add lines here
     var linesYOverlapRatio = 1/3;
     var linesY = timeBarHeight*linesYOverlapRatio;
     var linesYOverlap = (1-linesYOverlapRatio)*timeBarHeight;
     var linesHeight = linesYOverlap + App.directions.length * GraphicalComparisonScreen.portraitData.routeItemHeight;
-    var linesGroup = DrawFns.createGraphicalIntervalLines(linesY, linesHeight, linesYOverlap, barStartTime, barEndTime, scalingFactor);
+    var linesGroup = DrawFns.createGraphicalIntervalLines(linesY, linesHeight, linesYOverlap, earliestScrollTime, latestScrollTime, App.departure_time, scalingFactor);
     GraphicalComparisonScreen.routeItemsGroup.add(linesGroup);
 
     for (var directionIdx = 0; directionIdx < App.directions.length; directionIdx++) {
@@ -621,6 +633,21 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       }
     }
     
+    GraphicalComparisonScreen.routeItemsGroup.setDraggable("true");
+
+    var min_x = posFromTime(earliestScrollTime, App.departure_time, scalingFactor);
+    var max_x = posFromTime(latestScrollTime, App.departure_time, scalingFactor)-App.getCanvasWidth();
+
+    GraphicalComparisonScreen.routeItemsGroup.setDragBoundFunc(function (pos) {
+      var x = pos.x;
+      x = Math.min(x, -min_x);
+      x = Math.max(x, -max_x);
+      return {
+        x: x,
+        y: 0
+      };
+    });
+
     GraphicalComparisonScreen.mainLayer.draw();
   };
 

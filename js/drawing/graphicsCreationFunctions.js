@@ -344,12 +344,12 @@ define(["color-constants",
     return div_size;
   };
 
-  DrawFns.createGraphicalTimeBar = function (width, height, barStartTime, barEndTime, scalingFactor) {
+  DrawFns.createGraphicalTimeBar = function (startx, endx, height, barStartTime, barEndTime, departureTime, scalingFactor) {
     var timeBarGroup = new Kinetic.Group();
     var bg = new Kinetic.Rect({
-      x: 0,
+      x: startx,
       y: 0,
-      width: width,
+      width: endx-startx,
       height: height,
       fill: "black"
     });
@@ -357,21 +357,14 @@ define(["color-constants",
     timeBarGroup.add(bg);
     
     var currTime = new Date(barStartTime);
-    currTime.setMinutes(0);
-    var finalTime = new Date(barEndTime);
-    finalTime.setMinutes(0);
-    finalTime.setHours(finalTime.getHours() + 1);
-
-    //var divCount = ((barEndTime - currTime)/1000/60/5);
-    //console.log("Div Count: " + divCount);
 
     var bigDivisionSize = getBigDivisionSize(scalingFactor);
 
-    while (currTime < finalTime) {
+    while (currTime < barEndTime) {
       var timeTxt = formatTime(currTime);
 
       var timeItem = new Kinetic.Text({
-        x: 2+posFromTime(currTime, barStartTime, scalingFactor),
+        x: 2+posFromTime(currTime, departureTime, scalingFactor),
         y: 13,
         text: timeTxt,
         textFill: 'white',
@@ -386,14 +379,13 @@ define(["color-constants",
     return timeBarGroup;  
   }
 
-  DrawFns.createGraphicalIntervalLines = function (y, height, linesYOverlap, lineStartTime, lineEndTime, scalingFactor) {
+  DrawFns.createGraphicalIntervalLines = function (y, height, linesYOverlap, lineStartTime, lineEndTime, departureTime, scalingFactor) {
     var timeIterator = new Date(lineStartTime);
-    timeIterator.setMinutes(0);
     var linesGroup = new Kinetic.Group();
     var bigDivisionSize = getBigDivisionSize(scalingFactor);
     while (timeIterator < lineEndTime) {
       timeIterator.setMinutes(timeIterator.getMinutes()+5);
-      var x = posFromTime(timeIterator, lineStartTime, scalingFactor);
+      var x = posFromTime(timeIterator, departureTime, scalingFactor);
       var pt1 = {x: x, y: y+linesYOverlap};
       var pt2 = {x: x, y: height+y};
       var strokeWidth = 1;
