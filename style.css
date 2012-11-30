@@ -6,7 +6,7 @@ Released for free under a Creative Commons Attribution 2.5 License
 */
 
 /*
- * Some edits by Julian Ceipek (10/12/2012)
+ * Some edits by Julian Ceipek (10/12/2012) and Laurence Toal (various dates)
  */
 
 body {
@@ -60,7 +60,7 @@ a:hover {
 }
 
 .container {
-	width: 1000px;
+	width: 100%;
 	margin: 0px auto;
 }
 
