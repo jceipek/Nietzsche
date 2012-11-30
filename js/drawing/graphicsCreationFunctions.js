@@ -298,30 +298,31 @@ define(["color-constants",
     var color = "#999999";
     var strokewidth = 3;
     var buttonGroup = new Kinetic.Group();
+    buttonGroup.setPosition({x: x, y: y+strokewidth});
     var selectionButton = new Kinetic.Rect({
-      x: x,
-      y: y+strokewidth,
-      width: width+15,
+      x: 0,
+      y: 0,
+      width: width,
       height: height-strokewidth*2,
       fill: '#777777',
       strokeWidth: strokewidth,
       stroke: "#424242",
-      cornerRadius: 20,
+      cornerRadius: 10,
     });
     var selectionButtonGrabLeft = new Kinetic.Line({
-      points: [x+width/4, y+0.1*height, x+width/4, y+0.9*height],
+      points: [width/4, 0.1*height, width/4, 0.9*height],
       stroke: color,
       strokeWidth: 8,
       lineCap: "round",
     });
      var selectionButtonGrabRight = new Kinetic.Line({
-      points: [x+2*width/4, y+0.1*height, x+2*width/4, y+0.9*height],
+      points: [2*width/4, 0.1*height, 2*width/4, 0.9*height],
       stroke: color,
       strokeWidth: 8,
       lineCap: "round",
     });
       var selectionButtonGrabMiddle = new Kinetic.Line({
-      points: [x+3*width/4, y+0.1*height, x+3*width/4, y+0.9*height],
+      points: [3*width/4, 0.1*height, 3*width/4, 0.9*height],
       stroke: color,
       strokeWidth: 8,
       lineCap: "round",
@@ -331,6 +332,9 @@ define(["color-constants",
     buttonGroup.add(selectionButtonGrabMiddle);
     buttonGroup.add(selectionButtonGrabRight);
     buttonGroup.add(selectionButtonGrabLeft);
+    buttonGroup.getWidth = function () {
+      return selectionButton.getWidth()
+    };
     return buttonGroup;
   };
 
