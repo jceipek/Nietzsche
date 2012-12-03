@@ -515,16 +515,26 @@ define(["color-constants",
   };
   
   // TODO: declare two lines instead of one rectangle
-   DrawFns.createWaitStep = function (yMid, thickness, start, end, color) {
+   DrawFns.createWaitStep = function (yMid, thickness, height, start, end, color) {
     var waitLineGroup = new Kinetic.Group();
-    var background = new Kinetic.Rect({
+    var upLine = new Kinetic.Rect({
       x: start,
       y: yMid-thickness/2,
       width: end-start,
-      height: thickness/4,
+      height: height,
       fill: color
     });
-    waitLineGroup.add(background);
+    
+    var bottomLine = new Kinetic.Rect({
+      x: start,
+      y: yMid+thickness/2-height,
+      width: end-start,
+      height: height,
+      fill: color
+    });
+    
+    waitLineGroup.add(upLine);
+    waitLineGroup.add(bottomLine);
     return waitLineGroup;
   };
   

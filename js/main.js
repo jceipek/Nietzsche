@@ -500,7 +500,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           stepEnd.setSeconds(stepEnd.getSeconds());
           stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
           
-          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, stepStart, stepEnd, "red");
+          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_ITEM_BORDER_COLOR);
         }
         
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
