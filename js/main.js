@@ -862,7 +862,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     DetailedDirectionsScreen.directionsGroup.setDragBoundFunc(function (pos) {
       var y = pos.y;
       var max_y = Math.max(heightOffset - App.getCanvasHeight(), 0);
-      y = Math.max(Math.min(y,0), -max_y);
+      y = Math.max(Math.min(y,0), -max_y-DetailedDirectionsScreen.portraitData.arrivalBarHeight);
       return {
         x: 0,
         y: y
@@ -873,7 +873,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var barY = App.getCanvasHeight()-barHeight;
     var barWidth = App.getCanvasWidth();
     var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
-    var arrivalBar = DrawFns.createArrivalBar(DetailedDirectionsScreen.portraitData.gapForPrevScreen, barWidth, barHeight, barY, direction.arrival_time.text, pathBlockWidth);
+    var arrivalBar = DrawFns.createArrivalBar(DetailedDirectionsScreen.portraitData.gapForPrevScreen,
+                                              barWidth, barHeight, barY, direction.arrival_time.text, 
+                                              pathBlockWidth, direction.steps[direction.steps.length-1]);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();

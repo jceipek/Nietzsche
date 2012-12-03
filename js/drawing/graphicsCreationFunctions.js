@@ -471,14 +471,35 @@ define(["color-constants",
     return sideBarGroup
   };
 
-  DrawFns.createArrivalBar = function (gapForPrevScreen, width, height, y, timeString, pathBlockWidth) {
+  var colorFromStep = function (step) {
+    var pathColor = UNKNOWN_STEP_COLOR;
+
+    if (step.travel_mode === "TRANSIT") {
+      pathColor = step.transit.line.color;
+      if (step.transit.line !== undefined && step.transit.line.vehicle !== undefined) {
+        var line = step.transit.line;
+        var vehicleName = line.vehicle.name;
+        if (vehicleName === "Bus") {
+          pathColor = BUS_STEP_COLOR;
+        }
+      }
+    } else if (step.travel_mode === "DRIVING") {
+      pathColor = DRIVING_STEP_COLOR;
+    } else if (step.travel_mode === "WALKING") { 
+      pathColor = WALKING_STEP_COLOR;
+    }
+
+    return pathColor;
+  }
+
+  DrawFns.createArrivalBar = function (x_offset, width, height, y, timeString, pathBlockWidth, lastStep) {
     var textInset = height*0.27;
     var arrivalBarGroup = new Kinetic.Group();
     arrivalBarGroup.setPosition(0,y);
     var background = new Kinetic.Rect({
-      x: gapForPrevScreen,
+      x: x_offset,
       y: 0,
-      width: width-gapForPrevScreen,
+      width: width-x_offset,
       height: height,
       fill: {
         start: {
@@ -516,6 +537,13 @@ define(["color-constants",
     });
     arrivalBarGroup.add(background);
     arrivalBarGroup.add(text);
+
+    var pathColor = colorFromStep(lastStep);
+
+    var pathItem = DrawFns.createDirectionStepPathItem(x_offset, pathBlockWidth/2, height/2, pathBlockWidth*0.5, pathColor);
+    //DrawFns.createDirectionStepItem(x_offset, 0, width, height, 30, lastStep);
+    arrivalBarGroup.add(pathItem);
+
     return arrivalBarGroup;
   };
 
@@ -548,14 +576,14 @@ define(["color-constants",
     return waitGroup;
   };
 
-  DrawFns.createDirectionStepItem = function (gapForPrevScreen, y, width, height, pathBlockWidth, step) {
+  DrawFns.createDirectionStepItem = function (x_offset, y, width, height, pathBlockWidth, step) {
 
     var stepGroup = new Kinetic.Group();
     stepGroup.setPosition(0,y);
     var background = new Kinetic.Rect({
-      x: gapForPrevScreen,
+      x: x_offset,
       y: 0,
-      width: width-gapForPrevScreen,
+      width: width-x_offset,
       height: height,
       fill: DIRECTION_STEP_ITEM_BG_COLOR,
       stroke: DIRECTION_STEP_ITEM_BORDER_COLOR,
@@ -564,41 +592,26 @@ define(["color-constants",
 
     var instructionsTextString = step.instructions;
     var instructionsText = new Kinetic.Text({
-      x: pathBlockWidth+gapForPrevScreen,
+      x: pathBlockWidth+x_offset,
       y: 0,
       text: instructionsTextString,
       fontSize: 30,
       fontFamily: "HelveticaNeue-Medium",
       textFill: DIRECTION_STEP_ITEM_INSTR_COLOR,
-      width: width-pathBlockWidth-gapForPrevScreen,
+      width: width-pathBlockWidth-x_offset,
       padding: 5,
       align: "left"
     });
 
 
-    var pathColor = UNKNOWN_STEP_COLOR;
-
-    if (step.travel_mode === "TRANSIT") {
-      pathColor = step.transit.line.color;
-      if (step.transit.line !== undefined && step.transit.line.vehicle !== undefined) {
-        var line = step.transit.line;
-        var vehicleName = line.vehicle.name;
-        if (vehicleName === "Bus") {
-          pathColor = BUS_STEP_COLOR;
-        }
-      }
-    } else if (step.travel_mode === "DRIVING") {
-      pathColor = DRIVING_STEP_COLOR;
-    } else if (step.travel_mode === "WALKING") { 
-      pathColor = WALKING_STEP_COLOR;
-    }
+    var pathColor = colorFromStep(step);
     
-    var pathItem = DrawFns.createDirectionStepPathItem(gapForPrevScreen, pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
+    var pathItem = DrawFns.createDirectionStepPathItem(x_offset, pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
     
     var duration = millisecondsToHumanString(step.duration.value * 1000);
 
     var durationTxt = new Kinetic.Text({
-      x: pathBlockWidth+gapForPrevScreen,
+      x: pathBlockWidth+x_offset,
       y: height/2,
       text: "(" + duration + ")",
       fontSize: 18,
@@ -647,7 +660,41 @@ define(["color-constants",
       height: height,
       fill: color
     });
-    return pathRect;
+
+    var startRounded = false;
+    var endRounded = true;
+    var radius = thickness/2;
+    var stepShape = new Kinetic.Shape({
+      drawFunc: function(context) {
+
+        context.beginPath();
+        if(startRounded){
+          context.arc(xStart+radius, yMid, radius, Math.PI/2, -Math.PI/2, false);
+        }
+        else{
+          context.moveTo(xMid-thickness/2+gapForPrevScreen, 0)
+          //context.moveTo(xStart, yMid+radius);
+          //context.lineTo(xStart, yMid-radius);
+          context.lineTo(xMid-thickness/2+gapForPrevScreen+thickness, 0)
+        }
+        if(endRounded){
+          //context.arc(xEnd-radius, yMid, radius, -Math.PI/2, Math.PI/2, false);
+          context.arc(xMid-thickness/2+gapForPrevScreen+thickness/2, height, radius, 0, -Math.PI, false);
+        }
+        else{
+          //context.lineTo(xEnd, yMid-radius);
+          context.lineTo(xMid-thickness/2+gapForPrevScreen+thickness, height);
+        }
+        //context.lineTo(xEnd, yMid+radius);
+        context.lineTo(xMid-thickness/2+gapForPrevScreen, height);
+        context.closePath();
+        
+        this.fill(context);
+      },
+      fill: color
+    });
+
+    return stepShape;
   };
 
   DrawFns.displayDelayDesignA = function (appWidth, appHeight, alertText) {
