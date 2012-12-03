@@ -107,7 +107,7 @@ define(["color-constants",
       text: route.category,
       fontSize: 20,
       fontFamily: 'HelveticaNeue',
-      textFill: '#a0a8c1',
+      textFill: ROUTE_CATEGORY_COLOR,
       attrs: {
         swapTextFill: '#fff'
       },
