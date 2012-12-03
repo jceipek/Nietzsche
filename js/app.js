@@ -1,7 +1,7 @@
 define(function () {
 
   var App = {
-      use_simulated_data: false, //Do we use Google Maps or some cached data?
+      use_simulated_data: true, //Do we use Google Maps or some cached data?
       design_A: false, // Do we use Design A? if not, use Design B
       simulate_delay: false, // Whether to simulate route change introducing delay
       from_route: null,

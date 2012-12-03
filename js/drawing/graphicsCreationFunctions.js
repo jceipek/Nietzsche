@@ -335,6 +335,11 @@ define(["color-constants",
     buttonGroup.getWidth = function () {
       return selectionButton.getWidth()
     };
+    
+    buttonGroup.isBeingDragged = false
+
+    buttonGroup.origPos = {x: x, y: y};
+
     return buttonGroup;
   };
 
@@ -466,14 +471,14 @@ define(["color-constants",
     return sideBarGroup
   };
 
-  DrawFns.createArrivalBar = function (width, height, y, timeString, pathBlockWidth) {
+  DrawFns.createArrivalBar = function (gapForPrevScreen, width, height, y, timeString, pathBlockWidth) {
     var textInset = height*0.27;
     var arrivalBarGroup = new Kinetic.Group();
     arrivalBarGroup.setPosition(0,y);
     var background = new Kinetic.Rect({
-      x: 0,
+      x: gapForPrevScreen,
       y: 0,
-      width: width,
+      width: width-gapForPrevScreen,
       height: height,
       fill: {
         start: {
@@ -514,14 +519,14 @@ define(["color-constants",
     return arrivalBarGroup;
   };
 
-  DrawFns.createDirectionWaitItem = function (y, width, height, msWaitTime) {
+  DrawFns.createDirectionWaitItem = function (gapForPrevScreen, y, width, height, msWaitTime) {
     var textInset = height*0.25;
     var waitGroup = new Kinetic.Group();
     waitGroup.setPosition(0,y);
     var background = new Kinetic.Rect({
-      x: 0,
+      x: gapForPrevScreen,
       y: 0,
-      width: width,
+      width: width-gapForPrevScreen,
       height: height,
       fill: WAIT_ITEM_BG_COLOR,
       stroke: WAIT_ITEM_BORDER_COLOR,
@@ -529,7 +534,7 @@ define(["color-constants",
     });
     var waitText = "wait " + millisecondsToHumanString(msWaitTime);
     var text = new Kinetic.Text({
-      x: 0,
+      x: gapForPrevScreen,
       y: 0,
       text: waitText,
       fontSize: 18,
@@ -543,14 +548,14 @@ define(["color-constants",
     return waitGroup;
   };
 
-  DrawFns.createDirectionStepItem = function (y, width, height, pathBlockWidth, step) {
+  DrawFns.createDirectionStepItem = function (gapForPrevScreen, y, width, height, pathBlockWidth, step) {
 
     var stepGroup = new Kinetic.Group();
     stepGroup.setPosition(0,y);
     var background = new Kinetic.Rect({
-      x: 0,
+      x: gapForPrevScreen,
       y: 0,
-      width: width,
+      width: width-gapForPrevScreen,
       height: height,
       fill: DIRECTION_STEP_ITEM_BG_COLOR,
       stroke: DIRECTION_STEP_ITEM_BORDER_COLOR,
@@ -559,13 +564,13 @@ define(["color-constants",
 
     var instructionsTextString = step.instructions;
     var instructionsText = new Kinetic.Text({
-      x: pathBlockWidth,
+      x: pathBlockWidth+gapForPrevScreen,
       y: 0,
       text: instructionsTextString,
       fontSize: 30,
       fontFamily: "HelveticaNeue-Medium",
       textFill: DIRECTION_STEP_ITEM_INSTR_COLOR,
-      width: width-pathBlockWidth,
+      width: width-pathBlockWidth-gapForPrevScreen,
       padding: 5,
       align: "left"
     });
@@ -588,12 +593,12 @@ define(["color-constants",
       pathColor = WALKING_STEP_COLOR;
     }
     
-    var pathItem = DrawFns.createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
+    var pathItem = DrawFns.createDirectionStepPathItem(gapForPrevScreen, pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
     
     var duration = millisecondsToHumanString(step.duration.value * 1000);
 
     var durationTxt = new Kinetic.Text({
-      x: pathBlockWidth,
+      x: pathBlockWidth+gapForPrevScreen,
       y: height/2,
       text: "(" + duration + ")",
       fontSize: 18,
@@ -634,9 +639,9 @@ define(["color-constants",
     return stepGroup;
   };
 
-  DrawFns.createDirectionStepPathItem = function (xMid, height, thickness, color) {
+  DrawFns.createDirectionStepPathItem = function (gapForPrevScreen, xMid, height, thickness, color) {
     var pathRect = new Kinetic.Rect({
-      x: xMid-thickness/2,
+      x: xMid-thickness/2+gapForPrevScreen,
       y: 0,
       width: thickness,
       height: height,

@@ -53,6 +53,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   GraphicalComparisonScreen.mainLayer.add(GraphicalComparisonScreen.routeButtonsGroup);
 
 // TODO: Think about actual implementation for this
+  var gap = 30;
   var DetailedDirectionsScreen = {
     portraitData: {
       moveDirectionItemHeight: 250,
@@ -60,23 +61,33 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       arrivalBarHeight: 70,
       pathBlockWidth: 50,
       sideBarWidth: 40,
-      sideBarYOffset: 15
+      sideBarYOffset: 15,
+      gapForPrevScreen: gap
     },
     mainLayer: new Kinetic.Layer(),
+    tabGroup: new Kinetic.Group(),
     arrivalTimeGroup: new Kinetic.Group(),
     directionsGroup: new Kinetic.Group(),
     background: new Kinetic.Rect({
-      x: 0,
+      x: gap,
       y: 0,
-      width: App.getCanvasWidth(),
+      width: App.getCanvasWidth()-gap,
+      shadow: {
+        color: 'black',
+        offset: {x: -20, y:0},
+        opacity: 0.5,
+        blur: 30
+      },
       height: App.stage.getHeight(),
       fill: DETAILED_DIRECTIONS_SCREEN_BG_COLOR
     })
   };
+  delete gap
 
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
+  DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.tabGroup);
   DetailedDirectionsScreen.mainLayer.hide();
   
 
@@ -207,6 +218,80 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
         finalize();
         /* END RESET */
       }, time);
+    } else if (transition === 'SLIDE LEFT COVER') {
+      endScreen.mainLayer.moveToTop();
+      startScreen.mainLayer.moveToBottom();
+      var orig_pos = endScreen.mainLayer.getPosition();
+      endScreen.mainLayer.show();
+
+      var initialFractionComplete = -endScreen.mainLayer.getOffset().x/App.getCanvasWidth();
+
+
+      var anim = new Kinetic.Animation({
+        func: function(frame) {
+
+          var fractionComplete = frame.time/time*(1-initialFractionComplete)+initialFractionComplete;
+          fractionComplete = Math.min(fractionComplete, 1);
+          fractionComplete = Math.max(fractionComplete, 0);
+          var width = App.getCanvasWidth();
+
+          endScreen.mainLayer.setOffset(
+            -(width-fractionComplete*width),
+            endScreen.mainLayer.getPosition().y);
+          endScreen.mainLayer.draw();
+          startScreen.mainLayer.draw();
+        },
+        node: App.stage
+      });
+
+      anim.start();
+      setTimeout(function () {
+        anim.stop();
+        /* RESET ORIGINAL SCREEN AND HIDE IT */
+        //startScreen.mainLayer.setPosition(0,0);
+        endScreen.mainLayer.setOffset(0,0);
+        startScreen.mainLayer.draw();
+        endScreen.mainLayer.draw();
+        finalize();
+        /* END RESET */
+      }, time);
+    } else if (transition === 'SLIDE RIGHT UNCOVER') {
+      endScreen.mainLayer.moveToTop();
+      startScreen.mainLayer.moveToBottom();
+      var orig_pos = endScreen.mainLayer.getPosition();
+      endScreen.mainLayer.show();
+
+      var initialFractionComplete = -endScreen.mainLayer.getOffset().x/App.getCanvasWidth();
+
+
+      var anim = new Kinetic.Animation({
+        func: function(frame) {
+
+          var fractionComplete = frame.time/time*(initialFractionComplete)+(1-initialFractionComplete);
+          fractionComplete = Math.min(fractionComplete, 1);
+          fractionComplete = Math.max(fractionComplete, 0);
+          var width = App.getCanvasWidth();
+
+          endScreen.mainLayer.setOffset(
+            -(fractionComplete*width),
+            endScreen.mainLayer.getPosition().y);
+          endScreen.mainLayer.draw();
+          startScreen.mainLayer.draw();
+        },
+        node: App.stage
+      });
+
+      anim.start();
+      setTimeout(function () {
+        anim.stop();
+        /* RESET ORIGINAL SCREEN AND HIDE IT */
+        //startScreen.mainLayer.setPosition(0,0);
+        endScreen.mainLayer.setOffset(App.getCanvasWidth(),0);
+        startScreen.mainLayer.draw();
+        endScreen.mainLayer.draw();
+        finalize();
+        /* END RESET */
+      }, time);
     }
   };
 
@@ -262,10 +347,15 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     }
   };
 
-  var generateRouteIconSelectedFunction = function (button, direction) {
+  var generateRouteIconClickDownFunction = function (button, direction) {
     return function () {
       App.chosen_direction = direction;
       displayDetailedDirections();
+      //button.origPos = button.getPosition();
+      //button.moveTo(DetailedDirectionsScreen.mainLayer);
+
+      DetailedDirectionsScreen.mainLayer.draw();
+      GraphicalComparisonScreen.mainLayer.draw();
       /*
       console.log("Oh, HAI");
 
@@ -289,45 +379,77 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     }
   };
 
-  var generateRouteButtonBounceFunction = function (button, direction) {
-    return function () {
-      console.log("bounce");
-      var old_button_pos = button.getPosition();
-      var time = 1000;
-      button.moveTo(DetailedDirectionsScreen.mainLayer);
-      DetailedDirectionsScreen.mainLayer.show();
-      DetailedDirectionsScreen.mainLayer.moveToTop();
-      button.setPosition({x: -button.getWidth(), y:old_button_pos.y});
+  var generateRouteButtonDraggedFunction = function (button, direction) {
+    return function (e) {
+      DetailedDirectionsScreen.mainLayer.setOffset({x:-button.getPosition().x-button.getWidth()+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y:0});
       DetailedDirectionsScreen.mainLayer.draw();
-
-      var anim = new Kinetic.Animation({
-        func: function(frame) {
-          var offset = Math.abs(Math.sin(frame.time * Math.PI / time * 3))*(time/frame.time*0.1);
-          DetailedDirectionsScreen.mainLayer.setOffset({x:-App.getCanvasWidth()+offset*30, y:0});
-          DetailedDirectionsScreen.mainLayer.draw();
-        },
-        node: App.stage
-      });
-
-      anim.start();
-
-      setTimeout(function () {
-        anim.stop();
-
-        /* RESET ORIGINAL SCREEN AND HIDE IT */
-        DetailedDirectionsScreen.mainLayer.setOffset({x:0, y:0});
-        DetailedDirectionsScreen.mainLayer.hide();
-        button.moveTo(GraphicalComparisonScreen.routeButtonsGroup);
-        button.setPosition(old_button_pos);
-        GraphicalComparisonScreen.mainLayer.draw();
-        DetailedDirectionsScreen.mainLayer.draw();
-        /* END RESET */
-
-        // XXX: FIX THIS!
-        transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
-      }, time);
+      button.isBeingDragged = true;
     }
-  }
+  };
+
+  var generateRouteButtonDragEndFunction = function (button, direction) {
+    return function (e) {
+      console.log(button.isBeingDragged);
+      if (button.getPosition().x > App.getCanvasWidth()*4/5 && !button.isBeingDragged) {
+        console.log("bounce");
+        var old_button_pos = button.origPos;
+        var time = 1000;
+        button.moveTo(DetailedDirectionsScreen.tabGroup);
+        button.setPosition({x: -button.getWidth()+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y: button.getPosition().y});
+  
+        var anim = new Kinetic.Animation({
+          func: function(frame) {
+            var offset = Math.abs(Math.sin(frame.time * Math.PI / time * 3))*(time/frame.time*0.1);
+            DetailedDirectionsScreen.mainLayer.setOffset({x:-App.getCanvasWidth()+offset*30, y:0});
+            GraphicalComparisonScreen.mainLayer.draw();
+            DetailedDirectionsScreen.mainLayer.draw();
+          },
+          node: App.stage
+        });
+  
+        anim.start();
+  
+        setTimeout(function () {
+          anim.stop();
+  
+          /* RESET ORIGINAL SCREEN AND HIDE IT */
+          //DetailedDirectionsScreen.mainLayer.setOffset({x:0, y:0});
+          //DetailedDirectionsScreen.mainLayer.hide();
+          button.moveTo(GraphicalComparisonScreen.routeButtonsGroup);
+          button.setPosition(old_button_pos);
+          GraphicalComparisonScreen.mainLayer.draw();
+          DetailedDirectionsScreen.mainLayer.draw();
+          /* END RESET */
+        }, time);
+      } else if (button.getPosition().x < App.getCanvasWidth()*3/5 && button.isBeingDragged) {
+        console.log('TRANS');
+        button.moveTo(DetailedDirectionsScreen.tabGroup);
+        button.setPosition({x: -button.getWidth()+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y: button.getPosition().y});
+        transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT COVER', App.MEDIUM_DELAY);
+        setTimeout(function () {
+          button.moveTo(GraphicalComparisonScreen.routeButtonsGroup);
+        }, App.MEDIUM_DELAY);
+      } else {
+        console.log('RET' && button.isBeingDragged);
+        button.moveTo(DetailedDirectionsScreen.tabGroup);
+        button.setPosition({x: -button.getWidth()+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y: button.getPosition().y});
+        transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE RIGHT UNCOVER', App.MEDIUM_DELAY);
+        setTimeout(function () {
+          button.moveTo(GraphicalComparisonScreen.routeButtonsGroup);
+          button.setPosition(button.origPos);
+          GraphicalComparisonScreen.mainLayer.draw()
+        }, App.MEDIUM_DELAY);
+      }
+      button.isBeingDragged = false
+    }
+  };
+
+  var generateRouteButtonBounceFunction = function (button, direction) {
+    //return function() {};
+    return function () {
+
+    }
+  };
 
   var generateSearchFieldFunction = function (fieldId) {
     return function () {
@@ -341,7 +463,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       
         listGroup.removeChildren(); // Clear the list
 
-        listGroup.setDraggable('true');
+        listGroup.setDraggable(true);
         listGroup.setPosition(0,0);
 
         var currYOffset = 0;
@@ -583,6 +705,12 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   };
 
   var displayGraphicalRoutes = function () {
+
+    // Prepare next screen for display (to enable dragging)
+    DetailedDirectionsScreen.mainLayer.show();
+    DetailedDirectionsScreen.mainLayer.moveToTop();
+    DetailedDirectionsScreen.mainLayer.setOffset({x:-App.getCanvasWidth(), y:0});
+
     GraphicalComparisonScreen.routeItemsGroup.setPosition({x: 0, y: 0});
     GraphicalComparisonScreen.routeItemsGroup.removeChildren();
     GraphicalComparisonScreen.routeButtonsGroup.removeChildren();
@@ -660,8 +788,13 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
                                      GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth, 
                                      GraphicalComparisonScreen.portraitData.routeItemHeight);
         
-        graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
-        graphicalRouteButton.on('mouseup touchend', generateRouteButtonBounceFunction(graphicalRouteButton, direction));
+        graphicalRouteButton.setDraggable(true);
+        graphicalRouteButton.on('mousedown touchstart', generateRouteIconClickDownFunction(graphicalRouteButton, direction));
+        graphicalRouteButton.on('dragmove', generateRouteButtonDraggedFunction(graphicalRouteButton, direction));
+        graphicalRouteButton.on('mouseup touchend dragend', generateRouteButtonDragEndFunction(graphicalRouteButton, direction));
+        graphicalRouteButton.setDragBoundFunc(function (pos) {
+          return {x: pos.x, y: this.getPosition().y};
+        });
       }
       
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
@@ -670,7 +803,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       }
     }
     
-    GraphicalComparisonScreen.routeItemsGroup.setDraggable("true");
+    GraphicalComparisonScreen.routeItemsGroup.setDraggable(true);
 
     var min_x = posFromTime(earliestScrollTime, App.departure_time, scalingFactor);
     var max_x = posFromTime(latestScrollTime, App.departure_time, scalingFactor)-App.getCanvasWidth();
@@ -709,14 +842,14 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
       if (diff_ms > App.CONSIDER_THIS_WAIT_TIME_MS) {
         var height = DetailedDirectionsScreen.portraitData.waitDirectionItemHeight;
-        var waitStepItem = DrawFns.createDirectionWaitItem(heightOffset, width, height, diff_ms);
+        var waitStepItem = DrawFns.createDirectionWaitItem(DetailedDirectionsScreen.portraitData.gapForPrevScreen, heightOffset, width, height, diff_ms);
         heightOffset += height;
         DetailedDirectionsScreen.directionsGroup.add(waitStepItem);
       } 
 
       var height = DetailedDirectionsScreen.portraitData.moveDirectionItemHeight;
       var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
-      var stepItem = DrawFns.createDirectionStepItem(heightOffset, width, height, pathBlockWidth, step);
+      var stepItem = DrawFns.createDirectionStepItem(DetailedDirectionsScreen.portraitData.gapForPrevScreen, heightOffset, width, height, pathBlockWidth, step);
       heightOffset += height;
 
       stepEndTime = new Date(stepStartTime);
@@ -725,7 +858,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       DetailedDirectionsScreen.directionsGroup.add(stepItem);
     }
 
-    DetailedDirectionsScreen.directionsGroup.setDraggable('true');
+    DetailedDirectionsScreen.directionsGroup.setDraggable(true);
     DetailedDirectionsScreen.directionsGroup.setDragBoundFunc(function (pos) {
       var y = pos.y;
       var max_y = Math.max(heightOffset - App.getCanvasHeight(), 0);
@@ -740,7 +873,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var barY = App.getCanvasHeight()-barHeight;
     var barWidth = App.getCanvasWidth();
     var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
-    var arrivalBar = DrawFns.createArrivalBar(barWidth, barHeight, barY, direction.arrival_time.text, pathBlockWidth);
+    var arrivalBar = DrawFns.createArrivalBar(DetailedDirectionsScreen.portraitData.gapForPrevScreen, barWidth, barHeight, barY, direction.arrival_time.text, pathBlockWidth);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
     DetailedDirectionsScreen.mainLayer.draw();
