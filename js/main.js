@@ -713,15 +713,24 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var heightOffset = 0;
     var mapXOffset = 20;
     var mapYOffset = 20;
-    var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap" +
-"&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318" +
-"&markers=color:red%7Ccolor:red%7Clabel:C%7C40.718217,-73.998284&sensor=false";
+
     var departureTime = new Date(direction.departure_time.value);
     var stepStartTime = departureTime;
     var stepEndTime = new Date(departureTime);
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var step = direction.steps[stepIdx];
-
+      if (step.travel_mode === "WALKING") {
+          var mapStartCoord = step.start_location.toString();
+          mapStartCoord = mapStartCoord.replace("(", "").replace(")", ""); // strip parens for url
+          var mapEndCoord = step.end_location.toString();
+          mapEndCoord = mapEndCoord.replace("(", "").replace(")", ""); //strip parens for url
+          console.log("start coordinate: " + mapStartCoord.toString());
+          console.log("end coordinate: " + mapEndCoord.toString());
+          var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?center=" + mapStartCoord + "&zoom=13&size=300x300&maptype=roadmap" +
+"&markers=color:blue%7Clabel:A%7C"+ mapStartCoord + "&markers=color:green%7Clabel:B%7C" + mapEndCoord +
+"&sensor=false";
+          console.log("map url: " + mapSrc);
+      }
       if (step.travel_mode === "TRANSIT") {
         stepStartTime = new Date(step.transit.departure_time.value);
       }
