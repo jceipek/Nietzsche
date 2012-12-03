@@ -584,7 +584,7 @@ define(["color-constants",
     return waitGroup;
   };
 
-  DrawFns.createDirectionStepItem = function (y, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc) {
+  DrawFns.createDirectionStepItem = function (y, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc, callback) {
 
     var stepGroup = new Kinetic.Group();
     stepGroup.setPosition(0,y);
@@ -603,7 +603,7 @@ define(["color-constants",
       x: pathBlockWidth,
       y: 0,
       text: instructionsTextString,
-      fontSize: 30,
+      fontSize: 22,
       fontFamily: "HelveticaNeue-Medium",
       textFill: DIRECTION_STEP_ITEM_INSTR_COLOR,
       width: width-pathBlockWidth,
@@ -611,7 +611,7 @@ define(["color-constants",
       align: "left"
     });
 
-
+    //assign appropriate colors to each step
     var pathColor = UNKNOWN_STEP_COLOR;
 
     if (step.travel_mode === "TRANSIT") {
@@ -632,7 +632,8 @@ define(["color-constants",
     var pathItem = DrawFns.createDirectionStepPathItem(pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
     
     var duration = millisecondsToHumanString(step.duration.value * 1000);
-
+    
+    //display text showing how long the step takes
     var durationTxt = new Kinetic.Text({
       x: pathBlockWidth,
       y: height/2,
@@ -643,29 +644,33 @@ define(["color-constants",
       padding: 5,
       align: "left"
     });
-    stepGroup.add(background);
+
+    stepGroup.add(background); //add bg so it doesn't cover the map
 
     if (step.travel_mode === "WALKING") {
       //make a google map :D
       console.log("step is: " + step.instructions);
       console.log("centering map on " + step.start_location.toString());
+      console.log("block width: " + pathBlockWidth);
+      console.log("height: " + height);
 
       var imageObj = new Image();
-      imageObj.onLoad = function() {
+      imageObj.src = mapSrc;
+      imageObj.onload = function() {
+        console.log("added map to stepGroup"); 
         var map = new Kinetic.Image({
-          x: width-mapXOffset,
+          x: mapXOffset,
           y: height-mapYOffset,
           image: imageObj,
-          width: 300,
-          height: 300
+          width: 350,
+          height: 200
         });
         stepGroup.add(map);
-        console.log("added map to stepGroup");     
+        callback();    
       };
-      imageObj.src = mapSrc;
+      console.log(imageObj);
     }
 
-    //stepGroup.add(background);
     stepGroup.add(instructionsText);
     stepGroup.add(pathItem);
     stepGroup.add(durationTxt);
@@ -684,7 +689,8 @@ define(["color-constants",
     return pathRect;
   };
 
-  DrawFns.displayDelayDesignA = function (appWidth, appHeight, alertText) {
+  /* //Unused code from testing various delay alert implementations
+    DrawFns.displayDelayDesignA = function (appWidth, appHeight, alertText) {
     DrawFns.createModal(appWidth, appHeight, alertText);
   }
 
@@ -729,7 +735,7 @@ define(["color-constants",
     modalGroup.add(text);
     console.log("added all elements");
     return modalGroup;
-  }
+  }*/
 
   return DrawFns;
 });
