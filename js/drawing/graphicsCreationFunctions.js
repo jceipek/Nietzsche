@@ -111,7 +111,7 @@ define(["color-constants",
       attrs: {
         swapTextFill: '#fff'
       },
-      width: route.category.length+130,
+      width: route.category.length + 130,
       padding: 20,
       align: 'right',
     });
