@@ -471,7 +471,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var scalingFactor = scalingFactor;
-
+    var waitStep = null;
   
     var start = posFromTime(departureTime, App.departure_time, scalingFactor);
 
@@ -488,6 +488,21 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
             stepColor = BUS_STEP_COLOR;
           }
         }
+        if(timeOffset > departureTime) {
+          console.log('timeoffset: ' + timeOffset);
+        
+          var stepStart = posFromTime(timeOffset, App.departure_time, scalingFactor);
+          timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
+          var stepEnd = new Date(timeOffset);
+          
+          console.log('departureTime: ' + timeOffset);
+          
+          stepEnd.setSeconds(stepEnd.getSeconds());
+          stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+          
+          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, stepStart, stepEnd, "red");
+        }
+        
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
         stepColor = DRIVING_STEP_COLOR;
@@ -535,6 +550,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
+      if(waitStep !== null){
+        routeGroup.add(waitStep);
+      }
       routeGroup.add(stepLine);
 
       var icon = null;

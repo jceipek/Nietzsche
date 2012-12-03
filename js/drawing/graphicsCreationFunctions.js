@@ -513,7 +513,21 @@ define(["color-constants",
     arrivalBarGroup.add(text);
     return arrivalBarGroup;
   };
-
+  
+  // TODO: declare two lines instead of one rectangle
+   DrawFns.createWaitStep = function (yMid, thickness, start, end, color) {
+    var waitLineGroup = new Kinetic.Group();
+    var background = new Kinetic.Rect({
+      x: start,
+      y: yMid-thickness/2,
+      width: end-start,
+      height: thickness/4,
+      fill: color
+    });
+    waitLineGroup.add(background);
+    return waitLineGroup;
+  };
+  
   DrawFns.createDirectionWaitItem = function (y, width, height, msWaitTime) {
     var textInset = height*0.25;
     var waitGroup = new Kinetic.Group();
