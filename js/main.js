@@ -84,7 +84,6 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   App.stage.add(GraphicalComparisonScreen.mainLayer);
   App.stage.add(RouteSelectionScreen.mainLayer);
 
-
   // Given a route and a search string, indicates whether the route
   //   matches the string.
   var routeMatchesStringFilter = function (route, string, type) {
@@ -236,7 +235,6 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
         }
         displayGraphicalRoutes();
         console.log(response);
-        console.log(JSON.stringify(response));
       } else {
         console.log('Routing Failed!');
       }
@@ -268,6 +266,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     return function () {
       App.chosen_direction = direction;
       displayDetailedDirections();
+      /*
+      console.log("Oh, HAI");
+
       transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
       if (App.simulate_delay) {
         var delay_time = App.MIN_TIME_UNTIL_SIMULATED_DELAY + Math.random() * (App.MAX_TIME_UNTIL_SIMULATED_DELAY - App.MIN_TIME_UNTIL_SIMULATED_DELAY);
@@ -276,22 +277,57 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           console.log("DELAY!");
           if (App.isDesignA()) {
               displayDelayDesignA();
-              //DrawFns.displayDelayDesignA(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
-              //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your train is running late");
-            
           }
           if (App.isDesignB()) {
             displayDelayDesignB();
-            //DrawFns.displayDelayDesignB(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
-            //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your train is running late");
-
             transitionScreen(DetailedDirectionsScreen, GraphicalComparisonScreen, 'SWAP', App.MEDIUM_DELAY);
           }
         }, delay_time);
       }
+      */
       console.log('To the detailed directions screen!');
     }
   };
+
+  var generateRouteButtonBounceFunction = function (button, direction) {
+    return function () {
+      console.log("bounce");
+      var old_button_pos = button.getPosition();
+      var time = 1000;
+      button.moveTo(DetailedDirectionsScreen.mainLayer);
+      DetailedDirectionsScreen.mainLayer.show();
+      DetailedDirectionsScreen.mainLayer.moveToTop();
+      button.setPosition({x: -button.getWidth(), y:old_button_pos.y});
+      DetailedDirectionsScreen.mainLayer.draw();
+
+      var anim = new Kinetic.Animation({
+        func: function(frame) {
+          var offset = Math.abs(Math.sin(frame.time * Math.PI / time * 3))*(time/frame.time*0.1);
+          DetailedDirectionsScreen.mainLayer.setOffset({x:-App.getCanvasWidth()+offset*30, y:0});
+          DetailedDirectionsScreen.mainLayer.draw();
+        },
+        node: App.stage
+      });
+
+      anim.start();
+
+      setTimeout(function () {
+        anim.stop();
+
+        /* RESET ORIGINAL SCREEN AND HIDE IT */
+        DetailedDirectionsScreen.mainLayer.setOffset({x:0, y:0});
+        DetailedDirectionsScreen.mainLayer.hide();
+        button.moveTo(GraphicalComparisonScreen.routeButtonsGroup);
+        button.setPosition(old_button_pos);
+        GraphicalComparisonScreen.mainLayer.draw();
+        DetailedDirectionsScreen.mainLayer.draw();
+        /* END RESET */
+
+        // XXX: FIX THIS!
+        transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE LEFT', App.MEDIUM_DELAY);
+      }, time);
+    }
+  }
 
   var generateSearchFieldFunction = function (fieldId) {
     return function () {
@@ -435,7 +471,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var scalingFactor = scalingFactor;
-
+    var waitStep = null;
   
     var start = posFromTime(departureTime, App.departure_time, scalingFactor);
 
@@ -452,6 +488,21 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
             stepColor = BUS_STEP_COLOR;
           }
         }
+        if(timeOffset > departureTime) {
+          console.log('timeoffset: ' + timeOffset);
+        
+          var stepStart = posFromTime(timeOffset, App.departure_time, scalingFactor);
+          timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
+          var stepEnd = new Date(timeOffset);
+          
+          console.log('departureTime: ' + timeOffset);
+          
+          stepEnd.setSeconds(stepEnd.getSeconds());
+          stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+          
+          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_ITEM_BORDER_COLOR);
+        }
+        
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
         stepColor = DRIVING_STEP_COLOR;
@@ -499,6 +550,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
+      if(waitStep !== null){
+        routeGroup.add(waitStep);
+      }
       routeGroup.add(stepLine);
 
       var icon = null;
@@ -625,6 +679,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
                                      GraphicalComparisonScreen.portraitData.routeItemHeight);
         
         graphicalRouteButton.on('mousedown touchstart', generateRouteIconSelectedFunction(graphicalRouteButton, direction));
+        graphicalRouteButton.on('mouseup touchend', generateRouteButtonBounceFunction(graphicalRouteButton, direction));
       }
       
       GraphicalComparisonScreen.routeItemsGroup.add(graphicalRouteItem);
@@ -652,6 +707,8 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   };
 
   var displayDetailedDirections = function () {
+    DetailedDirectionsScreen.directionsGroup.removeChildren();
+    DetailedDirectionsScreen.arrivalTimeGroup.removeChildren();
     var direction = App.chosen_direction;
     var heightOffset = 0;
     var mapXOffset = 20;
@@ -714,7 +771,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   };
 
   var displayDelayDesignA = function () {
-    // TODO: IMPLEMENT ASAP
+    // WE ARE NOT USING THIS
     var width = DetailedDirectionsScreen.portraitData.sideBarWidth;
     var y = DetailedDirectionsScreen.portraitData.sideBarYOffset;
     var height = App.getCanvasHeight() - DetailedDirectionsScreen.portraitData.arrivalBarHeight - y*2;
@@ -727,11 +784,10 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     DetailedDirectionsScreen.arrivalTimeGroup.add(msgBubble);
     DetailedDirectionsScreen.arrivalTimeGroup.add(sideBar);
     DetailedDirectionsScreen.mainLayer.draw();
-    //DrawFns.createModal(App.getCanvasWidth(), App.stage.getHeight, "Your route has changed! \n New arrival time: 7:02 \n 3 new steps");
   };
 
   var displayDelayDesignB = function () {
-    // TODO: IMPLEMENT ASAP
+    // TODO: IMPLEMENT ASAP. This is the one we are using
     App.chosen_direction.is_viable = false;
     App.directions = [App.chosen_direction];
     displayGraphicalRoutes();
