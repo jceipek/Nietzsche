@@ -68,11 +68,11 @@ define(["color-constants",
       strokeWidth: 4
     });
 
-    var nickname = new Kinetic.Text({
+    var routeName = new Kinetic.Text({
       name: 'text',
       x: 0,
       y: 0,
-      text: route.nickname,
+      text: route.name,
       fontSize: 24,
       fontFamily: 'HelveticaNeue-Medium',
       textFill: '#000',
@@ -86,9 +86,9 @@ define(["color-constants",
 
     var routeDetails = new Kinetic.Text({
       name: 'text',
-      x: 0,
+      x: route.category.length + 110,
       y: 40,
-      text: route.name + "\n" + route.address +"\n" + route.location,
+      text: route.address +"\n" + route.location,
       fontSize: 20,
       fontFamily: 'HelveticaNeue',
       textFill: '#555',
@@ -99,12 +99,29 @@ define(["color-constants",
       padding: 20,
       align: 'left',
     });
+    
+    var infoRouteDetails = new Kinetic.Text({
+      name: 'text',
+      x: 0,
+      y: 40,
+      text: route.category,
+      fontSize: 20,
+      fontFamily: 'HelveticaNeue',
+      textFill: '#a0a8c1',
+      attrs: {
+        swapTextFill: '#fff'
+      },
+      width: route.category.length+130,
+      padding: 20,
+      align: 'right',
+    });
 
     group.setPosition(0, y);
     group.setWidth(width);
     group.setHeight(height);
     group.add(background);
-    group.add(nickname);
+    group.add(routeName);
+    group.add(infoRouteDetails);
     group.add(routeDetails);
     return group;
   };
