@@ -711,26 +711,34 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     DetailedDirectionsScreen.arrivalTimeGroup.removeChildren();
     var direction = App.chosen_direction;
     var heightOffset = 0;
-    var mapXOffset = 20;
-    var mapYOffset = 20;
+
+    //positioning for the map
+    var mapXOffset = 275;
+    var mapYOffset = 210;
 
     var departureTime = new Date(direction.departure_time.value);
     var stepStartTime = departureTime;
     var stepEndTime = new Date(departureTime);
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var step = direction.steps[stepIdx];
+      
       if (step.travel_mode === "WALKING") {
-          var mapStartCoord = step.start_location.toString();
-          mapStartCoord = mapStartCoord.replace("(", "").replace(")", ""); // strip parens for url
-          var mapEndCoord = step.end_location.toString();
-          mapEndCoord = mapEndCoord.replace("(", "").replace(")", ""); //strip parens for url
-          console.log("start coordinate: " + mapStartCoord.toString());
-          console.log("end coordinate: " + mapEndCoord.toString());
-          var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?center=" + mapStartCoord + "&zoom=13&size=300x300&maptype=roadmap" +
+        //create start and end coordinates to mark on map
+        var mapStartCoord = step.start_location.toString();
+        mapStartCoord = mapStartCoord.replace("(", "").replace(")", ""); // strip parens for url
+        var mapEndCoord = step.end_location.toString();
+        mapEndCoord = mapEndCoord.replace("(", "").replace(")", ""); //strip parens for url
+        var polyline_data = step.polyline.points.toString().replace("@","%40").replace(":","%3A").replace("|","%7C").replace("~","%7E");
+        console.log("polyline: " + polyline_data);
+        console.log("start coordinate: " + mapStartCoord.toString());
+        console.log("end coordinate: " + mapEndCoord.toString());
+        var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?center=" + mapStartCoord + "&zoom=16&size=350x200&maptype=roadmap" +
 "&markers=color:blue%7Clabel:A%7C"+ mapStartCoord + "&markers=color:green%7Clabel:B%7C" + mapEndCoord +
-"&sensor=false";
-          console.log("map url: " + mapSrc);
+"&path=color:0x0000ff%7Cweight:5%7C" + mapStartCoord + "%7C" + mapEndCoord + "&sensor=false";
+        //var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?size=350x200&path=weight:5%7Ccolor:0x0000ff%7Cenc:"+polyline_data;
+        console.log("map url: " + mapSrc);
       }
+
       if (step.travel_mode === "TRANSIT") {
         stepStartTime = new Date(step.transit.departure_time.value);
       }
@@ -748,7 +756,10 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
       var height = DetailedDirectionsScreen.portraitData.moveDirectionItemHeight;
       var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
-      var stepItem = DrawFns.createDirectionStepItem(heightOffset, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc);
+      var stepItem = DrawFns.createDirectionStepItem(heightOffset, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc,
+        function () {
+          DetailedDirectionsScreen.mainLayer.draw();
+        });
       DetailedDirectionsScreen.mainLayer.draw();
       heightOffset += height;
 
@@ -779,7 +790,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     DetailedDirectionsScreen.mainLayer.draw();
   };
 
-  var displayDelayDesignA = function () {
+  /*var displayDelayDesignA = function () {
     // WE ARE NOT USING THIS
     var width = DetailedDirectionsScreen.portraitData.sideBarWidth;
     var y = DetailedDirectionsScreen.portraitData.sideBarYOffset;
@@ -801,7 +812,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     App.directions = [App.chosen_direction];
     displayGraphicalRoutes();
     
-  };
+  };*/
 
   var getFirstRouteWithMatch = function (string) {
     for (var routeIdx = 0; routeIdx < PossibleRoutes.length; routeIdx++)
@@ -831,14 +842,4 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
   App.heightOffset = $('#top-bar').height();
 
-  //$('#to-field').bind('click', focus-to-field());
-
- // $('#to-field').bind('touchstart', function() {
-   //  $('#to-field').focus();
-    //});
-    //$('#to-field').trigger('touchstart');
-  
-  //function focus-to-field() {
-    //$('#to-field').focus();
-  //}
 });
