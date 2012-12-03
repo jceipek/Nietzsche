@@ -539,7 +539,7 @@ define(["color-constants",
     return waitGroup;
   };
 
-  DrawFns.createDirectionStepItem = function (y, width, height, pathBlockWidth, step) {
+  DrawFns.createDirectionStepItem = function (y, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc) {
 
     var stepGroup = new Kinetic.Group();
     stepGroup.setPosition(0,y);
@@ -598,35 +598,33 @@ define(["color-constants",
       padding: 5,
       align: "left"
     });
+    stepGroup.add(background);
 
     if (step.travel_mode === "WALKING") {
       //make a google map :D
       console.log("step is: " + step.instructions);
       console.log("centering map on " + step.start_location.toString());
-      var displayWalkingMap = function() {
-        console.log("starting displayWalkingMap");
-        var directionsDisplay = new google.maps.DirectionsRenderer();  
-        var mapOptions = {
-          zoom: 7,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: step.start_location
-        }
-        map = new google.maps.Map(document.getElementById("screenContainer"), mapOptions);
-        
-        directionsDisplay.setMap(map);
-        console.log("did directionsDisplay.setMap");
-        
+
+      var imageObj = new Image();
+      imageObj.onLoad = function() {
+        var map = new Kinetic.Image({
+          x: width-mapXOffset,
+          y: height-mapYOffset,
+          image: imageObj,
+          width: 300,
+          height: 300
+        });
+        stepGroup.add(map);
+        console.log("added map to stepGroup");     
       };
-      //var walkingMap = displayWalkingMap();
-      //stepGroup.add(walkingMap);
-      //console.log("added map to stepGroup");
+      imageObj.src = mapSrc;
     }
 
-    stepGroup.add(background);
+    //stepGroup.add(background);
     stepGroup.add(instructionsText);
     stepGroup.add(pathItem);
     stepGroup.add(durationTxt);
-    
+
     return stepGroup;
   };
 
