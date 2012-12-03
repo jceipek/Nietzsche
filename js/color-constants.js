@@ -10,6 +10,7 @@ var DRIVING_STEP_COLOR = 'black';
 var WALKING_STEP_COLOR = '#00CED1';
 var UNKNOWN_STEP_COLOR = 'black';
 
+var WAIT_TIME_COLOR = 'black';
 var WAIT_ITEM_BG_COLOR = '#aaa';
 var WAIT_ITEM_TEXT_COLOR = 'white';
 var WAIT_ITEM_BORDER_COLOR = 'black';

@@ -472,6 +472,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var duration = direction.duration.value;
     var scalingFactor = scalingFactor;
     var waitStep = null;
+    var depart = new Date(direction.departure_time.value);
+    depart.setSeconds(depart.getSeconds()+direction.steps[0].duration.value);
+    var arrival = new Date(direction.steps[1].transit.departure_time.value)
   
     var start = posFromTime(departureTime, App.departure_time, scalingFactor);
 
@@ -488,25 +491,46 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
             stepColor = BUS_STEP_COLOR;
           }
         }
+        // XXX: This is a hack. It's not working if the route has a walking step following by a driving step or viceversa'
         if(timeOffset > departureTime) {
-          console.log('timeoffset: ' + timeOffset);
-        
           var stepStart = posFromTime(timeOffset, App.departure_time, scalingFactor);
           timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
           var stepEnd = new Date(timeOffset);
-          
-          console.log('departureTime: ' + timeOffset);
-          
+
           stepEnd.setSeconds(stepEnd.getSeconds());
           stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
           
-          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_ITEM_BORDER_COLOR);
+          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_TIME_COLOR);
         }
         
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
+        if(stepIdx === 0){
+          if(arrival > depart) {
+            var stepStart = posFromTime(arrival, App.departure_time, scalingFactor);
+            timeOffset = new Date(departureTime+direction.steps[stepIdx].duration.value);
+            var stepEnd = new Date(timeOffset);
+            
+            stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
+            stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+            
+            waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_TIME_COLOR);
+          }
+        }
         stepColor = DRIVING_STEP_COLOR;
       } else if (direction.steps[stepIdx].travel_mode === "WALKING") { 
+       if(stepIdx === 0){
+          if(arrival > depart) {
+            var stepStart = posFromTime(arrival, App.departure_time, scalingFactor);
+            timeOffset = new Date(departureTime+direction.steps[stepIdx].duration.value);
+            var stepEnd = new Date(timeOffset);
+            
+            stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
+            stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+            
+            waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_TIME_COLOR);
+          }
+        }
         stepColor = WALKING_STEP_COLOR;
       }
 
