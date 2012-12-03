@@ -752,14 +752,12 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
         mapStartCoord = mapStartCoord.replace("(", "").replace(")", ""); // strip parens for url
         var mapEndCoord = step.end_location.toString();
         mapEndCoord = mapEndCoord.replace("(", "").replace(")", ""); //strip parens for url
-        var polyline_data = step.polyline.points.toString().replace("@","%40").replace(":","%3A").replace("|","%7C").replace("~","%7E");
+        var polyline_data = step.polyline.points.toString();
         console.log("polyline: " + polyline_data);
         console.log("start coordinate: " + mapStartCoord.toString());
         console.log("end coordinate: " + mapEndCoord.toString());
-        var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?center=" + mapStartCoord + "&zoom=16&size=350x200&maptype=roadmap" +
-"&markers=color:blue%7Clabel:A%7C"+ mapStartCoord + "&markers=color:green%7Clabel:B%7C" + mapEndCoord +
-"&path=color:0x0000ff%7Cweight:5%7C" + mapStartCoord + "%7C" + mapEndCoord + "&sensor=false";
-        //var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?size=350x200&path=weight:5%7Ccolor:0x0000ff%7Cenc:"+polyline_data;
+        var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?size=350x200&path=weight:5%7Ccolor:0x0000ff%7Cenc:"+polyline_data+
+        "&markers=color:blue%7Clabel:A%7C"+ mapStartCoord + "&markers=color:green%7Clabel:B%7C" + mapEndCoord + "&sensor=false";
         console.log("map url: " + mapSrc);
       }
 
