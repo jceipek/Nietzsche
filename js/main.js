@@ -423,6 +423,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           /* END RESET */
         }, time);
       } else if (button.getPosition().x < App.getCanvasWidth()*3/5 && button.isBeingDragged) {
+        
         console.log('TRANS');
         button.moveTo(DetailedDirectionsScreen.tabGroup);
         button.setPosition({x: -button.getWidth()+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y: button.getPosition().y});
@@ -430,8 +431,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
         setTimeout(function () {
           button.moveTo(GraphicalComparisonScreen.routeButtonsGroup);
         }, App.MEDIUM_DELAY);
-      } else {
-        console.log('RET' && button.isBeingDragged);
+      } else if (button.isBeingDragged){
+        
+        console.log('RET' + button.isBeingDragged);
         button.moveTo(DetailedDirectionsScreen.tabGroup);
         button.setPosition({x: -button.getWidth()+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y: button.getPosition().y});
         transitionScreen(GraphicalComparisonScreen, DetailedDirectionsScreen, 'SLIDE RIGHT UNCOVER', App.MEDIUM_DELAY);
@@ -441,7 +443,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           GraphicalComparisonScreen.mainLayer.draw()
         }, App.MEDIUM_DELAY);
       }
-      button.isBeingDragged = false
+      button.isBeingDragged = false;
     }
   };
 
@@ -886,12 +888,12 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
         var mapEndCoord = step.end_location.toString();
         mapEndCoord = mapEndCoord.replace("(", "").replace(")", ""); //strip parens for url
         var polyline_data = step.polyline.points.toString();
-        console.log("polyline: " + polyline_data);
-        console.log("start coordinate: " + mapStartCoord.toString());
-        console.log("end coordinate: " + mapEndCoord.toString());
+        //console.log("polyline: " + polyline_data);
+        //console.log("start coordinate: " + mapStartCoord.toString());
+        //console.log("end coordinate: " + mapEndCoord.toString());
         var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?size=350x200&path=weight:5%7Ccolor:0x0000ff%7Cenc:"+polyline_data+
         "&markers=color:blue%7Clabel:A%7C"+ mapStartCoord + "&markers=color:green%7Clabel:B%7C" + mapEndCoord + "&sensor=false";
-        console.log("map url: " + mapSrc);
+        //console.log("map url: " + mapSrc);
       }
 
       if (step.travel_mode === "TRANSIT") {

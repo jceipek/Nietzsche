@@ -715,15 +715,15 @@ define(["color-constants",
 
     if (step.travel_mode === "WALKING") {
       //make a google map :D
-      console.log("step is: " + step.instructions);
-      console.log("centering map on " + step.start_location.toString());
-      console.log("block width: " + pathBlockWidth);
-      console.log("height: " + height);
+      //console.log("step is: " + step.instructions);
+      //console.log("centering map on " + step.start_location.toString());
+      //console.log("block width: " + pathBlockWidth);
+      //console.log("height: " + height);
 
       var imageObj = new Image();
       imageObj.src = mapSrc;
       imageObj.onload = function() {
-        console.log("added map to stepGroup"); 
+        //console.log("added map to stepGroup"); 
         var map = new Kinetic.Image({
           x: mapXOffset,
           y: height-mapYOffset,
@@ -734,7 +734,7 @@ define(["color-constants",
         stepGroup.add(map);
         callback();    
       };
-      console.log(imageObj);
+      //console.log(imageObj);
     }
 
     stepGroup.add(instructionsText);
