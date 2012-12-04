@@ -237,8 +237,12 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       var orig_pos = endScreen.mainLayer.getPosition();
       endScreen.mainLayer.show();
 
-      var initialFractionComplete = -endScreen.mainLayer.getOffset().x/App.getCanvasWidth();
 
+      var initialOffset_x = endScreen.mainLayer.getOffset().x;
+      var initialFractionComplete = -initialOffset_x/App.getCanvasWidth();
+      console.log("Full Width: " + App.getCanvasWidth())
+      console.log("Current Offset: " + initialOffset_x);
+      console.log("Initial Fraction Complete: " + initialFractionComplete);
 
       var anim = new Kinetic.Animation({
         func: function(frame) {
@@ -247,9 +251,11 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           fractionComplete = Math.min(fractionComplete, 1);
           fractionComplete = Math.max(fractionComplete, 0);
           var width = App.getCanvasWidth();
-
-          endScreen.mainLayer.setOffset(
-            -(width-fractionComplete*width),
+          var new_offset = -(1-fractionComplete)*width;
+          if (initialOffset_x > new_offset) {
+            new_offset = initialOffset_x;
+          }
+          endScreen.mainLayer.setOffset(new_offset,
             endScreen.mainLayer.getPosition().y);
           endScreen.mainLayer.draw();
           startScreen.mainLayer.draw();
@@ -274,6 +280,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
       var orig_pos = endScreen.mainLayer.getPosition();
       endScreen.mainLayer.show();
 
+      var initialOffset_x = endScreen.mainLayer.getOffset().x;
       var initialFractionComplete = -endScreen.mainLayer.getOffset().x/App.getCanvasWidth();
 
 
@@ -285,8 +292,12 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           fractionComplete = Math.max(fractionComplete, 0);
           var width = App.getCanvasWidth();
 
-          endScreen.mainLayer.setOffset(
-            -(fractionComplete*width),
+          var new_offset = -(fractionComplete*width);
+          if (initialOffset_x < new_offset) {
+            new_offset = initialOffset_x;
+          }
+
+          endScreen.mainLayer.setOffset(new_offset,
             endScreen.mainLayer.getPosition().y);
           endScreen.mainLayer.draw();
           startScreen.mainLayer.draw();
