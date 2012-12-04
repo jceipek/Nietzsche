@@ -392,7 +392,7 @@ define(["color-constants",
 
   var getBigDivisionSize = function(scalingFactor) {
     // XXX: Currently hardcodes fake width of time bar text
-    var hardcoded_width = 70;
+    var hardcoded_width = 80;
     var div_size = 5;
     while (60*div_size*scalingFactor < hardcoded_width) {
       div_size += 5;

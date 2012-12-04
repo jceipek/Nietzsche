@@ -121,6 +121,15 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var finalize = function () {
       App.heightOffset = $('#top-bar').height();
       App.active_screen = endScreen;
+
+      // XXX: VERY Bad hack to work around problems with sliding:
+      if (endScreen == RouteSelectionScreen) {
+        DetailedDirectionsScreen.mainLayer.moveToBottom();
+        DetailedDirectionsScreen.mainLayer.hide();
+        DetailedDirectionsScreen.mainLayer.draw();
+        App.active_screen.mainLayer.moveToTop();
+        App.active_screen.mainLayer.draw();
+      }
     };
 
     if (time === undefined) {
