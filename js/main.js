@@ -34,7 +34,8 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   var GraphicalComparisonScreen = {
     portraitData: {
       routeItemHeight: 150,
-      routeSelectionButtonWidth: 88,
+      //routeSelectionButtonWidth: 88,
+      routeSelectionButtonWidth: 66,
       timeBarHeight: 40
     },
     mainLayer: new Kinetic.Layer(),

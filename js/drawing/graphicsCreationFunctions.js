@@ -26,6 +26,14 @@ define(["color-constants",
       width: width,
       padding: 10,
       align: 'left',
+      shadow: {
+        color: '#333',
+        offset: {
+          x: 0,
+          y: 1
+        },
+        blur: 3
+      }
     });
 
     var background = new Kinetic.Rect({
@@ -44,8 +52,8 @@ define(["color-constants",
         },
         colorStops: LIST_HEADER_GRADIENT
       },
-      stroke: '#555',
-      strokeWidth: 4
+      stroke: '#333',
+      strokeWidth: 2
     });
 
     group.add(background);
@@ -65,7 +73,7 @@ define(["color-constants",
       height: height,
       fill: 'white',
       stroke: 'grey',
-      strokeWidth: 4
+      strokeWidth: 2
     });
 
     var routeName = new Kinetic.Text({
@@ -312,43 +320,63 @@ define(["color-constants",
   };
   //This is the button that transitions from Screen 2 to Screen 3
   DrawFns.createGraphicalRouteButton = function (x, y, width, height, direction) {
-    var color = "#999999";
     var strokewidth = 3;
     var buttonGroup = new Kinetic.Group();
-    buttonGroup.setPosition({x: x, y: y+strokewidth});
+    
     var selectionButton = new Kinetic.Rect({
       x: 0,
       y: 0,
       width: width,
       height: height-strokewidth*2,
-      fill: '#777777',
+      fill: {
+        start: {
+          x: 0,
+          y: -50
+        },
+        end: {
+          x: 0,
+          y: 50
+        },
+        colorStops: BUTTON_GRADIENT
+      },
       strokeWidth: strokewidth,
-      stroke: "#424242",
+      stroke: BUTTON_GRADIENT,
       cornerRadius: 10,
     });
     var selectionButtonGrabLeft = new Kinetic.Line({
-      points: [width/4, 0.1*height, width/4, 0.9*height],
-      stroke: color,
+      points: [width/3, 0.1*height, width/3, 0.9*height],
+      stroke: BUTTON_LINE_COLOR,
+      shadow: {
+        color: BUTTON_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 3
+        },
+        blur: 3
+      },
       strokeWidth: 8,
       lineCap: "round",
     });
-     var selectionButtonGrabRight = new Kinetic.Line({
-      points: [2*width/4, 0.1*height, 2*width/4, 0.9*height],
-      stroke: color,
-      strokeWidth: 8,
-      lineCap: "round",
-    });
-      var selectionButtonGrabMiddle = new Kinetic.Line({
-      points: [3*width/4, 0.1*height, 3*width/4, 0.9*height],
-      stroke: color,
+
+      var selectionButtonGrabRight = new Kinetic.Line({
+      points: [2*width/3, 0.1*height, 2*width/3, 0.9*height],
+      stroke: BUTTON_LINE_COLOR,
+      shadow: {
+        color: BUTTON_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 3
+        },
+        blur: 3
+      },
       strokeWidth: 8,
       lineCap: "round",
     });
 
     buttonGroup.add(selectionButton);
-    buttonGroup.add(selectionButtonGrabMiddle);
     buttonGroup.add(selectionButtonGrabRight);
     buttonGroup.add(selectionButtonGrabLeft);
+    buttonGroup.setPosition({x: x, y: y+strokewidth});
     buttonGroup.getWidth = function () {
       return selectionButton.getWidth()
     };
@@ -564,9 +592,19 @@ define(["color-constants",
       y: 0,
       width: width,
       height: height,
-      fill: WAIT_ITEM_BG_COLOR,
       stroke: WAIT_ITEM_BORDER_COLOR,
-      strokeWidth: 2
+      strokeWidth: 2,
+      fill: {
+        start: {
+          x: 0,
+          y: -50
+        },
+        end: {
+          x: 0,
+          y: 50
+        },
+        colorStops: WAIT_ITEM_BG_GRADIENT
+      },
     });
     var waitText = "wait " + millisecondsToHumanString(msWaitTime);
     var text = new Kinetic.Text({
@@ -577,7 +615,15 @@ define(["color-constants",
       fontFamily: "HelveticaNeue-Medium",
       textFill: WAIT_ITEM_TEXT_COLOR,
       padding: textInset,
-      align: "left"
+      align: "left",
+      shadow: {
+        color: WAIT_ITEM_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 1
+        },
+        blur: 3
+      }
     });
     waitGroup.add(background);
     waitGroup.add(text);
