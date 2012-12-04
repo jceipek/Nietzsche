@@ -794,6 +794,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
     var earliestScrollTime = new Date(barStartTime);
     earliestScrollTime.setMinutes(0);
+    earliestScrollTime.setHours(earliestScrollTime.getHours() - 1); // XXX: Ugly hack to show start of route sometimes
     var latestScrollTime = new Date(barEndTime);
     latestScrollTime.setMinutes(0);
     latestScrollTime.setHours(latestScrollTime.getHours() + 1);
@@ -937,6 +938,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
     DetailedDirectionsScreen.directionsGroup.setDraggable(true);
     DetailedDirectionsScreen.directionsGroup.setDragBoundFunc(function (pos) {
+      GraphicalComparisonScreen.mainLayer.draw(); // XXX: Ugly hack to prevent disappearance of button
       var y = pos.y;
       var max_y = Math.max(heightOffset - App.getCanvasHeight(), 0);
       y = Math.max(Math.min(y,0), -max_y-DetailedDirectionsScreen.portraitData.arrivalBarHeight);
@@ -955,6 +957,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
                                               pathBlockWidth, direction.steps[direction.steps.length-1]);
     DetailedDirectionsScreen.arrivalTimeGroup.add(arrivalBar);
 
+    GraphicalComparisonScreen.mainLayer.draw();
     DetailedDirectionsScreen.mainLayer.draw();
   };
 
