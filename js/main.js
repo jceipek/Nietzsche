@@ -424,7 +424,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
         var anim = new Kinetic.Animation({
           func: function(frame) {
             var offset = Math.abs(Math.sin(frame.time * Math.PI / time * 3))*(time/frame.time*0.1);
-            DetailedDirectionsScreen.mainLayer.setOffset({x:-App.getCanvasWidth()+offset*30, y:0});
+            DetailedDirectionsScreen.mainLayer.setOffset({x:-App.getCanvasWidth()+offset*30+DetailedDirectionsScreen.portraitData.gapForPrevScreen, y:0});
             GraphicalComparisonScreen.mainLayer.draw();
             DetailedDirectionsScreen.mainLayer.draw();
           },
