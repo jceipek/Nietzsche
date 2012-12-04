@@ -98,7 +98,10 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
   // Given a route and a search string, indicates whether the route
   //   matches the string.
-  var routeMatchesStringFilter = function (route, string, type) {
+  var routeMatchesStringFilter = function (route, string, type, otherRoute) {
+    if (otherRoute === route) {
+      return false;
+    }
     string = string.toLowerCase()
     if (type !== undefined && type !== route.type) {
       return false;
@@ -483,7 +486,15 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
           var headerString = ROUTE_TYPES[routeTypeIdx];
           var matches = 0;
           for (var i=0; (i < PossibleRoutes.length); i++) {
-            if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString)) {
+            
+            var otherRoute = null;
+            if (fieldId === '#from-field') {
+              otherRoute = App.to_route;
+            } else {
+              otherRoute = App.from_route;
+            }
+            
+            if (routeMatchesStringFilter(PossibleRoutes[i], currentValue, headerString, otherRoute)) {
               if (matches === 0) {
                 var item = DrawFns.createRouteHeader(currYOffset, screenWidth, headerHeight, headerString);
                 listGroup.add(item);
