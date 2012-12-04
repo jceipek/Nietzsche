@@ -26,6 +26,14 @@ define(["color-constants",
       width: width,
       padding: 10,
       align: 'left',
+      shadow: {
+        color: '#333',
+        offset: {
+          x: 0,
+          y: 1
+        },
+        blur: 3
+      }
     });
 
     var background = new Kinetic.Rect({
@@ -44,8 +52,8 @@ define(["color-constants",
         },
         colorStops: LIST_HEADER_GRADIENT
       },
-      stroke: '#555',
-      strokeWidth: 4
+      stroke: '#333',
+      strokeWidth: 2
     });
 
     group.add(background);
@@ -65,14 +73,14 @@ define(["color-constants",
       height: height,
       fill: 'white',
       stroke: 'grey',
-      strokeWidth: 4
+      strokeWidth: 2
     });
 
-    var nickname = new Kinetic.Text({
+    var routeName = new Kinetic.Text({
       name: 'text',
       x: 0,
       y: 0,
-      text: route.nickname,
+      text: route.name,
       fontSize: 24,
       fontFamily: 'HelveticaNeue-Medium',
       textFill: '#000',
@@ -86,9 +94,9 @@ define(["color-constants",
 
     var routeDetails = new Kinetic.Text({
       name: 'text',
-      x: 0,
+      x: route.category.length + 110,
       y: 40,
-      text: route.name + "\n" + route.address +"\n" + route.location,
+      text: route.address +"\n" + route.location,
       fontSize: 20,
       fontFamily: 'HelveticaNeue',
       textFill: '#555',
@@ -99,12 +107,29 @@ define(["color-constants",
       padding: 20,
       align: 'left',
     });
+    
+    var infoRouteDetails = new Kinetic.Text({
+      name: 'text',
+      x: 0,
+      y: 40,
+      text: route.category,
+      fontSize: 20,
+      fontFamily: 'HelveticaNeue',
+      textFill: ROUTE_CATEGORY_COLOR,
+      attrs: {
+        swapTextFill: '#fff'
+      },
+      width: route.category.length + 130,
+      padding: 20,
+      align: 'right',
+    });
 
     group.setPosition(0, y);
     group.setWidth(width);
     group.setHeight(height);
     group.add(background);
-    group.add(nickname);
+    group.add(routeName);
+    group.add(infoRouteDetails);
     group.add(routeDetails);
     return group;
   };
@@ -295,43 +320,65 @@ define(["color-constants",
   };
   //This is the button that transitions from Screen 2 to Screen 3
   DrawFns.createGraphicalRouteButton = function (x, y, width, height, direction) {
-    var color = "#999999";
+
     var strokewidth = 3;
     var buttonGroup = new Kinetic.Group();
-    buttonGroup.setPosition({x: x, y: y+strokewidth});
+    
     var selectionButton = new Kinetic.Rect({
       x: 0,
       y: 0,
       width: width,
       height: height-strokewidth*2,
-      fill: '#777777',
+      fill: {
+        start: {
+          x: 0,
+          y: -50
+        },
+        end: {
+          x: 0,
+          y: 50
+        },
+        colorStops: BUTTON_GRADIENT
+      },
       strokeWidth: strokewidth,
-      stroke: "#424242",
+      stroke: BUTTON_GRADIENT,
       cornerRadius: 10,
     });
     var selectionButtonGrabLeft = new Kinetic.Line({
-      points: [width/4, 0.1*height, width/4, 0.9*height],
-      stroke: color,
+      points: [width/3, 0.1*height, width/3, 0.9*height],
+      stroke: BUTTON_LINE_COLOR,
+      shadow: {
+        color: BUTTON_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 3
+        },
+        blur: 3
+      },
       strokeWidth: 8,
       lineCap: "round",
     });
-     var selectionButtonGrabRight = new Kinetic.Line({
-      points: [2*width/4, 0.1*height, 2*width/4, 0.9*height],
-      stroke: color,
-      strokeWidth: 8,
-      lineCap: "round",
-    });
-      var selectionButtonGrabMiddle = new Kinetic.Line({
-      points: [3*width/4, 0.1*height, 3*width/4, 0.9*height],
-      stroke: color,
+
+      var selectionButtonGrabRight = new Kinetic.Line({
+      points: [2*width/3, 0.1*height, 2*width/3, 0.9*height],
+      stroke: BUTTON_LINE_COLOR,
+      shadow: {
+        color: BUTTON_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 3
+        },
+        blur: 3
+      },
       strokeWidth: 8,
       lineCap: "round",
     });
 
     buttonGroup.add(selectionButton);
-    buttonGroup.add(selectionButtonGrabMiddle);
+    
     buttonGroup.add(selectionButtonGrabRight);
     buttonGroup.add(selectionButtonGrabLeft);
+    buttonGroup.setPosition({x: x, y: y+strokewidth});
     buttonGroup.getWidth = function () {
       return selectionButton.getWidth()
     };
@@ -546,7 +593,31 @@ define(["color-constants",
 
     return arrivalBarGroup;
   };
-
+  
+  // TODO: declare two lines instead of one rectangle
+   DrawFns.createWaitStep = function (yMid, thickness, height, start, end, color) {
+    var waitLineGroup = new Kinetic.Group();
+    var upLine = new Kinetic.Rect({
+      x: start,
+      y: yMid-thickness/2,
+      width: end-start,
+      height: height,
+      fill: color
+    });
+    
+    var bottomLine = new Kinetic.Rect({
+      x: start,
+      y: yMid+thickness/2-height,
+      width: end-start,
+      height: height,
+      fill: color
+    });
+    
+    waitLineGroup.add(upLine);
+    waitLineGroup.add(bottomLine);
+    return waitLineGroup;
+  };
+  
   DrawFns.createDirectionWaitItem = function (gapForPrevScreen, y, width, height, msWaitTime) {
     var textInset = height*0.25;
     var waitGroup = new Kinetic.Group();
@@ -556,9 +627,19 @@ define(["color-constants",
       y: 0,
       width: width-gapForPrevScreen,
       height: height,
-      fill: WAIT_ITEM_BG_COLOR,
       stroke: WAIT_ITEM_BORDER_COLOR,
-      strokeWidth: 2
+      strokeWidth: 2,
+      fill: {
+        start: {
+          x: 0,
+          y: -50
+        },
+        end: {
+          x: 0,
+          y: 50
+        },
+        colorStops: WAIT_ITEM_BG_GRADIENT
+      },
     });
     var waitText = "wait " + millisecondsToHumanString(msWaitTime);
     var text = new Kinetic.Text({
@@ -569,14 +650,22 @@ define(["color-constants",
       fontFamily: "HelveticaNeue-Medium",
       textFill: WAIT_ITEM_TEXT_COLOR,
       padding: textInset,
-      align: "left"
+      align: "left",
+      shadow: {
+        color: WAIT_ITEM_SHADOW_COLOR,
+        offset: {
+          x: 0,
+          y: 1
+        },
+        blur: 3
+      }
     });
     waitGroup.add(background);
     waitGroup.add(text);
     return waitGroup;
   };
 
-  DrawFns.createDirectionStepItem = function (x_offset, y, width, height, pathBlockWidth, step) {
+  DrawFns.createDirectionStepItem = function (x_offset, y, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc, callback) {
 
     var stepGroup = new Kinetic.Group();
     stepGroup.setPosition(0,y);
@@ -595,7 +684,7 @@ define(["color-constants",
       x: pathBlockWidth+x_offset,
       y: 0,
       text: instructionsTextString,
-      fontSize: 30,
+      fontSize: 22,
       fontFamily: "HelveticaNeue-Medium",
       textFill: DIRECTION_STEP_ITEM_INSTR_COLOR,
       width: width-pathBlockWidth-x_offset,
@@ -603,13 +692,14 @@ define(["color-constants",
       align: "left"
     });
 
-
+    //assign appropriate colors to each step
     var pathColor = colorFromStep(step);
     
     var pathItem = DrawFns.createDirectionStepPathItem(x_offset, pathBlockWidth/2, height, pathBlockWidth*0.5, pathColor);
     
     var duration = millisecondsToHumanString(step.duration.value * 1000);
-
+    
+    //display text showing how long the step takes
     var durationTxt = new Kinetic.Text({
       x: pathBlockWidth+x_offset,
       y: height/2,
@@ -621,34 +711,36 @@ define(["color-constants",
       align: "left"
     });
 
+    stepGroup.add(background); //add bg so it doesn't cover the map
+
     if (step.travel_mode === "WALKING") {
       //make a google map :D
       console.log("step is: " + step.instructions);
       console.log("centering map on " + step.start_location.toString());
-      var displayWalkingMap = function() {
-        console.log("starting displayWalkingMap");
-        var directionsDisplay = new google.maps.DirectionsRenderer();  
-        var mapOptions = {
-          zoom: 7,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          center: step.start_location
-        }
-        map = new google.maps.Map(document.getElementById("screenContainer"), mapOptions);
-        
-        directionsDisplay.setMap(map);
-        console.log("did directionsDisplay.setMap");
-        
+      console.log("block width: " + pathBlockWidth);
+      console.log("height: " + height);
+
+      var imageObj = new Image();
+      imageObj.src = mapSrc;
+      imageObj.onload = function() {
+        console.log("added map to stepGroup"); 
+        var map = new Kinetic.Image({
+          x: mapXOffset,
+          y: height-mapYOffset,
+          image: imageObj,
+          width: 350,
+          height: 200
+        });
+        stepGroup.add(map);
+        callback();    
       };
-      //var walkingMap = displayWalkingMap();
-      //stepGroup.add(walkingMap);
-      //console.log("added map to stepGroup");
+      console.log(imageObj);
     }
 
-    stepGroup.add(background);
     stepGroup.add(instructionsText);
     stepGroup.add(pathItem);
     stepGroup.add(durationTxt);
-    
+
     return stepGroup;
   };
 
@@ -697,7 +789,8 @@ define(["color-constants",
     return stepShape;
   };
 
-  DrawFns.displayDelayDesignA = function (appWidth, appHeight, alertText) {
+  /* //Unused code from testing various delay alert implementations
+    DrawFns.displayDelayDesignA = function (appWidth, appHeight, alertText) {
     DrawFns.createModal(appWidth, appHeight, alertText);
   }
 
@@ -742,7 +835,7 @@ define(["color-constants",
     modalGroup.add(text);
     console.log("added all elements");
     return modalGroup;
-  }
+  }*/
 
   return DrawFns;
 });

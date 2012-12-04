@@ -1,7 +1,7 @@
    // Given a Date object, returns a string in a standard format such as "3:00 PM"
   var formatTime = function (time) {
     var hours = time.getHours();
-    var amPM = 'pm';
+    var amPM = 'am';
     if (hours >= 12) {
       amPM = 'pm';
     }

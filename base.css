@@ -13,12 +13,11 @@ form {
 }
 
 #top-bar {
-  color: #eee;
+  color: #444;
+  text-shadow: 0em 0.1em #f6f6f6;
   font-family: HelveticaNeue-Light, Sans-Serif;
   padding: 0px;
-  background-image: -webkit-gradient(linear, left top, left bottom, 
-                                       from(#555), to(#333));
-  background-image: linear-gradient(to bottom, #555, #333);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgb(230,230,230)), color-stop(50%, rgb(195,195,195)), color-stop(100%, rgb(186,186,186)));
   border-bottom-style: solid;
   border-bottom-color: black; 
   border-bottom-width: 1px;  

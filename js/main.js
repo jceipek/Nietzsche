@@ -34,7 +34,8 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
   var GraphicalComparisonScreen = {
     portraitData: {
       routeItemHeight: 150,
-      routeSelectionButtonWidth: 88,
+      //routeSelectionButtonWidth: 88,
+      routeSelectionButtonWidth: 66,
       timeBarHeight: 40
     },
     mainLayer: new Kinetic.Layer(),
@@ -593,7 +594,10 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
     var scalingFactor = scalingFactor;
-
+    var waitStep = null;
+    var depart = new Date(direction.departure_time.value);
+    depart.setSeconds(depart.getSeconds()+direction.steps[0].duration.value);
+    var arrival = new Date(direction.steps[1].transit.departure_time.value)
   
     var start = posFromTime(departureTime, App.departure_time, scalingFactor);
 
@@ -610,10 +614,46 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
             stepColor = BUS_STEP_COLOR;
           }
         }
+        // XXX: This is a hack. It's not working if the route has a walking step following by a driving step or viceversa'
+        if(timeOffset > departureTime) {
+          var stepStart = posFromTime(timeOffset, App.departure_time, scalingFactor);
+          timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
+          var stepEnd = new Date(timeOffset);
+
+          stepEnd.setSeconds(stepEnd.getSeconds());
+          stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+          
+          waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_TIME_COLOR);
+        }
+        
         timeOffset = new Date(direction.steps[stepIdx].transit.departure_time.value);
       } else if (direction.steps[stepIdx].travel_mode === "DRIVING") {
+        if(stepIdx === 0){
+          if(arrival > depart) {
+            var stepStart = posFromTime(arrival, App.departure_time, scalingFactor);
+            timeOffset = new Date(departureTime+direction.steps[stepIdx].duration.value);
+            var stepEnd = new Date(timeOffset);
+            
+            stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
+            stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+            
+            waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_TIME_COLOR);
+          }
+        }
         stepColor = DRIVING_STEP_COLOR;
       } else if (direction.steps[stepIdx].travel_mode === "WALKING") { 
+       if(stepIdx === 0){
+          if(arrival > depart) {
+            var stepStart = posFromTime(arrival, App.departure_time, scalingFactor);
+            timeOffset = new Date(departureTime+direction.steps[stepIdx].duration.value);
+            var stepEnd = new Date(timeOffset);
+            
+            stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
+            stepEnd = posFromTime(stepEnd, App.departure_time, scalingFactor);
+            
+            waitStep = DrawFns.createWaitStep (y+height/2-10, 20, 3, stepStart, stepEnd, WAIT_TIME_COLOR);
+          }
+        }
         stepColor = WALKING_STEP_COLOR;
       }
 
@@ -657,6 +697,9 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
       timeOffset.setSeconds(timeOffset.getSeconds()+direction.steps[stepIdx].duration.value);
 
+      if(waitStep !== null){
+        routeGroup.add(waitStep);
+      }
       routeGroup.add(stepLine);
 
       var icon = null;
@@ -826,11 +869,31 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     DetailedDirectionsScreen.arrivalTimeGroup.removeChildren();
     var direction = App.chosen_direction;
     var heightOffset = 0;
+
+    //positioning for the map
+    var mapXOffset = 275;
+    var mapYOffset = 210;
+
     var departureTime = new Date(direction.departure_time.value);
     var stepStartTime = departureTime;
     var stepEndTime = new Date(departureTime);
     for (var stepIdx = 0; stepIdx < direction.steps.length; stepIdx++) {
       var step = direction.steps[stepIdx];
+      
+      if (step.travel_mode === "WALKING") {
+        //create start and end coordinates to mark on map
+        var mapStartCoord = step.start_location.toString();
+        mapStartCoord = mapStartCoord.replace("(", "").replace(")", ""); // strip parens for url
+        var mapEndCoord = step.end_location.toString();
+        mapEndCoord = mapEndCoord.replace("(", "").replace(")", ""); //strip parens for url
+        var polyline_data = step.polyline.points.toString();
+        console.log("polyline: " + polyline_data);
+        console.log("start coordinate: " + mapStartCoord.toString());
+        console.log("end coordinate: " + mapEndCoord.toString());
+        var mapSrc = "http://maps.googleapis.com/maps/api/staticmap?size=350x200&path=weight:5%7Ccolor:0x0000ff%7Cenc:"+polyline_data+
+        "&markers=color:blue%7Clabel:A%7C"+ mapStartCoord + "&markers=color:green%7Clabel:B%7C" + mapEndCoord + "&sensor=false";
+        console.log("map url: " + mapSrc);
+      }
 
       if (step.travel_mode === "TRANSIT") {
         stepStartTime = new Date(step.transit.departure_time.value);
@@ -849,7 +912,11 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
       var height = DetailedDirectionsScreen.portraitData.moveDirectionItemHeight;
       var pathBlockWidth = DetailedDirectionsScreen.portraitData.pathBlockWidth;
-      var stepItem = DrawFns.createDirectionStepItem(DetailedDirectionsScreen.portraitData.gapForPrevScreen, heightOffset, width, height, pathBlockWidth, step);
+      var stepItem = DrawFns.createDirectionStepItem(DetailedDirectionsScreen.portraitData.gapForPrevScreen, heightOffset, width, height, pathBlockWidth, step, mapXOffset, mapYOffset, mapSrc,
+        function () {
+          DetailedDirectionsScreen.mainLayer.draw();
+        });
+      DetailedDirectionsScreen.mainLayer.draw();
       heightOffset += height;
 
       stepEndTime = new Date(stepStartTime);
@@ -881,7 +948,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     DetailedDirectionsScreen.mainLayer.draw();
   };
 
-  var displayDelayDesignA = function () {
+  /*var displayDelayDesignA = function () {
     // WE ARE NOT USING THIS
     var width = DetailedDirectionsScreen.portraitData.sideBarWidth;
     var y = DetailedDirectionsScreen.portraitData.sideBarYOffset;
@@ -903,7 +970,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     App.directions = [App.chosen_direction];
     displayGraphicalRoutes();
     
-  };
+  };*/
 
   var getFirstRouteWithMatch = function (string) {
     for (var routeIdx = 0; routeIdx < PossibleRoutes.length; routeIdx++)

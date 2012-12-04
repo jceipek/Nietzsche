@@ -10,6 +10,7 @@ define(function () {
       name: 'Jenna Mitnick',
       address: '116 Jaques Street',
       location: 'Somerville, MA',
+      category: 'home',
       mapsData: {
         location: '116 Jaques Street, Somerville, MA'
       }
@@ -23,6 +24,7 @@ define(function () {
       name: 'Josh Randall',
       address: '100 Marshall Street',
       location: 'Watertown, MA',
+      category: 'home',
       mapsData: {
         location: '100 Marshall Street, Watertown, MA'
       }
@@ -36,6 +38,7 @@ define(function () {
       name: 'Olin College of Engineering',
       address: '1000 Olin Way',
       location: 'Needham, MA',
+      category: 'home',
       mapsData: {
         location: '1000 Olin Way, Needham, MA'
       }
@@ -50,6 +53,7 @@ define(function () {
       name: "Ben & Jerry's",
       address: '174 Newbury Street',
       location: 'Boston, MA',
+      category: 'restaurant',
       mapsData: {
         location: '174 Newbury Street, Boston, MA'
       }
