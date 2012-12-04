@@ -94,7 +94,7 @@ define(["color-constants",
 
     var routeDetails = new Kinetic.Text({
       name: 'text',
-      x: route.category.length + 110,
+      x: 145,
       y: 40,
       text: route.address +"\n" + route.location,
       fontSize: 20,
@@ -119,7 +119,7 @@ define(["color-constants",
       attrs: {
         swapTextFill: '#fff'
       },
-      width: route.category.length + 130,
+      width: 170,
       padding: 20,
       align: 'right',
     });

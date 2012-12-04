@@ -593,7 +593,6 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
     var arrivalTime = new Date(direction.arrival_time.value);
     var departureTime = new Date(direction.departure_time.value);
     var duration = direction.duration.value;
-    var scalingFactor = scalingFactor;
     var waitStep = null;
     var depart = new Date(direction.departure_time.value);
     depart.setSeconds(depart.getSeconds()+direction.steps[0].duration.value);
@@ -790,7 +789,7 @@ function(App, PossibleRoutes, googleMapsResponse_SAVED, color_constants, helpers
 
     // Scaling factor is adjusted so that the first route shows up fully
     var firstArrivalTime = new Date(App.directions[0].arrival_time.value);
-    var availableScreenSpace = App.stage.getWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
+    var availableScreenSpace = App.getCanvasWidth() - GraphicalComparisonScreen.portraitData.routeSelectionButtonWidth;
     var scalingFactor = availableScreenSpace/((firstArrivalTime-App.getCurrentTime())/1000); 
     
     var bg_x = posFromTime(earliestScrollTime, App.departure_time, scalingFactor);
