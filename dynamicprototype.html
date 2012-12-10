@@ -18,6 +18,9 @@ Released   : 20120818
 <title>HFID | Nietzsche | Dynamic Prototype</title>
 <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="waypoints.min.js"></script>
+<script src="scrolling.js"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -31,6 +34,7 @@ Released   : 20120818
 				<li><a href="testing.html">Usability Report</a></li>
 				<li><a href="refinement.html">Design Refinement</a></li>
 				<li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
+				<li><a href="finaltesting.html">Final Usability Report</a></li>
 				<li><a href="team.html">The Team</a></li>
 			</ul>
 		</div>
@@ -42,44 +46,99 @@ Released   : 20120818
 	<!--<div class="divider">&nbsp;</div>-->
 	<div id="page" class="container">
 		<div id="content">
+
 			<div class="post">
-				<h2 class="introduction" id="welcome">Instructions</h2>
+				<h2 class="introduction" id="development">Prototype Development</h2>
 				<div class="entry">
+					<p>In order to build our dynamic prototype, we used a combination of HTML, CSS, and Javascript, since those are the languages best known by the majority of our team. This also allowed us to easily interface with the Google Maps API, which brought an element of real-world functionality to our project. The greatest challenges we faced in developing our prototype were figuring out how to ensure that this information is displayed correctly. It would be very easy to create static images that showed hypothetical route information, but we wanted to make sure we understood the problems potentially faced in taking actual route planning information and displaying that in the format we were proposing. Unfortunately, this took considerably more time than expected. Furthermore, by using Google Maps information in screen 2 that dynamically changed with time, we removed the possibility of using a static display for screen 3, since the route information would no longer be consistent. With hindsight, our enthusiasm to start implementation may have negatively impacted the quality of prototype at the time of the code-freeze, but we also feel that the majority of technical challenges have been overcome and that the remaining features that must be added can be added relatively quickly.</p>		
+				</div>
+
+            </div>
+
+			<div class="post">
+				<h2 class="introduction" id="notes">Using the Prototype</h2>
+				<div class="entry">
+					<h3>Important Notes</h3>
 					<ol>
-						<li>Our prototype works on your smartphone! If you have an iPhone, open up <a href="main.html">this page</a> and you’ll have an experience closer to what we intended and designed for.
+						<li>Our prototype works on your smartphone! If you have an iPhone, open <a href="main.html">this page</a> on it and you’ll have an experience closer to what we intended and designed for.
 
                         If you don’t have an iPhone, you may have noticed this application looks pretty big – sorry about that. Zoom out to see the whole screen at once (For Mac, press “command” and “minus”; for Windows, press “ctrl” and “minus”).</li>
 
                         <li>This app actually uses realtime data from Google Maps. Depending on the time of day you’re looking at this, the MBTA might not be running, so the results will be very strange. We recommend that you use this app between 6 am EST and 9 pm EST for the best variety of results.</li>
 
                         <li>This is our first attempt at implementing this design in code. We have a lot of things we’d like to fix, but our apologies if things aren’t very pretty. If you have any comments or find any bugs, please email us at Nietzsche.mbta@gmail.com. Thanks!</li>
-                    </ol>
-					
+                    </ol>		
 				</div>
 
-				<h2 class="scenario1" id="proposal">Scenario 1</h2>
+				<h2 class="introduction" id="usability">Usability Script</h2>
 				<div class="entry">
+					<h3>Introduction</h3>
+					<p>This document is supposed to help you (our heuristic evaluation team) understand our prototype. Our current prototype is functional in a very minimal way, but lacks many features that we feel make our design better than similar applications. As such, this document will guide you through our prototype and make sure you understand why we did certain things, what functionality the design should have, and what changes we are we need to make.  We think it might be helpful to take a look at our final mock-ups, since those give a very good picture of what we want this to ultimately look like.</p>
+
+					<h3>Design Rationale</h3>
+					<p>The basic idea of our design is that rather than making users navigate through 80 different screens to find their desired information, our application is layered so that individuals who are experienced with the MBTA system can quickly find a particular piece of information, whereas novice users "go deeper" to find more comprehensive instructions. As such, our scenarios do not require using the application in different ways, rather changing the level of information you need to find.</p>
+
+					<h3>Screen 1</h3>
+					<p>This screen lets users modify their start and end points. By default, the application assumes you want to get from your current location (please assume this is the case for all scenarios) and displays the keyboard to accept a destination. As the user types, the list will auto-populate itself based on your contact book, Google Maps results, and MBTA stations. Based on our user research, stations are never the ultimate start or end point for a journey, so we rank those results last.</p>
+
+					<h3>Screen 2</h3>
+					<p>Clicking on a result takes you to our comparison page. The animation is supposed to suggest that you have been taken to an entirely new screen, i.e. a screen that is not physically related by swiping, dragging, etc. This screen serves two major purposes.
+
+                    Firstly, for users who are familiar with the MBTA system, we found they are chiefly concerned with time, i.e. when does the next train leave, when will they get to their destination, etc. This view makes those times immediately available. 
+
+                    Secondly, for users who are not sure which route to take, this view helps them compare their options based on duration, number of connections, amount of walking, etc. Our user testing showed this graphical view was much more helpful than having to compare lists of numbers.
+
+                    Our application uses the Google Maps API, so this screen will change as a function of time. Getting the dynamic content to display correctly took some time, so we are aware that there are things to change:</p>
+
+                    <ol>
+                    	<li>The times in the black bar at the top should be readable</li>
+                        <li>There should be vertical lines connected with these times to help segment the screen, allowing for better comparison based on time.</li>
+                        <li>There are gaps between the colored transit lines that represent wait times. We need to outline the whole line to make it obvious that it is a single route option.</li>
+                        <li>The "canvas" that these routes sit needs to be scrollable. The user must be able to move about the screen to explore additional options, if they wish. In terms of the mental model, we are displaying a small part of an enormous canvas that graphically describes all possible route options. They are arranged horizontally by time and vertically by "goodness" (think of HipMunk's "agony" filter)</li>
+                        <li>General prettiness and spacing issues, such as icon overlaps.</li>
+                    </ol>
+
+                    <h3>Screen 3</h3>
+                    <p>When you swipe on a tab in screen 2, you are dragging information specific to that route onto the screen. Each step of your route (also taken by Google Maps, hence some of the funny wording and size issues) is color coded. At the bottom of the screen is an estimated time of arrival, viewable regardless of where you are in the route. There are many features that need to be added:</p>
+                    <ol>
+                        <li>Maps for walking directions</li>
+                        <li>An indicator for your current location that runs along the colored segments</li>
+                        <li>Auto-scrolling (the list will scroll to make sure your current and next steps are always viewable) and the ability to scroll in general</li>
+                        <li>"I missed the train!" button - a unique feature of our design is a button that will automatically update your directions if you miss a train or bus. This button will only be displayed for steps that are followed by a bus or train, so it is only an option when appropriate. Ideally, this button would glow if it detects you have been sitting at the end of a step for a while, but we are definitely not going to get GPS data into this thing anytime soon.</li>
+                    </ol>
+
+                    <h3>Other Things</h3>
+                    <ol>
+                    	<li>To get from screen 3 to screen 2, the final design should support a left-to-right swipe anywhere on the screen, a motion consistent with getting from screen 2 to screen 3.</li>
+                    	<li>Supporting landscape mode</li>
+                    	<li>Prettiness, obviously</li>
+                    </ol>
+
+				</div>
+
+				<h2 class="scenario1" id="scenarios">Scenarios</h2>
+				<div class="entry">
+					<h3>Scenario 1</h3>
 					<p><em>Background:</em> Your name is Peter, a young business professional working in the Financial District of Boston. Being punctual is part of who you are, regardless of where you’re going. You’re relatively familiar with the T, but like know exactly when trains are supposed to leave and arrive.</p>
 
                     <p><em>Instructions:</em> You know you need to catch the T pretty soon to get to your friend Jenna’s apartment, but want to know exactly when the next train leaves. Use this app to find out. (Hint: our application is synchronized with your contacts)</p>
 
 					<p>(<a href="#top">top of page</a>)</p>
 
-
-					
+	
 				</div>
 
-				<h2 class="scenario2" id="proposal">Scenario 2</h2>
 				<div class="entry">
+					<h3>Scenario 2</h3>
 					<p><em>Background:</em> Your name is Samantha, a single-mother of two young children. Managing them is a handful on the T, so when getting directions it’s important that everything is clearly laid out for you to see.</p>
 
                     <p><em>Instructions:</em> You know there is a Ben &amp; Jerry’s somewhere on Newbury St., but don’t know how to get to it from here using the MBTA. Use this app to figure out the simplest (i.e. fewest transfers) route and what your first steps should be.</p>
 
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
-
-                <h2 class="scenario2" id="proposal">Scenario 3</h2>
+ 
 				<div class="entry">
+					<h3>Scenario 3</h3>
 					<p><em>Background:</em> Your name is Lilah, a college freshman in Boston. The T comes pretty regularly, so you don’t bother much with planning, especially since you often go out with friends and don’t mind getting a little lost – it’s fun to explore a new city!
 
                     <p><em>Instructions:</em> Your friend Josh has invited you and some of your friends to his place for a party. He just called to ask when you’re going to arrive – can you use this app to tell him?</p>
@@ -89,10 +148,9 @@ Released   : 20120818
 
 				<h2 class="title" id="proto">Prototype</h2>
 				<div class="entry">
-					<p>In order to view our prototype on your mobile phone, <a href="main.html">go here</a></p>
+					<p>A version of this prototype optimized for mobile phones can be found <a href="main.html">here</a></p>
 					<div id = "iphone-border">
-					        <iframe src="main.html" frameBorder="0" align="center" width="640px" height="960px"></iframe>
-				      
+					  <iframe src="main.html" frameBorder="0" align="center" width="640px" height="960px"></iframe>
                     </div>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
@@ -105,10 +163,10 @@ Released   : 20120818
 			<div>
 				<h2>Navigation</h2>
 				<ul class="list-style1">
-					<li><a href="#intro">Instructions</a></li>
-					<li><a href="#scenario1">Scenario 1</a></li>
-					<li><a href="#scenario2">Scenario 2</a></li>
-					<li><a href="#scenario3">Scenario 3</a></li>
+					<li><a href="#intro">Prototype Development</a></li>
+					<li><a href="#notes">Using the Prototype</a></li>
+					<li><a href="#usability">Usability Script</a></li>
+					<li><a href="#scenarios">Scenarios</a></li>
 					<li><a href="#proto">Prototype</a></li>
 				</ul>
 			</div>

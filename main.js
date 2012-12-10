@@ -4,6 +4,7 @@ var demoTime = null;
 
 var ROUTE_SELECTION_SCREEN_BG_COLOR = '#eee';
 var GRAPHICAL_COMPARISON_SCREEN_BG_COLOR = '#eee';
+var DETAILED_DIRECTIONS_SCREEN_BG_COLOR = '#eee';
 
 $(function() {
 
@@ -84,17 +85,19 @@ $(function() {
     mainLayer: new Kinetic.Layer(),
     arrivalTimeGroup: new Kinetic.Group(),
     directionsGroup: new Kinetic.Group(),
-    staticImage: new Image(),
-    background: new Kinetic.Image({ // TODO: Change to normal background when all elements are dynamic
+    background: new Kinetic.Rect({
       x: 0,
-      y: 0
+      y: 0,
+      width: Application.getCanvasWidth(),
+      height: Application.stage.getHeight(),
+      fill: DETAILED_DIRECTIONS_SCREEN_BG_COLOR
     })
   };
 
-  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
+/*  DetailedDirectionsScreen.staticImage.src = "detailedDirectionsScreen.png";
   DetailedDirectionsScreen.staticImage.onload = function () {
     DetailedDirectionsScreen.background.setImage(DetailedDirectionsScreen.staticImage);
-  };
+  };*/
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.background);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.directionsGroup);
   DetailedDirectionsScreen.mainLayer.add(DetailedDirectionsScreen.arrivalTimeGroup);
@@ -436,7 +439,6 @@ $(function() {
       stepEnd.setSeconds(stepEnd.getSeconds()+direction.steps[stepIdx].duration.value);
       stepEnd = posFromTime(stepEnd, Application.departure_time, scalingFactor);
 
-console.log(stepStart);
 
       if (direction.steps[stepIdx].travel_mode === "TRANSIT") {
         if (startFlagExists === false) {
@@ -508,7 +510,7 @@ console.log(stepStart);
     var timeBarHeight = GraphicalComparisonScreen.portraitData.timeBarHeight;
     
     var barStartTime; 
-    var earliestDepartureTime = Application.directions[0].departure_time;
+    var earliestDepartureTime = new Date(Application.directions[0].departure_time.value);
     for (var i = 0; i < Application.directions.length; i++) {
       if (Application.directions[i].departure_time < earliestDepartureTime) {
          earliestDepartureTime = Application.directions[i].departure_time;
@@ -517,7 +519,7 @@ console.log(stepStart);
     }
     
     var barEndTime;
-    var latestArrivalTime = Application.directions[0].arrival_time;
+    var latestArrivalTime = new Date(Application.directions[0].arrival_time.value);
     for (var i = 0; i < Application.directions.length; i++) {
       if (Application.directions[i].arrival_time >= latestArrivalTime) {
          latestArrivalTime = Application.directions[i].arrival_time;
@@ -531,7 +533,7 @@ console.log(stepStart);
     
     for (var directionIdx = 0; directionIdx < Application.directions.length; directionIdx++) {
       var direction = Application.directions[directionIdx];
-      var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime); // L TODO: fix
+      var graphicalTimeBar = createGraphicalTimeBar(Application.getCanvasWidth(), timeBarHeight, barStartTime, barEndTime, scalingFactor); // L TODO: fix
       var graphicalRouteItem = 
         createGraphicalRouteItem(directionIdx*GraphicalComparisonScreen.portraitData.routeItemHeight+timeBarHeight, Application.stage.getWidth(), 
                                  GraphicalComparisonScreen.portraitData.routeItemHeight, direction, scalingFactor);

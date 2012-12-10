@@ -18,6 +18,9 @@ Released   : 20120818
 <title>HFID | Nietzsche | User Testing</title>
 <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
 <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="waypoints.min.js"></script>
+<script src="scrolling.js"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -28,9 +31,10 @@ Released   : 20120818
 				<li><a href="inspirations.html">Inspirations</a></li>
 				<li><a href="needs.html">Needs Analysis</a></li>
 				<li><a href="design.html">Design Development</a></li>
-				<li><a href="testing.html">Uability Report</a></li>
+				<li><a href="testing.html">Usability Report</a></li>
 				<li><a href="refinement.html">Design Refinement</a></li>
 				<li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
+				<li><a href="finaltesting.html">Final Usability Report</a></li>
 				<li><a href="team.html">The Team</a></li>
 			</ul>
 		</div>
@@ -45,106 +49,75 @@ Released   : 20120818
 			<div class="post">
 				<h2 class="title" id="introduction">Introduction</h2>
 				<div class="entry">
-					<p>Our team is developing an application to help new or inexperienced users of the MBTA better use and navigate the system.
-                                        Using the insights we gained during the research phase of this project, we have constructed an early prototype of a possible application design.
-                                        The purpose of this prototype is to allow us to evaluate the performance of the design in its current form  through test sessions with potential users.
-                                        There are design decisions we would like specific feedback on, in addition to whatever other insights our users can give us.</p>
+					<p>Our team is developing an application to help new or inexperienced users of the MBTA better use and navigate the system. Using the insights we gained during the research phase of this project, we have constructed an early prototype of a possible application design. The purpose of this prototype is to allow us to evaluate the performance of the design in its current form  through test sessions with potential users. There are design decisions we would like specific feedback on, in addition to whatever other insights our users can give us.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="prototype">Prototype</h2>
 				<div class="entry">
-					<p>
-                                        Our design has a very limited number of separate screens that update based on user input and environmental context such as time,
-                                        location, and live tracking data. As such, our prototype consists of a foamcore iPhone (larger than a real iPhone to make testing easier)
-                                        and several low-resolution representations of screens a user might see as they go through a particular scenario. The philosophy behind our design
-                                        is to provide multiple levels of information &mdash; brief interaction with the application will provide most-commonly accessed information whereas
-                                        deeper interaction will show more. This philosophy was inspired by the tasks most commonly completed by our personas. For example, while
-                                        <a href="needs.html#peter">Peter</a> is very familiar with the train route from his apartment to his work, he needs to check on the status of the
-                                        train and figure out when we has to head to the station. On the other hand, <a href="needs.html#henryandelise">Henry &amp; Elise</a> need detailed
-                                        directions of the entire route from their hotel to downtown Boston. Rather than separating these use cases at the top level, we structured the
-                                        application so that the information Peter needs is available almost immediately whereas Henry &amp; Elise can spend more time interacting with the
-                                        application to get the information they need. We tried to make this information progression make sense rather than forcing users to "jump through hoops"
-                                        by <a href="inspirations.html#magicink">overemphasizing interaction</a>.</p>
+					<p> Our design has a very limited number of separate screens that update based on user input and environmental context such as time, location, and live tracking data. As such, our prototype consists of a foamcore iPhone (larger than a real iPhone to make testing easier) and several low-resolution representations of screens a user might see as they go through a particular scenario. The philosophy behind our design is to provide multiple levels of information &mdash; brief interaction with the application will provide most-commonly accessed information whereas deeper interaction will show more. This philosophy was inspired by the tasks most commonly completed by our personas. For example, while <a href="needs.html#peter">Peter</a> is very familiar with the train route from his apartment to his work, he needs to check on the status of the train and figure out when we has to head to the station. On the other hand, <a href="needs.html#henryandelise">Henry &amp; Elise</a> need detailed directions of the entire route from their hotel to downtown Boston. Rather than separating these use cases at the top level, we structured the application so that the information Peter needs is available almost immediately whereas Henry &amp; Elise can spend more time interacting with the application to get the information they need. We tried to make this information progression make sense rather than forcing users to "jump through hoops" by <a href="inspirations.html#magicink">overemphasizing interaction</a>.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="method">Method</h2>
 				<div class="entry">
-					<p>Unfortunately, very few of the individuals we met during the research phase responded to our follow-up emails. Consequently, most of our test participants
-                                        were members of the Olin community who identified themselves as infrequent users of public transportation or users unfamiliar with the MBTA system &mdash;
-                                        people with needs similar to <a href="needs.html#lilah">Lilah's</a>.</p>
+					<p>Unfortunately, very few of the individuals we met during the research phase responded to our follow-up emails. Consequently, most of our test participants were members of the Olin community who identified themselves as infrequent users of public transportation or users unfamiliar with the MBTA system &mdash; people with needs similar to <a href="needs.html#lilah">Lilah's</a>.</p>
 
-					<p>Since our variable-depth design is meant to sidestep the need for different users to complete different tasks,
-                                        we focused on a single scenario broken down into the following steps:
+					<p>Since our variable-depth design is meant to sidestep the need for different users to complete different tasks, we focused on a single scenario broken down into the following steps:
 					    <ul>
-						<li>We tell each participant to imagine that there is a subway station near his/her apartment and that he/she has been
-                                                invited to a party at a friend's house in Boston. We then ask them to use our application prototype to find out how to get
-                                                there using public transportation.</li>
-						<li>When the participant reaches the directions page (Screen 3), we ask them to describe to the observer/facilitator in
-                                                plain language how they will get to the party.</li>
-						<li>We notify the participant that the party has just been cancelled before he/she has had a chance to leave.
-                                                We ask the participant is to re-route to a new location starting from the screen showing the route to the party.</li>
-						<li>Public transportation seldom works on schedule. We ask the participant what he/she would do if he/she arrived at
-                                                a bus stop just as the bus was leaving. Our design has a button specifically for this situation and we want to ensure
-                                                that its functionality is clear.</li>
-						<li>We ask the participant how he/she would determine where to go within a station in order to transfer from one train
-                                                to another. Our prototype includes a Google Streetview-style representation of this journey which can be accessed by tapping
-                                                on a specific station.</li>
+						<li>We tell each participant to imagine that there is a subway station near his/her apartment and that he/she has been invited to a party at a friend's house in Boston. We then ask them to use our application prototype to find out how to get there using public transportation.</li>
+						<li>When the participant reaches the directions page (Screen 3), we ask them to describe to the observer/facilitator in plain language how they will get to the party.</li>
+						<li>We notify the participant that the party has just been cancelled before he/she has had a chance to leave. We ask the participant is to re-route to a new location starting from the screen showing the route to the party.</li>
+						<li>Public transportation seldom works on schedule. We ask the participant what he/she would do if he/she arrived at a bus stop just as the bus was leaving. Our design has a button specifically for this situation and we want to ensure that its functionality is clear.</li>
+						<li>We ask the participant how he/she would determine where to go within a station in order to transfer from one train to another. Our prototype includes a Google Streetview-style representation of this journey which can be accessed by tapping on a specific station.</li>
 					    </ul>
 					</p>
 
-					<p>These questions were administered by a facilitator who also took notes during the test. Another team member acted as the computer and made additional
-                                        observations (mentally) that were then compared and discussed after the test participant had left. In addition to the scenario completed by the participant,
-                                        we asked the participant about the alternative versions of Screen 2 we had prepared. We also asked for feedback on the other screens.</p>
+					<p>These questions were administered by a facilitator who also took notes during the test. Another team member acted as the computer and made additional observations (mentally) that were then compared and discussed after the test participant had left. In addition to the scenario completed by the participant, we asked the participant about the alternative versions of Screen 2 we had prepared. We also asked for feedback on the other screens.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 
 				<h2 class="title" id="measures">Test Measures</h2>
 				<div class="entry">
-					<p>Our observations were largely qualitative in nature. They relate to how long it took for participants to make a decision or navigate a page,
-                                        the confidence with which participants described their actions and choices, whether they were able to correctly determine the functionality of the UI
-                                        elements. We also gathered explicit feedback at the end of each test. While we handled each user test in small subteams, we shared our experiences with
-                                        the entire team at the end of the project phase, allowing us to spot common feedback issues and rule out edge-case complaints.</p>
-                                        <p>We realize that we gathered little quantitative information during this phase, but the functionality of our design is largely dependent on
-                                        contextually-added elements and the user’s progression through physical space during the journey, which limited the effectiveness of paper prototypes
-                                        to some degree.
-                                        </p>
+					<p>Our observations were largely qualitative in nature. They relate to how long it took for participants to make a decision or navigate a page, the confidence with which participants described their actions and choices, whether they were able to correctly determine the functionality of the UI elements. We also gathered explicit feedback at the end of each test. While we handled each user test in small subteams, we shared our experiences with the entire team at the end of the project phase, allowing us to spot common feedback issues and rule out edge-case complaints.</p>
+                    <p>We realize that we gathered little quantitative information during this phase, but the functionality of our design is largely dependent on contextually-added elements and the user’s progression through physical space during the journey, which limited the effectiveness of paper prototypes to some degree.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 
 				<h2 class="title" id="results">Results</h2>
 				<div class="entry">
-					<p>The key insights and observations we made of our user tests are arranged by interface screen below.
-                                        Insights that came up during multiple tests are highlighted with <em class='highlighted'>+X</em></p>
+					<p>The key insights and observations we made of our user tests are arranged by interface screen below. Insights that came up during multiple tests are highlighted with <em class='highlighted'>+X</em></p>
 
 					<h3>Screen 1</h3>
 					    <ul>
 					        <li>Testers liked the integration with their contact list, felt like search results were "relevant", "useful" <em class='highlighted'>+3</em></li>
-						<li>Some testers' habits or mental models created confusion</li>
-						<li>One tester changed the start point from their current location to the first place they were unfamiliar with,
-                                                "don’t need directions to places I know how to get to"</li>
-						<ul><li>Replaced "Here" with actual address "since GPS data is not always accurate"</li>
-						<li>"Where is the 'Go' button?"</li></ul>
+						    <li>Some testers' habits or mental models created confusion</li>
+						    <li>One tester changed the start point from their current location to the first place they were unfamiliar with, "don’t need directions to places I know how to get to"</li>
+						        <ul>
+						        	<li>Replaced "Here" with actual address "since GPS data is not always accurate"</li>
+						            <li>"Where is the 'Go' button?"</li>
+						        </ul>
 					    </ul>
 
 					<h3>Screen 2</h3>
 					    <ul>
-						<li>Colors are not as useful for determining transit types as symbols or icons – this effect is even worse when colors differ
-                                                from the official MBTA colors. <em class='highlighted'>+2</em></li>
-						<li>"Graphical view is prettier, but less useful"</li>
-						<ul><li>Far easier to quickly compare routes,
-                                                figure out which one is shortest, which one has the least walking etc.<em class='highlighted'>+2</em></li>
-						<li>Graphical view in current form lacks explicit presentation of information as seen in the textual view</li>
-						<ul><li>Frequency/repetition of routes</li></ul>
-						<li>"Important" times are displayed, others are hidden. <em class='highlighted'>+1</em></li>
-						<li>Graphical view is better at presenting more of some types of information</li>
-						<ul><li>Showing the kind of transit, the type of connection, and the specific bus numbers were all liked by testers –
-                                                helps them make more "informed" decisions in comparing routes <em class='highlighted'>+1</em></li></ul>
-						<li>In general, users were not convinced one view is currently better than the other.</li></ul>
-						<li>"I picked the first option because it was at the top of the list – I assume the app put it there for a reason"</li>
+						  <li>Colors are not as useful for determining transit types as symbols or icons – this effect is even worse when colors differ from the official MBTA colors. <em class='highlighted'>+2</em></li>
+						  <li>"Graphical view is prettier, but less useful"</li>
+						  <ul>
+							<li>Far easier to quickly compare routes, figure out which one is shortest, which one has the least walking etc.<em class='highlighted'>+2</em></li>
+						    <li>Graphical view in current form lacks explicit presentation of information as seen in the textual view</li>
+						    <ul>
+						    	<li>Frequency/repetition of routes</li>
+						    </ul>
+						    <li>"Important" times are displayed, others are hidden. <em class='highlighted'>+1</em></li>
+						    <li>Graphical view is better at presenting more of some types of information</li>
+						    <ul>
+						    	<li>Showing the kind of transit, the type of connection, and the specific bus numbers were all liked by testers – helps them make more "informed" decisions in comparing routes <em class='highlighted'>+1</em></li>
+						    </ul>
+						    <li>In general, users were not convinced one view is currently better than the other.</li></ul>
+						    <li>"I picked the first option because it was at the top of the list – I assume the app put it there for a reason"</li>
 					    </ul>
 
 					<h3>Screen 3</h3>

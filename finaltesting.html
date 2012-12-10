@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : TrendyBiz
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120818
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>HFID | Nietzsche | Final Testing</title>
+        <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
+        <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="waypoints.min.js"></script>
+        <script src="scrolling.js"></script>
+    </head>
+    
+    <body>
+    <div id="wrapper">
+	<div id="menu-wrapper">
+		<div id="menu" class="container">
+			<ul>
+				<li class="current_page_item"><a href="index.html">Home</a></li>
+				<li><a href="inspirations.html">Inspirations</a></li>
+				<li><a href="needs.html">Needs Analysis</a></li>
+				<li><a href="design.html">Design Development</a></li>
+				<li><a href="testing.html">Usability Report</a></li>
+				<li><a href="refinement.html">Design Refinement</a></li>
+				<li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
+				<li><a href="finaltesting.html">Final Usability Report</a></li>
+				<li><a href="team.html">The Team</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="logo" class="container">
+		<h1 id="top"><img src="images/NietzscheLogoSmall.png" alt="logo"/></h1>
+		<p>humanizing MBTA transit</p>
+	</div>
+	<!--<div class="divider">&nbsp;</div>-->
+	<div id="page" class="container">
+		<div id="content">
+			<div class="post">
+				<h2 class="title" id="methodology">Testing Methodology</h2>
+				<div class="entry">
+					<p>The most important decision we made as part of this round of testing was in how we implemented a prototype for testing. Unfortunately, a technical error meant that much of the work we completed over Thanksgiving Break was lost, leaving us very little time to implement something we could test with. Perhaps the largest technical obstacle was creating the delayed route data testers would interact with. Google Maps provides us with a great deal of information, but the existing architecture of our prototype would require a great deal of work to create "fake" future data.</p>
+					<p>Faced with this and the need to work on fixing other heuristic violations, we decided to go back to previous design tools. A paper prototype is not of sufficient fidelity for this test, but we created a "digital paper prototype" using Microsoft PowerPoint. The use of animations and hyperlinking between pages did not provide all functionality of our prototype (e.g. auto-populating lists), but sufficient functionality for the features we were testing. This format provided several advantages over modifying our Javascript-based prototype:<br/>
+					<ul>
+						<li><strong>Short development time:</strong> It took approximately ~1.5 hours to create the static images and assemble the PowerPoint. For comparison, it would have taken at least 1.5 hours to create the fake data for our prototype, let alone integrate this into our prototype.</li>
+						<li><strong>Resolved heuristic violations:</strong> Creating static images allowed us to address all of the major heuristic violations raised during the heuristic evaluation. If left unchanged, these violations would have undoubtedly influenced our testers ability to complete the scenario and therefore skew our data.</li>
+					</ul>
+				    </p>
+				    <p>The powerpoint for Design A can be found <a href="images/test_a.pptx">here</a>. The powerpoint for Design B can be found <a href="images/text_b.pptx">here</a>.</p>
+				    <p><img src="images/delay_mockups.png" alt="potential ways to represent delays" width="100%"/></p>
+				</div>
+            </div>
+            
+            <div class="#post">
+				<h2 class="title" id="overview">Overview and General Comments</h2>
+				<div class="entry">
+					<p>Testing showed that Design A is clearly superior to Design B both in terms of how quickly testers completed the scenario and the confidence with which they did so. Comments and observations from this process also confirmed some of our general design decisions (e.g. using a graphical comparison of route options) and emphasized the need for refinement in certain features (e.g. the sliding tabs and the "I missed the bus" button).</p>
+				</div>
+			</div>
+
+			<div class="#post">
+				<h2 class="title" id="metricevaluation">Metric Evaluation</h2>
+				<div class="entry">
+					<p>The two metrics we planned to measure in this round of testing were time (the time between the user being alerted to the error and the user recovering from that error) and confidence (how confident the user felt about their new route).</p>
+					<p>Time was measured by starting a stopwatch when the error notification appeared on the screen and stopping the stopwatch then the tester declared they felt they had completed the task.</p>
+					<p>Confidence was measured by asking the tester to state their confidence in their new route on a scale of 0 to 5 (0 meaning "I have no idea what's going on", 5 meaning "I was never confused or uncertain during the test").</p>
+					<p>We originally intended to quantitatively measure whether the testers noticed all differences in the route, but this proved difficult for two reasons. Firstly, many of the testers of Design B would end up going back to the graphical comparison view before declaring they had completed the task. Whilst they technically were as aware of the route changes as testers of Design A, this recognition happened later in the interaction (see, time). Secondly, it was impractical to make the test completely realistic, namely our testers did not spend 30 minutes with their initial route before an error occurring. Many users commented that they were not 100% sure of the differences between routes because they had simply not paid as thorough attention to their initial route. Future testing would ideally be conducted in the field, where the testers would spend "realistic" amounts of time with appropriate parts of the interface.</p>
+					<p>The following table documents the raw and average data collected during the tests:</p>
+					<table>
+						<tr><th></th><th>Design A</th><th>Design B</th></tr>
+						<tr><td>Time Data</td><td>29.2, 18.5, 65.8</td><td>78.7, 43.5, 29</td></tr>
+						<tr><td>Average Times</td><td>37.8</td><td>50.2</td></tr>
+						<tr><td>Confidence Data</td><td>5, 4, 4</td><td>2, 3, 2</td></tr>
+						<tr><td>Average Confidence</td><td>4.7</td><td>2.3</td></tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="#post">
+				<h2 class="title" id="interpretation">Interpretation</h2>
+				<div class="entry">
+					<p>The data from our small-scale formal testing shows that Design A allows users to recover from errors almost twice as quickly and with nearly double the confidence. Even if these specifics margins did not hold true for a larger test, it seems clear that Design A is the superior option.Based on the quantitative data above and the qualitative data collected during the tests, we can take away the following insights:<br/>
+						<ul>
+							<li><strong>Wording is important:</strong> fter the first two tests, we changed the wording of our alert notifications. Originally, the notification alerted users to "errors", informed them there were alternative routes, and offered to "show them". Some testers interpreted an error to mean a program error and expected the "show me" button to highlight the error that had occurred.
+
+                            We therefore edited the notification to include "delay alert" and make it more explicit that the application had selected a new route. </li>
+
+                            <li><strong>Graphical comparisons are still ideal:</strong> Testers of Design A were consistently more confident in describing the differences between their old and new route. Testers of Design B often returned to the graphical comparison screen during the test, or did so when asked to explain the differences between the routes. 
+
+                            Upon reflection, this should not come as a serious surprise, given that we chose to use a graphical comparison view for our general design. Lo-fidelity prototype testing early in the phase told us that users are better able to notice differences across multiple options with graphics rather than words. This round of formal user testing not only helped us refine our vision of the error recovery feature, but also confirmed that a graphical comparison view is a powerful feature of application's design.</li>
+
+                            <li><strong>Sometimes interfaces are too quick for users:</strong> Testers of Design B were consistently confused after dismissing the delay notification. There was no "major" change between the two screens, leading the testers to fixate on the triangular alert symbol and accompanying flag. 
+
+                            One tester suggested implementing a loading screen that informed the users "loading a new route" to help make it clear that these were in fact different screens. One tester was not even aware the steps of the route had changed until asked about it.
+
+                            It is worth pointing out that many testers also said that since they had not spent much time with the original route, it was harder to remember the steps and therefore harder to notice what had changed. This has been a consistent problem in our user testing, namely that our testing is not able to replicate the physical and temporal movement involved in travelling. Regardless, our testing made it clear that users need changes to be obvious and visible.</li>
+
+                            <li><strong>Visibility makes a difference:</strong> Fundamentally, testers seemed to respond better to Design A because it made the process of selecting a new route more visible by showing the tester that the old route was invalid, presenting them with alternative routes compared to the old route, and making them select a new one. This puts the user more in control of the process and greatly improved confidence.
+
+                            The suggestion to add a "new route loading" page is very intriguing and we would have liked to modify Design B to include this, but there was no available time. This could potentially increase user confidence by making the system's actions more visible without requiring the user to execute the actions themselves.</li>
+                        </ul>
+					</p>
+				</div>
+			</div>
+
+			<div class="#post">
+				<h2 class="title" id="future">Future Work</h2>
+				<div class="entry">
+					<p>As mentioned above, we would like to test a modified version of Design B that includes the "new route loading" page. We will not speculate about the possible results of this test here, but future work should consider this feature further before considering implementation.</p> 
+ 
+                    <p>We do not intend on implementing this feature in the prototype due at the end of the project. This is partially due to the extremely limited time remaining until the end of the project, but also because "real" implementation of this feature would require using data from the MBTA as well as Google Maps. This change would affect the entire project, not just this single feature. Using the realtime train/bus data from the MBTA would be essential to actual implementation of this design, but beyond the scope of this project.</p>
+
+                    <p>In terms of what we would implement if more time were available, we would implement a largely unchanged version of Design A. Testing did not reveal any major usability issues with this design, although there were two prominent comments about our overall design:<br/>
+						<ul>
+							<li>The functionality of the tabs is not clear when presented as a static button. It is increasingly apparent that the swiping motion is critical in making their use obvious. We have explained in previous documents our intention to make the tabs "bounce" when tapped, suggesting to the user that interaction in that direction is required.
+
+                            One tester suggested changing the visual style of the tabs to something closer to the physical world, e.g. tabs on a manilla envelope. He suggested that particular design since the tabs slightly overlap, something that traditional buttons do not do.</li>
+
+                            <li>Several testers commented about the "I missed the bus" button. This is perhaps due to the fact we explained at the beginning that we were testing a feature related to recovering from delays, but this is not the first time testing has shown user confusion about what the button does or why it is there. 
+
+                            It occurred to us during this round of testing that the "I missed the bus" button is a way of manually invoking the error recovery mode. It seems that we need to invest more thought into where and when this button is visible. We have already changed the design once to make the button visible only within appropriate steps, but perhaps further changes are required to make the button only available when the user is approaching a connection. Again, future work needs to create a prototype that can better replicate the physical and temporal movement of users.</li>
+                        </ul>
+					</p>
+
+				</div>
+			</div>
+
+			<div style="clear: both;">&nbsp;</div>
+		</div>
+		<!-- end #content -->
+		<div id="sidebar">
+			<div>
+				<h2>Navigation</h2>
+				<ul class="list-style1">
+					<li><a href="#methodology">Testing Methodology</a></li>
+				    <li><a href="#overview">Overview and General Comments</a></li>
+				    <li><a href="#metricevaluation">Metric Evaluation</a></li>
+				    <li><a href="#interpretation">Interpretation</a></li>
+				    <li><a href="#future">Future Work</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- end #sidebar -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+
+
+</div>
+
+<div id="footer">
+	<p>© 2012. All rights reserved. Design by <a href="http://www.freecsstemplates.org">FCT</a>.  Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

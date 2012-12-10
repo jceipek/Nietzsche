@@ -6,7 +6,7 @@ Released for free under a Creative Commons Attribution 2.5 License
 */
 
 /*
- * Some edits by Julian Ceipek (10/12/2012)
+ * Some edits by Julian Ceipek (10/12/2012) and Laurence Toal (various dates)
  */
 
 body {
@@ -48,7 +48,7 @@ ul, ol {
 
 a {
 	text-decoration: none;
-	color: #731F1F;
+	color: #900000;
 }
 
 a:hover {
@@ -60,7 +60,7 @@ a:hover {
 }
 
 .container {
-	width: 1000px;
+	width: 100%;
 	margin: 0px auto;
 }
 
@@ -210,7 +210,6 @@ a:hover {
 #menu a {
 	display: block;
 	padding: 0px 15px;
-	/background: url(images/img10.png) no-repeat right 50%;
 	line-height: 52px;
 	text-decoration: none;
 	text-transform: lowercase;
@@ -236,6 +235,7 @@ a:hover {
 	overflow: hidden;
 	width: 960px;
 	padding: 20px 20px 40px 20px;
+	position: relative;
 }
 
 /* Content */
@@ -248,6 +248,10 @@ a:hover {
 
 .post {
 	overflow: hidden;
+}
+
+.post h2 {
+	letter-spacing: -3px;
 }
 
 .post .title {
@@ -329,6 +333,9 @@ a:hover {
 	margin: 0px;
 	padding: 0px 0px 0px 0px;
 	color: #787878;
+	z-index: 1;
+	position: absolute;
+	margin-left: 640px;
 }
 
 #sidebar h2 {
@@ -342,6 +349,11 @@ a:hover {
 
 #sidebar a:hover {
 	text-decoration: underline;
+}
+
+.sticky #sidebar {
+	position: fixed;
+	top: 0;
 }
 
 /* Calendar */
