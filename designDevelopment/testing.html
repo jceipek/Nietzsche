@@ -17,30 +17,28 @@ Released   : 20120818
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>HFID | Nietzsche | User Testing</title>
 <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
-<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../style.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src="waypoints.min.js"></script>
-<script src="scrolling.js"></script>
+<script src="../waypoints.min.js"></script>
+<script src="../scrolling.js"></script>
 </head>
 <body>
 <div id="wrapper">
 	<div id="menu-wrapper">
 		<div id="menu" class="container">
 			<ul>
-				<li class="current_page_item"><a href="index.html">Home</a></li>
-				<li><a href="inspirations.html">Inspirations</a></li>
-				<li><a href="needs.html">Needs Analysis</a></li>
-				<li><a href="design.html">Design Development</a></li>
-				<li><a href="testing.html">Usability Report</a></li>
-				<li><a href="refinement.html">Design Refinement</a></li>
-				<li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
-				<li><a href="finaltesting.html">Final Usability Report</a></li>
-				<li><a href="team.html">The Team</a></li>
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../inspirations.html">Inspirational Designs</a></li>
+				<li><a href="../needsAnalysis/needs.html">Phase 1: Needs Analysis</a></li>
+				<li><a href="design.html">Phase 2: Design Development</a></li>
+				<li><a href="../designRefinement/refinement.html">Phase 3: Design Refinement</a></li>
+				<li><a href="../finalRefinement/finalRefinement.html">Phase 4: Final Refinement</a></li>
+				<li><a href="../team.html">Team Contributions</a></li>
 			</ul>
 		</div>
 	</div>
 	<div id="logo" class="container">
-		<h1 id="top"><img src="images/NietzscheLogoSmall.png" alt="logo"/></h1>
+		<h1 id="top"><img src="../images/NietzscheLogoSmall.png" alt="logo"/></h1>
 		<p>humanizing MBTA transit</p>
 	</div>
 	<!--<div class="divider">&nbsp;</div>-->
@@ -55,13 +53,13 @@ Released   : 20120818
 
 				<h2 class="title" id="prototype">Prototype</h2>
 				<div class="entry">
-					<p> Our design has a very limited number of separate screens that update based on user input and environmental context such as time, location, and live tracking data. As such, our prototype consists of a foamcore iPhone (larger than a real iPhone to make testing easier) and several low-resolution representations of screens a user might see as they go through a particular scenario. The philosophy behind our design is to provide multiple levels of information &mdash; brief interaction with the application will provide most-commonly accessed information whereas deeper interaction will show more. This philosophy was inspired by the tasks most commonly completed by our personas. For example, while <a href="needs.html#peter">Peter</a> is very familiar with the train route from his apartment to his work, he needs to check on the status of the train and figure out when we has to head to the station. On the other hand, <a href="needs.html#henryandelise">Henry &amp; Elise</a> need detailed directions of the entire route from their hotel to downtown Boston. Rather than separating these use cases at the top level, we structured the application so that the information Peter needs is available almost immediately whereas Henry &amp; Elise can spend more time interacting with the application to get the information they need. We tried to make this information progression make sense rather than forcing users to "jump through hoops" by <a href="inspirations.html#magicink">overemphasizing interaction</a>.</p>
+					<p> Our design has a very limited number of separate screens that update based on user input and environmental context such as time, location, and live tracking data. As such, our prototype consists of a foamcore iPhone (larger than a real iPhone to make testing easier) and several low-resolution representations of screens a user might see as they go through a particular scenario. The philosophy behind our design is to provide multiple levels of information &mdash; brief interaction with the application will provide most-commonly accessed information whereas deeper interaction will show more. This philosophy was inspired by the tasks most commonly completed by our personas. For example, while <a href="../needsAnalysis/needs.html#peter">Peter</a> is very familiar with the train route from his apartment to his work, he needs to check on the status of the train and figure out when we has to head to the station. On the other hand, <a href="../needsAnalysis/needs.html#henryandelise">Henry &amp; Elise</a> need detailed directions of the entire route from their hotel to downtown Boston. Rather than separating these use cases at the top level, we structured the application so that the information Peter needs is available almost immediately whereas Henry &amp; Elise can spend more time interacting with the application to get the information they need. We tried to make this information progression make sense rather than forcing users to "jump through hoops" by <a href="../inspirations.html#magicink">overemphasizing interaction</a>.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="method">Method</h2>
 				<div class="entry">
-					<p>Unfortunately, very few of the individuals we met during the research phase responded to our follow-up emails. Consequently, most of our test participants were members of the Olin community who identified themselves as infrequent users of public transportation or users unfamiliar with the MBTA system &mdash; people with needs similar to <a href="needs.html#lilah">Lilah's</a>.</p>
+					<p>Unfortunately, very few of the individuals we met during the research phase responded to our follow-up emails. Consequently, most of our test participants were members of the Olin community who identified themselves as infrequent users of public transportation or users unfamiliar with the MBTA system &mdash; people with needs similar to <a href="../needsAnalysis/needs.html#lilah">Lilah's</a>.</p>
 
 					<p>Since our variable-depth design is meant to sidestep the need for different users to complete different tasks, we focused on a single scenario broken down into the following steps:
 					    <ul>
@@ -125,34 +123,27 @@ Released   : 20120818
 						<li>Users liked the layout of the directions page
 						<ul><li>Showing only information needed to navigate the system
 						<li>Linear representation of train routes shows time, which is in fact more useful than seeing them geographically on a map</li></ul>
-						<li>Small maps embedded into directions help reassure users and provide them additional information to help them plan their next steps
-                                                  <em class='highlighted'>+2</em></li>
+						<li>Small maps embedded into directions help reassure users and provide them additional information to help them plan their next steps <em class='highlighted'>+2</em></li>
 						<li>"Points on a line" are more than just points, they are physical places and mean a lot to users</li>
 						<ul><li>Certain wording was confusing, did not agree with the idea that "points are places"</li>
 						<li>Testers assumed that points would reveal extra information when clicked</li></ul>
-						<li>Majority of testers liked seeing the 2 stops immediately before their transfer/destination –
-                                                putting that information in the application is much better than assuming it’s on the train/bus <em class='highlighted'>+1</em></li>
-						<li>Testers liked how the “I missed the train/bus” button was prominent and would keep them within the directions page
-                                                (i.e. they would not have to re-start the whole application to re-route themselves) <em class='highlighted'>+2</em></li>
+						<li>Majority of testers liked seeing the 2 stops immediately before their transfer/destination – putting that information in the application is much better than assuming it’s on the train/bus <em class='highlighted'>+1</em></li>
+						<li>Testers liked how the “I missed the train/bus” button was prominent and would keep them within the directions page (i.e. they would not have to re-start the whole application to re-route themselves) <em class='highlighted'>+2</em></li>
 						<ul><li>However, whilst some testers realized what it was for, they were unsure what the result of pressing it would be</li>
 						<li>Also, placing it at the bottom of the screen makes it disconnected from the user’s current location or predicament</li></ul>
 					    </ul>
 
 					<h3>Screen 4</h3>
 					    <ul>
-						<li>Almost all testers expressed interest in the “Street-view” visuals, but felt that it would be more difficult
-                                                to align a picture on a phone with their surroundings than to simply look for a sign.</li>
+						<li>Almost all testers expressed interest in the “Street-view” visuals, but felt that it would be more difficult to align a picture on a phone with their surroundings than to simply look for a sign.</li>
 					    </ul>
 
 					<h3>General Observations</h3>
 					    <ul>
-						<li>Wording instructions is very challenging. Testers tended to input the information we gave them – in some tests we
-                                                gave the participants the address of the place they were going, in others we only gave them the person’s name.</li>
-						<ul><li>Certain phrasing or language issues were also present in the interface. For example, one tester thought
-                                                (x mi. / y min.) was a rate, not two separate pieces of information.</li></ul>
+						<li>Wording instructions is very challenging. Testers tended to input the information we gave them – in some tests we gave the participants the address of the place they were going, in others we only gave them the person’s name.</li>
+						<ul><li>Certain phrasing or language issues were also present in the interface. For example, one tester thought (x mi. / y min.) was a rate, not two separate pieces of information.</li></ul>
 						<li>One major limitation of the paper prototype was that "clickable" things were not always obviously "clickable"</li>
-						<li>Some users make decisions based on availability of cell signal, assume app needs data.
-                                                Others turn on Airplane Mode to conserve battery, hope app doesn’t need data</li>
+						<li>Some users make decisions based on availability of cell signal, assume app needs data. Others turn on Airplane Mode to conserve battery, hope app doesn’t need data</li>
 					    </ul>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
@@ -162,17 +153,12 @@ Released   : 20120818
 					<p>The major changes we will be making to our design based on testing are:</p>
 
 					<p><em>1. Replace "Street View"</em><br/>
-					Testers generally found the “Street View” concept in screen 4 intriguing, but not useful.
-                                        We will investigate possible alternatives for providing additional information for specific steps, but will not pursue this particular implementation.</p>
+					Testers generally found the “Street View” concept in screen 4 intriguing, but not useful. We will investigate possible alternatives for providing additional information for specific steps, but will not pursue this particular implementation.</p>
 
 					<p><em>2. Refine Screen 2</em><br/>
-					By far the biggest uncertainty in our design is how the final version of screen 2 will look. Users generally seemed more impressed by the graphical view,
-                                        but expressed a desire for more information. It may be possible to incorporate this information into the graphical view, although we must be careful
-                                        not to clutter and confuse the display. Another idea would be to make it obvious that users could access the graphical view from within the text view,
-                                        e.g. click on the color-bar or rotate the display.</p>
+					By far the biggest uncertainty in our design is how the final version of screen 2 will look. Users generally seemed more impressed by the graphical view, but expressed a desire for more information. It may be possible to incorporate this information into the graphical view, although we must be careful not to clutter and confuse the display. Another idea would be to make it obvious that users could access the graphical view from within the text view, e.g. click on the color-bar or rotate the display.</p>
 
-					<p>At this stage it is unclear precisely how we will refine screen 2, but feedback from the test sessions was helpful in identifying important elements
-                                        of each representation.</p>
+					<p>At this stage it is unclear precisely how we will refine screen 2, but feedback from the test sessions was helpful in identifying important elements of each representation.</p>
 
 					<p><em>3. Iron out the details</em><br/>
 
@@ -184,36 +170,28 @@ Released   : 20120818
 					    <li>Use logical icons and symbols; ensure that MBTA transit colors are reserved for the associated routes</li>
 					</ul>
 
-					<p>As mentioned earlier, our design has certain features that were difficult to test in paper.
-                                        This primarily includes modifying the size and arrangement of screens to make use of scrolling – tests gave positive feedback about scaling
-                                        line segments by time, but this means short segments become very information dense and difficult to read.
-                                        Lengthening the directions list would solve this, but we are not sure what impact scrolling will have on user perception.</p>
+					<p>As mentioned earlier, our design has certain features that were difficult to test in paper. This primarily includes modifying the size and arrangement of screens to make use of scrolling – tests gave positive feedback about scaling line segments by time, but this means short segments become very information dense and difficult to read. Lengthening the directions list would solve this, but we are not sure what impact scrolling will have on user perception.</p>
 
-					<p>We would also like to use MBTA GPS data to provide more accurate time information and show users' current locations on their journey,
-                                        actions that are best tested as a user actually goes through their journey, not just sitting in a room in front of paper.</p>
+					<p>We would also like to use MBTA GPS data to provide more accurate time information and show users' current locations on their journey, actions that are best tested as a user actually goes through their journey, not just sitting in a room in front of paper.</p>
 
-					<p>Overall, we were impressed at how much we were able to learn from a paper prototype – our test participants posed questions and made
-                                        decisions that did and will continue to force us to refine our design further. It is clear that our next iteration will be a great improvement,
-                                        but many other aspects will still need to be tested.</p>
+					<p>Overall, we were impressed at how much we were able to learn from a paper prototype – our test participants posed questions and made decisions that did and will continue to force us to refine our design further. It is clear that our next iteration will be a great improvement, but many other aspects will still need to be tested.</p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
 				<h2 class="title" id="appendicies">Appendices</h2>
 				<div class="entry">
 					<h3>Team Effort</h3>
-					<p>The breakdown of team effort can be found <a href="team.html#dd">here</a></p>
+					<p>The breakdown of team effort can be found <a href="../team.html#dd">here</a></p>
 
 					<h3>Script</h3>
-				        <p>Our <a href="PaperPrototypingScript.pdf">user test script</a> contains the introductory briefing we gave each user,
-                                        as well as the scenarios we asked them to walk through</p>
+				        <p>Our <a href="PaperPrototypingScript.pdf">user test script</a> contains the introductory briefing we gave each user, as well as the scenarios we asked them to walk through</p>
 
 					<h3>Raw Data</h3>
-					<p>A collection of sticky notes created during team de-briefing after all user tests were completed,
-                                        highlighting the most important feedback we recieved.</p>
-					<p><img src="images/lowfi1.jpg" width="100%"></p>
-					<p><img src="images/lowfi2.jpg" width="100%"></p>
-					<p><img src="images/lowfi3.jpg" width="100%"></p>
-					<p><img src="images/lowfi4.jpg" width="100%"></p>
+					<p>A collection of sticky notes created during team de-briefing after all user tests were completed, highlighting the most important feedback we recieved.</p>
+					<p><img src="lowfi1.jpg" width="100%"></p>
+					<p><img src="lowfi2.jpg" width="100%"></p>
+					<p><img src="lowfi3.jpg" width="100%"></p>
+					<p><img src="lowfi4.jpg" width="100%"></p>
 					<p>(<a href="#top">top of page</a>)</p>
 				</div>
 
