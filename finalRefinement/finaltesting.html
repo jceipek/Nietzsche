@@ -17,10 +17,10 @@ Released   : 20120818
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>HFID | Nietzsche | Final Testing</title>
         <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
-        <link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+        <link href="../style.css" rel="stylesheet" type="text/css" media="screen" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script src="waypoints.min.js"></script>
-        <script src="scrolling.js"></script>
+        <script src="../waypoints.min.js"></script>
+        <script src="../scrolling.js"></script>
     </head>
     
     <body>
@@ -28,25 +28,54 @@ Released   : 20120818
 	<div id="menu-wrapper">
 		<div id="menu" class="container">
 			<ul>
-				<li class="current_page_item"><a href="index.html">Home</a></li>
-				<li><a href="inspirations.html">Inspirations</a></li>
-				<li><a href="needs.html">Needs Analysis</a></li>
-				<li><a href="design.html">Design Development</a></li>
-				<li><a href="testing.html">Usability Report</a></li>
-				<li><a href="refinement.html">Design Refinement</a></li>
-				<li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
-				<li><a href="finaltesting.html">Final Usability Report</a></li>
-				<li><a href="team.html">The Team</a></li>
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../inspirations.html">Inspirational Designs</a></li>
+				<li><a href="../needsAnalysis/needs.html">Phase 1: Needs Analysis</a></li>
+				<li><a href="../designDevelopment/design.html">Phase 2: Design Development</a></li>
+				<li><a href="../designRefinement/refinement.html">Phase 3: Design Refinement</a></li>
+				<li><a href="finalRefinement.html">Phase 4: Final Refinement</a></li>
+				<li><a href="../team.html">Team Contributions</a></li>
 			</ul>
 		</div>
 	</div>
 	<div id="logo" class="container">
-		<h1 id="top"><img src="images/NietzscheLogoSmall.png" alt="logo"/></h1>
+		<h1 id="top"><img src="../images/NietzscheLogoSmall.png" alt="logo"/></h1>
 		<p>humanizing MBTA transit</p>
 	</div>
 	<!--<div class="divider">&nbsp;</div>-->
 	<div id="page" class="container">
 		<div id="content">
+			<div class="post">
+				<h2 class="title" id="plan">Testing Plan</h2>
+				<div class="entry">
+					<h3>Hypothesis</h3>
+					    <p>Our current dynamic prototype is functional in a very basic fashion, but does not do anything fundamentally different or better than other applications. We wish to implement a major feature that would help users determine the best way to recover from errors or delays within the MBTA system (i.e. the "I missed the train button" as seen in earlier mockups).</p>
+					    <p>There are several possible ways of handling this error recovery, ranging from updating information in the background without alerting the user to forcing the user to re-select a route from screen 2. We plan to test two different designs for this feature, measure certain key metrics, and compare the results to determine a quantifiably "better" design.</p>
+					<h3>Plan</h3>
+					    <p>We believe that the three critical factors in error recovery are:
+                            <ol>
+                            	<li>How quickly the user becomes aware of and deals with the error</li>
+                                <li>How confident they are in the decisions they make</li>
+                                <li>Their awareness of the implications of the error</li>
+                            </ol>
+                        </p>    
+
+                        <p>To test this, we will create two prototype designs. Each test subject will complete one scenario using one of the designs. This scenario will involve adding a function to our prototype that causes the current route to become incorrect (e.g. a train is late so the user will be unable to make a connection to another train). Data will be collected for this exercise. After completing the scenario, we will show the alternative design to the test subject and ask for holistic feedback. This feedback will not be used in determining which design is better (since the test is no longer unbiased), but will help us understand the advantages and disadvantages of each design. Since each individual test is so short, we hope to be able to test each design at least three times.</p>
+
+                        <p>The data we plan on measuring includes:
+                            <ul>
+                            	<li>The time it takes the user to notice that there is an error</li>
+                                <li>The time it takes the user to "deal with the situation", i.e. the time between receiving an error message and resolving the issue in a satisfactory manner.</li>
+                                <li>Is the user confident with their new instructions/route?</li>
+                                <li>Is the user fully aware of the implications of the new route?</li>
+                            </ul>
+                        </p>
+
+                    <h3>Interpretation</h3>
+                        <p>We expect that by comparing the two designs based on the factors described above, one design will emerge as being superior from a user perspective. This is the design we will implement in our final prototype. If there is no clear "winner" between the designs, we will consider the holistic feedback more seriously. Furthermore, it is very likely that we will merge the two design, incorporating elements that played a significant role in helping users complete the scenario.</p>
+				</div>
+            </div>
+
 			<div class="post">
 				<h2 class="title" id="methodology">Testing Methodology</h2>
 				<div class="entry">
@@ -57,8 +86,8 @@ Released   : 20120818
 						<li><strong>Resolved heuristic violations:</strong> Creating static images allowed us to address all of the major heuristic violations raised during the heuristic evaluation. If left unchanged, these violations would have undoubtedly influenced our testers ability to complete the scenario and therefore skew our data.</li>
 					</ul>
 				    </p>
-				    <p>The powerpoint for Design A can be found <a href="images/test_a.pptx">here</a>. The powerpoint for Design B can be found <a href="images/text_b.pptx">here</a>.</p>
-				    <p><img src="images/delay_mockups.png" alt="potential ways to represent delays" width="100%"/></p>
+				    <p>The powerpoint for Design A can be found <a href="test_a.pptx">here</a>. The powerpoint for Design B can be found <a href="text_b.pptx">here</a>.</p>
+				    <p><img src="delay_mockups.png" alt="potential ways to represent delays" width="100%"/></p>
 				</div>
             </div>
             
@@ -143,6 +172,7 @@ Released   : 20120818
 			<div>
 				<h2>Navigation</h2>
 				<ul class="list-style1">
+					<li><a href="#plan">Testing Plan</a></li>
 					<li><a href="#methodology">Testing Methodology</a></li>
 				    <li><a href="#overview">Overview and General Comments</a></li>
 				    <li><a href="#metricevaluation">Metric Evaluation</a></li>
