@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : TrendyBiz
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120818
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>HFID | Nietzsche | Final Refinement</title>
+        <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
+        <link href="../style.css" rel="stylesheet" type="text/css" media="screen" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="../waypoints.min.js"></script>
+        <script src="../scrolling.js"></script>
+    </head>
+    
+    <body>
+    <div id="wrapper">
+	<div id="menu-wrapper">
+		<div id="menu" class="container">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="inspirations.html">Inspirations</a></li>
+				<li><a href="needs.html">Needs Analysis</a></li>
+				<li><a href="design.html">Design Development</a></li>
+				<li><a href="testing.html">Usability Report</a></li>
+				<li><a href="refinement.html">Design Refinement</a></li>
+				<li><a href="dynamicprototype.html">Dynamic Prototype</a></li>
+				<li><a href="finaltesting.html">Final Usability Report</a></li>
+				<li><a href="team.html">The Team</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="logo" class="container">
+		<h1 id="top"><img src="../images/NietzscheLogoSmall.png" alt="logo"/></h1>
+		<p>humanizing MBTA transit</p>
+	</div>
+	<!--<div class="divider">&nbsp;</div>-->
+	<div id="page" class="container">
+		<div id="content">
+			<div class="post">
+				<h2 class="title" id="problem">Problem Statement</h2>
+				<div class="entry">
+					<p>Team Nietzsche set out to develop a mobile application that would help inexperienced or infrequent users of the MBTA get from A to B. Whilst there are already hundreds of applications available to aid the public transit experience, these applications fail to address many of the fundamental questions inexperienced users have, namely "What information do <strong>I</strong> need to know?", "which route is best for <strong>me</strong>?", and "what do I do if something goes <strong>wrong</strong>?" There are plenty of applications available that will give directions, but there are no applications that answer these questions. We want to change that.</p>
+				</div>
+            </div>
+            
+            <div class="#post">
+				<h2 class="title" id="solutionoverview">Solution Overview</h2>
+				<div class="entry">
+					<p>Our solution to the problem is to employ a user-centered design approach that answers the questions listed above. The solution should show relevant information when it's needed instead of all information that could be collected. The solution should make the data more visible and understandable, helping the user make more confident decisions. Most importantly, the solution should be more than just a tool. It should proactively help users recover from errors and delays, acting more as an assistant than a tool. This means learning your habits and also using as much real-time data as possible. All of these requirements need to be presented in a fashion that users can quickly, safely, and correctly interpret in the context of travelling on public transportation.</p>
+				</div>
+			</div>
+
+			<div class="#post">
+				<h2 class="title" id="description">Description of Final Interface Design</h2>
+				<div class="entry">
+					<h3>Functionality</h3>
+					    <p>As of 12/9/12, our prototype can
+					    	<ul>
+					    		<li>Search for contacts or places that we have already included (i.e. can't search for anything, only what we have)
+					    		    <ul>
+					    			    <li>The list auto-populates and is scrollable</li>
+					    		    </ul>
+					    		</li>
+					    		<li>View 4 possible routes
+					    			<ul>
+					    				<li>4 is the default limit for Google Maps</li>
+					    			    <li>Routes display mostly correctly, although there are some bugs in the time flags and icon overlap</li>
+					    			    <li>Routes are scrollable</li>
+					    			    <li>Tabs bounce when clicked, slide smoothly along with next screen</li>
+					    			</ul>
+					    		</li>
+                                <li>View specific directions for each route
+                                	<ul>
+                                		<li>Directions are taken from Google Maps - not as helpful as we envision a final product, but adequate for testing</li>
+                                		<li>Maps display for walking directions</li>
+                                		<li>List is scrollable</li>
+                                		<li>ETA bar features correct time</li>
+                                		<li>Tab and slice of previous screen viewable as a touch target</li>
+                                	</ul>
+                                <li>To/From fields can be edited from all screens</li>
+					    	</ul>
+					    </p>
+					    <p>This allows our users to
+					    	<ul>
+					    		<li>Set their start and end points</li>
+                                <li>Compare possible routes</li>
+                                <li>View specific directions for each route</li>
+                                <li>In other words, the basic functionality necessary for getting from A to B, whilst addressing the fundamental questions of "What information do I need to know?", "which route is best for me?".</li>
+                            </ul>
+                        </p>
+
+                    <h3>Interaction Flow</h3>  
+                        <p><img src="interaction_flow.png" alt="interaction flow" width="100%"/></p>
+                    
+                    <h3>Future Work</h3>
+                        <p>Whilst we tried extremely hard to make all of the modifications and refinements outlined in <a href="../designRefinement/..html">Heuristic Evaluation Response</a>, there were certain features that we were unable to address in the time allocated. Specifically:</p>
+                        <h4>Adding text descriptions to line segments</h4>
+                        	<p>Our heuristic evaluators suggested adding a text description to each line segment in the graphical comparison in order to clarify what each segment represented. This would be particularly effective at making sure users understand that a gap means they will be waiting between transit segments. However, when there are multiple segments of only a short duration, icons and text can overlap each other. Ideally this would be fixed by being able to zoom in and out of each route, but this introduces both technical challenges and questions about usability (e.g. What information should be visible when zoomed-in, but not when zoomed out?, Should all routes zoom in simultaneously, or just one at a time?, etc.). Whilst this would be a very useful feature, we decided there was insufficient time to refine and implement it properly.</p>
+                        
+                        <h4>Prevent users from making choices that might leave them stranded</h4>
+                        	<p>Being able to warn users that public transit might not be an appropriate mode of transportation was something we were very excited about during ideation. Our heuristic evaluators thought the same and asked for an indication of this in the graphical comparison. Some solutions are quite crude (i.e. don't display routes that occur at "extreme" times) whilst others are quite elaborate (i.e. integrate with local business data in order to check if a user is going to make it to their destination within operating hours). Given our desire for this to be a "smart" application that operates more like a personal assistant than merely a tool, we did not feel that the "crude" solutions would have been a meaningful use of time. Furthermore, given that the majority of usage of our prototype would take place during regular hours, the likelihood of a tester or user actually seeing this feature was quite small. Thus, we decided to put our resources into higher visibility issues.</p>
+                        
+                        <h4>Adding the "I missed the train/bus" button, i.e. answer the question "what do I do if something goes wrong?"</h4>
+                        	<p>Whilst a prominent feature in our design and something we did extensive testing with, the "I missed the train/bus" button has constantly been a source of confusion for our users. Simply put, our users do not know what to do with the button because they are not expecting to need a way of recovering from errors or delays. No matter where the button was positioned within the interface, the existence of a static button labeled "I missed the train" did not map well to the users' mental models. We feel that a dynamic button that appears or becomes prominent as appropriate (e.g. when a user is close to a connection) is the answer. However, just as the automatic error recovery feature tested in our final usability studies (link), creating the route data necessary for this feature to exist in our dynamic prototype would require considerable work. Rather than simply placing a button into our prototype that lacked any functionality, we decided to omit the button altogether. Implementing this would go hand-in-hand with a full implementation of the automatic error recovery feature.</p>
+                        
+                        <h4>Improving directions so that they better resemble the information format of the mock-ups</h4>
+                            <p>Google Maps provides text instructions, making it very easy for us to put <em>something</em> in the detailed directions page. However, our original concepts used more natural language and also included some additional information that Google lacks. For example, our original tests showed very positive reactions to showing not only the stop a user needs to get off at, but also the two stations preceding. By knowing the immediately preceding stations, users would have a way of knowing "when they ought to start paying attention". Creating our own textual directions would have taken considerable time to architect, implement, and de-bug. Thus, whilst Google's directions are not adequate for our final vision of the product, they were sufficient for this prototype.</p>
+
+                        <h4>Make everything gorgeous and fast</h4>
+                            <p>The look and feel of a product is very important. Most of our graphic design work was aimed at enhancing the usability of our prototype, not on making a product that was aesthetically refined and polished.</p>
+
+                    <h3>Tools</h3>
+                        <p>In order to build our dynamic prototype, we used a combination of HTML, CSS, and Javascript, since those are the languages best known by the majority of our team. This also allowed us to easily interface with the Google Maps API, which brought an element of real-world functionality to our project. The greatest challenges we faced in developing our prototype were figuring out how to ensure that this information is displayed correctly. It would be very easy to create static images that showed hypothetical route information, but we wanted to make sure we understood the problems potentially faced in taking actual route planning information and displaying that in the format we were proposing. Unfortunately, this took considerably more time than expected. Furthermore, by using Google Maps information in screen 2 that dynamically changed with time, we removed the possibility of using a static display for screen 3, since the route information would no longer be consistent. The usage of Google Maps did lead to problems in conducting the final usability test, the details of which are described [link to usability report].</p> 
+
+                        <p>The tools we used were more than adequate for implementing our design, although our decision to make use of the Google Maps API might have been slightly misguided. Far more time was spent trying on software development for our application, rather than refining the usability and design. We would highly recommend that other teams avoid trying to use "real data", no matter how seemingly easy it would be to integrate it. Integrating the Google Maps API early in our project created a raft of issues later in the semester that were very costly in terms of time. </p>
+				</div>
+			</div>
+
+			<div class="#post">
+				<h2 class="title" id="evolution">Design Evolution</h2>
+				<div class="entry">
+					<h3>Changes</h3>
+					    <p>Our overall vision of the product did not substantially change over the course of the semester, but our understanding of how the design would function was constantly challenged by our testers and evaluators. As such, there are many details that had to be exhaustively thought through and developed to create the prototype you see now. Given that our design has only three screens, we feel a screen-by-screen description is the best way of documenting the changes.</p>
+
+					<h3>Screen 1</h3>
+					    <p><img src="screen1_comparisons.png" alt="screen 1 comparisons" width="100%"/></p>
+					    <p>The manner in which users input start and end points in screen 1 has changed very little throughout the project. The major change between the various iterations has been in how data is displayed. This included categorizing information into contacts, places, station names, etc. and making sure the presentation of information was consistent the format used in other iOS applications.</p>
+
+					<h3>Screen 2</h3>
+					    <p><img src="screen2_comparisons.png" alt="screen 2 comparisons" width="100%"/></p>
+					    <p>The single largest change in our design process occurred in deciding how we could best display route information to help users select their optimal route. We prototyped a text-heavy design that displayed important details about each route, such as walking distance, the number of connections, and how often each route would repeat. We also prototyped a graphical view that did not explicitly list this data, but did a better job of comparing the different routes.</p>
+
+                        <p>We believed that the additional information in the textual view would allow users to make a more informed decision and therefore be more confident in their interaction. However, testing showed that whilst the textual view presents more detailed information, the format of that information is not precisely what our users are looking for. For example, our users were less interested in precisely how far they had to walk and more interested in how much time it would take them. Also, the number of connections was not as important as knowing what type of connections, e.g. train-to-train or train-to-bus. </p>
+
+                        <p>Overall, it was easier to explicitly see information about routes in the textual view, but our users preferred the graphical view for its ease of comparison and reduced need for information processing. In other words, it was easier to compare the lengths of lines side by side than to interpret a large set of numbers. </p>
+
+                        <p><img src="screen2_all_comparisons.png" alt="screen 2 comparisons (all)" width="100%"/></p>
+                        <p>Whilst it became clear that a graphical comparison was the optimal way of helping users compare and select routes, there were still many unanswered questions about how they would actually interact with the data on this screen. </p>
+
+                        <h4>Visibility</h4>
+                            <p>Our biggest concern in implementing the graphical comparison was displaying everything effectively in portrait mode. Landscape mode is the more obvious orientation for this sort of design, but portrait mode is how smartphones are used the majority of the time. We discussed the possibility of forced screen-rotation or even displaying the textual-view in portrait and the graphical-view in landscape. However, we decided that adapting the view for portrait mode was an acceptable challenge to try and tackle.</p>
+
+                            <p>As such, much thought into what information was necessary and how it could be best displayed. For example, users expressed some confusion about what time flags were only displayed at the start of the first public transit segment and at the end of the entire journey. This is because they are the two most important times in making a decision: the first time tells the user when they must be at a station and the last time informs the user as to when they will arrive at their destination. All other times are relevant only if that route has been selected.</p>
+
+                            <p>Ensuring that the colors and iconography of the graphical view were consistent with those used by the MBTA was paramount. This was easy for the public transit lines, but considerably more difficult for driving, walking, and waiting, since these are not modes with an MBTA-established convention. Luckily, once we began digital implementations, it became clear that there was sufficient room to make the route segments and icons quite large. </p>
+
+                            <p>The greatest difficulty in developing the graphics was representing wait time. In our earliest sketches, the time a user had to wait between public transit segments was represented by empty space. That is, the absence of a transportation method. However, once we began using the Google Maps API, certain routes contained such large waiting periods that users thought they were looking at the end of one route and beginning of a separate route. Several options were discussed, but ultimately this was more of a graphic design question than anything else. We implemented a thin stroke around the entire route to make it clear all segments belonged to a single route. The possibility of creating an icon or adding a text description was also discussed, but spacing and overlap became a major issue (see "Future Work")</p>
+
+                        <h4>Navigation</h4>
+                            <p>We anticipated that the greatest problem we would face in the graphical comparison view would be fitting all the graphical information into such a small display. However, the greatest difficulty our users faced was actually selecting a route and navigating to the detailed directions page. The original concept sketch shows that users would tap on a route, summoning a small display overlapping the route onto a map and a "Go!" button. We felt that there was insufficient room to display a map, as well as the fact that a map would not have helped our personas choose a route. </p>
+
+                            <p>We challenged ourselves to create a mental model that did not rely on obvious navigational buttons (e.g. "next" or "back"). In paper prototyping, our users generally assumed that simply tapping on a route would take them to the next screen. Initially we resisted this since the display was pannable and we were worried about the possibility of accidental route selection. However, this interaction was so prevalent that if we were to implement a multi-touch prototype, tapping on a route would be possible to see detailed directions.</p>
+
+                            <p>But given that our dynamic prototype was not multitouch, we needed to develop a touch target for our users. These buttons originally featured arrows or other icons suggesting direction, but our users assumed that these were related to display more of the route, not take them to a whole new page. Thus there was a serious question about the mental model of our application. Conducting a cognitive walkthrough with other class members was instrumental in helping us refine our understanding of this mental model.
+                            
+                            <p>The graphical view is a large canvas, only a small portion of which is displayed at any one time. This canvas is pannable in all directions to see more routes. If we liken this canvas to a large map, the detailed directions page is a separate page that the user can drag on top of the map. <em>Drag</em>. This physical analogy suggested the possibility of using swipe gestures to navigate between the two pages. This would establish a firm relationship between screens 2 and 3, that they both display the same information, but at different levels of detail.</p>
+
+                            <p>Suggesting that users should swipe on the screen proved to be a difficult challenge. The current implementation uses tabs with an embossed pattern that suggests it has a physical quality to it, one that a user might want to drag. This convention is already used extensively throughout iOS, but primarily in vertical swiping applications, not horizontal. Another problem was that users would often tap on the tabs, not swipe. We used a sliding transition, but users assumed this was simply an animation, not a suggestion about the mental model of the design. Ultimately, we ended up using another iOS convention: tapping on the tabs does not let the user navigate to the next screen, but causes the tab to bounce. This proved very effective at compelling users to use a swiping motion, even when using a mouse and keyboard, not a touch screen.</p>
+
+                    <h3>Screen 3</h3>
+                        <p><img src="screen3_comparisons.png" alt="screen 3 comparisons" width="100%"/></p>
+                        <p>The content of the detailed directions view in screen 3 remained largely unchanged throughout the project, but the presentation and arrangement of that content has gone through several iterations. </p>
+
+                        <h4>Simplicity</h4>
+                            <p>One of the primary problems we identified in existing applications is information overload - they provide more information than is actually necessary for users to complete their tasks. Thus, we wanted to ensure that only relevant information is displayed when it is appropriate. This didn't necessarily mean presenting less information, rather that all information presented served a purpose. </p>
+
+                            <p>The original concept scaled each step by duration - shorter segments used less screen space as larger segments. However, it soon became apparent that for journeys that could not be displayed on a single screen without scrolling lost the benefit of this scaling, since not all steps could be compared simultaneously. On the plus side, this gave us more space for each step and allowed us to ensure that the information was as clear and legible as possible. </p>
+
+                        <h4>Consistency</h4>
+                            <p>Our heuristic evaluators pointed out that whilst the Estimated Arrival Time display at the bottom of the screen was useful, it lacked visual consistency with the arrival time flag in the graphical comparison. Thus, we made sure that part of the final line segment was displayed on the ETA bar.</p>
+
+                            <p>Originally, these line segments were displayed at the top of the screen in a horizontal fashion similar to the graphical comparison screen. However, the line segments and text directions were disconnected, decreasing the utility of displaying the line segments at all. We changed these into a vertical display that aligned with the text directions. This not only increased consistency within the screen, but also helped guide users through the list of directions.</p>
+
+                            <p>Also, our heuristic evaluators expressed severe confusion about how to return to the previous screen. As mentioned earlier, our mental model was designed to teach the user that swiping on the screen would return them to the previous page. However, this interaction was not obvious, so it was necessary to create a touch target. Rather than creating a whole new tab or button, we simply stopped the screen from sliding all the way over - this left some of the tab and graphical comparison screen visible. Not only was this a touch target, but a clear indication of what would happen when the user swiped.</p>
+
+                        <h4>Mental Mapping</h4>
+                            <p>The biggest change in this screen involves the placement of the "I missed the train" button. It was originally located at the bottom of the screen, but in initial testing many users thought this was a status display or error message. To address this, we made sure that future prototypes made it as "button-like" as possible, in addition to moving the button to appropriate steps. It did not make sense to our users that they could say "I missed the train" when they are in the final walking direction of their journey. </p>
+
+                            <p>Despite moving the button to appropriate steps, there was still confusion about when it should be pressed or what would happen when it was pressed. The problem seems to stem from the fact that inexperienced users of the MBTA do not plan or progress through their journey expecting an error or delay. Therefore, they do not expect to see a button or feature that would address such a problem. We feel that the best way to deal with this would be to make the button dynamic, i.e. not only will it appear only in relevant steps, but also only at relevant times, such as when a user is within a few minutes of making a transfer or if they have been waiting a station longer than expected.</p>
+
+                    <h3>Screen 4</h3>
+                        <p><img src="screen4_comparisons.png" alt="screen 4 comparisons" width="100%"/></p>
+                        <p>During our ideation, we explored the possibility of a "street-view" style of directions. Rather than simply giving plain text to users, perhaps it would be possible to show them a picture of where they ought to go. Users quickly poked holes in this idea by pointing out that the world can look very different depending on which of the train you exit and that spinning around trying to line up a picture with their surroundings felt no easier or more comforting than simply looking for a sign. Thus, this feature was removed after initial testing.</p>
+
+                    <h3>Evaluation Techniques</h3>
+                        <p>It's very hard to single-out which of the evaluation techniques used over the course of this project was "most valuable" since each offered insight to different aspects of the design. Low-fidelity paper-prototypes challenged our understanding of our personas and were instrumental in determining the direction of our project. For example, we were unsure of whether a textual or graphical representation of possible routes would be the most  effective for our users, but paper-prototyping made it clear the graphical view was what we should pursue. With that said, we found paper-prototyping very limiting when it comes to dynamically changing content or gesture-based interactions.</p>
+
+                        <p>On the opposite side of the scale was a high-fidelity digital-prototype used for the formal usability test. As described in our usability report, there were significant challenges in implementing our particular feature in the dynamic prototype, forcing us to use a lower-fidelity PowerPoint presentation. This had sufficient functionality for the test and also allowed us to address heuristic violations that had not been resolved in the dynamic prototype. This was enough to conduct usability tests that successfully helped us develop our error-recovery feature, but it would have been more useful if we could have integrated this with the full functionality of our final prototype, if for no other reason than demonstration purposes.</p>
+
+                        <p>Perhaps the most useful evaluation technique was the heuristic evaluation. Submitting our prototype to the scrutiny of other class members who were familiar with level of sophistication and principles guiding our process, but not as familiar with our design decisions or user needs led to conversations our team would not have had independently. We needed to justify our design based on technical capabilities and user requirements. Certain concerns raised by the evaluators conflicted with our users, helping us refine and strengthen our personas. Other concerns were extremely valid and raised issues that we were either not aware of or had not found an adequate solution to. For example, we originally intended for users to make a swiping gesture to return from screen 3 to screen 2. The lack of a touch target made this extremely non-apparent to the evaluators, but they provided several useful suggestions for how we might create a touch target that makes the interaction flow more obvious with compromising our other design needs.</p> 
+
+                        <p>Overall, the heuristic evaluation was the most effective evaluation tool because it allowed us to have a highly detailed conversation with other designers and benefit from their perspectives and expertise.</p>
+				</div>
+			</div>
+
+			<div class="#post">
+				<h2 class="title" id="solutionoverview">Presentation</h2>
+				<div class="entry">
+					<p>Our final in-class presentation, complete with speaker notes, can be viewed and downloaded in pdf form <a href="finalPresentation.pdf">here</a></p>
+				</div>
+			</div>
+
+			<div style="clear: both;">&nbsp;</div>
+		</div>
+		<!-- end #content -->
+		<div id="sidebar">
+			<div>
+				<h2>Navigation</h2>
+				<ul class="list-style1">
+					<li><a href="#problem">Problem Statement</a></li>
+				    <li><a href="#solutionovervieww">Solution Overview</a></li>
+				    <li><a href="#description">Description of Final Interface Design</a></li>
+				    <li><a href="#evolution">Design Evolution</a></li>
+				    </a>
+				</ul>
+			</div>
+		</div>
+		<!-- end #sidebar -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+
+
+</div>
+
+<div id="footer">
+	<p>© 2012. All rights reserved. Design by <a href="http://www.freecsstemplates.org">FCT</a>.  Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
