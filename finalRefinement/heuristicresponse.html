@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : TrendyBiz
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120818
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>HFID | Nietzsche | Index</title>
+        <link href="http://fonts.googleapis.com/css?family=Dancing+Script|Open+Sans+Condensed:300" rel="stylesheet" type="text/css" />
+        <link href="../style.css" rel="stylesheet" type="text/css" media="screen" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="../waypoints.min.js"></script>
+        <script src="../scrolling.js"></script>
+    </head>
+    
+    <body>
+    <div id="wrapper">
+	<div id="menu-wrapper">
+		<div id="menu" class="container">
+			<ul>
+				<li><a href="../index.html">Home</a></li>
+				<li><a href="../inspirations.html">Inspirational Designs</a></li>
+				<li><a href="../needsAnalysis/needs.html">Phase 1: Needs Analysis</a></li>
+				<li><a href="../designDevelopment/design.html">Phase 2: Design Development</a></li>
+				<li><a href="../designRefinement/refinement.html">Phase 3: Design Refinement</a></li>
+				<li><a href="finalRefinement/finalRefinement.html">Phase 4: Final Refinement</a></li>
+				<li><a href="../team.html">Team Contributions</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="logo" class="container">
+		<h1 id="top"><img src="../images/NietzscheLogoSmall.png" alt="logo"/></h1>
+		<p>humanizing MBTA transit</p>
+	</div>
+	<!--<div class="divider">&nbsp;</div>-->
+	<div id="page" class="container">
+		<div id="content">
+			<div class="post">
+				<h2 class="title" id="response">Response to Heuristic Evaluation</h2>
+				<div class="entry">
+					<h3>Results</h3>
+					<p>The Heuristic Evaluation report we received contained a lot of great feedback - we were already aware of many of the violations, but there were some interesting observations that we discussed with the evaluators. The major Heuristic Violations are described below along with our plan to correct them:</p>
+
+					<h4>There is no way to save locations for repeat use</h4>
+					    <p>Originally, we designed our application to be "smart" - since Peter consistently goes to the same destination at about the same time, the application could automatically search for that destination when he opens the application at that time.</p>
+
+                        <p>A simpler way of implementing this would be to simply cache previous searches and suggest recent searches in a pre-populated list. For new users, this list will be empty, so the keyboard will automatically display, ready to accept input. For more experienced users, the keyboard will not automatically display, maximizing the available space to display the recent searches list. The list will be ranked based on how frequently a destination is chosen.</p>
+
+                    <h4>The formatting of names and addresses on Screen 1 is confusing</h4>
+                        <p>This is a trivial fix - in developing our prototype, we did not put much thought into what our fake addresses said, but obviously they would use the same format as the rest of iOS.</p>
+
+                    <h4>There is no information about when using public transportation would be a bad idea (e.g. leaving on the last train and not having a way to get back).</h4>
+                        <p>A feature yet to be implemented in our designing is graying-out route options that stray outside of public transit operating hours. If a user tries to select that route, the problem area will be highlighted, making sure the user knows that public transportation will not be sufficient to complete their journey.</p>
+
+                        <p>On a related note, we hope that a full implementation of our design would integrate with local businesses, letting users know that they would be arriving somewhere after the establishment has closed. However, this is well beyond the scope of the project and will not be something we pursue.</p>
+
+                    <h4>There is no indication of walking distances, only times</h4>
+                        <p>Oddly, this change is something that was approved of by our users during testing. They informed us that "0.3 mi" does not mean as much to them as "5 minutes of walking". Furthermore, the evaluation team agreed with us that by putting maps into Screen 3, we would be giving a more meaningful representation of distance than simply a number. We will not be making any changes to our design, but it means adding a map to Screen 3 is a high priority task for us.</p>
+
+                    <h4>Some of the colors and symbols on Screen 2 are unclear</h4>
+                        <p>This was a complaint raised by only one member of the heuristic evaluation team (who was not present at the group discussion) and it is unclear whether this is a mental mapping problem (i.e. black lines do not correspond to driving) or a size problem (i.e. the icons were smaller than they could see). We believe we can solve this in the same manner we intend to address the possibility of color-blind users: including small text over the line segments on Screen 2 that say "Green", "Drive", etc.</p>
+
+                    <h4>There is no way to navigate back from Screen 3 to Screen 2</h4>
+                        <p>The swiping motion that takes the user from Screen 2 to 3 is very important since we want to help suggest to the user that swiping in the opposite motion will get them back. To make this suggestion stronger, the evaluation team suggested making a small part of Screen 2 visible, providing a target for the user to click on. We like this suggestion since there is plenty of white space available on Screen 3, allowing for a more creative and intuitive interaction than a "back" button. This change would also be quite simple implement.</p>
+
+                    <h4>It was not clear that the large gaps in routes on Screen 2 corresponded to wait times</h4>
+                        <p>We are aware of this issue, although the evaluation team provided numerous different suggestions for how we might make the fact more clear. We plan to create 2-3 mock-ups of possible graphics and use the Formal Experiment assignment to find out which one is most obvious.</p>
+
+                    <h4>The functionality of the tabs on Screen 2 was not immediately obvious</h4>
+                        <p>We deliberately slowed the animation of moving from Screen 2 to Screen 3 to try and simulate the swiping motion, but that was not always clear on computers with slower processors. Our mock-ups show that Screen 3 should slide along with the tab, but that was not implemented in the prototype. In talking with the evaluation team, we decided that rather than letting the tabs double as a static button, we should alter the design so that Screen 3 can only be accessed by swiping. If the user simply taps on the tab, it will bounce, suggesting that the user should do something more. This should be particularly effective on iOS where users are familiar with "jiggling" icons (such as when arranging icons on the homepage).</p>
+
+                    <h4>The color of the arrival time flag on Screen 2 is different from the color of the Estimated Arrival Time bar on Screen 3</h4>
+                        <p>This is a great point that we entirely missed. Building that sort of consistency into the design is very important - we will create 2-3 mock-ups for this, as well, although we will probably decide which one to implement ourselves, rather than through user testing.</p>
+
+                    <h4>It was not obvious how the routes were ranked on Screen 2</h4>
+                        <p>Several of the applications we found during initial research made users choose their preferences at the start of every search. We were appalled by this and made sure that our design did not require such cumbersome interactions. Our current design does not make it clear to the user how the routes are ranked - many people have suggested we use a "Hipmunk" style of ranking that allows users to sort by duration, number of connections, walking distance, etc. However, our application is "smart" - it ranks routes by all of these factors, something Hipmunk users will know as "agony". Regardless of whether or not this is the "best" ranking method, we pointed out to the evaluation team that due to relative simplicity of the MBTA system, there are never going to be more than 3-5 possible ways of travelling using public transportation. For a more complex system such as New York, being able to sort by different options might be more important, but for this project we will not commit resources to providing different ranking methods.</p>
+
+                    <h3>Plan</h3>
+                        <p>Many of the redesign plans listed above were items we were already planning on implementing, with a few exceptions. The full redesign plan now includes:</p>
+
+                        <h4>Screen 1</h4>
+                            <ul>
+                            	<li>Fixing formatting of names, addresses</li>
+                            </ul>
+                        
+                        <h4>Screen 2</h4>
+                            <ul>
+                            	<li>Making wait times more obvious</li>
+                            	<li>Adding text descriptions to line segments</li>
+                            	<li>"Graying out" routes that might lead to a user being stranded outside of MBTA operating hours</li>
+                            	<li>Modifying the swiping nature of the tabs
+                            		<ul>
+                            			<li>Had discussed making them thinner to prevent additional overlap, however, users can always pan the routes</li>
+                            			<li>Discussed making tabs semi-transparent</li>
+                            	    </ul>
+                            	</li>
+                            	<li>Fixing bugs in the graphics (icon overlap, time overlap, adding buffer space between the end of the route and the tab, etc.)</li>
+                            	<li>Making the routes scrollable</li>
+                            </ul>
+
+                        <h4>Screen 3</h4>
+                            <ul>
+                            	<li>Adding maps to walking directions</li>
+								<li>Adding "I missed the train/bus" button</li>
+								<li>Modifying the estimated arrival time bar to be consistent with Screen 2</li>
+								<li>Making the directions list scrollable</li>
+								<li>Making some of Screen 2 visible to provide target for going back</li>
+								<li>Improving directions so that they better resemble the information format of the mock-ups</li>
+							</ul>
+
+					    <h4>General</h4>
+					        <ul>
+					        	<li>Make everything gorgeous and fast</li>
+					        	<li>Is changing "here" to an actual place/address worthwhile?</li>
+					        </ul>
+				</div>
+            </div>
+            
+
+
+			<div style="clear: both;">&nbsp;</div>
+		</div>
+		<!-- end #content -->
+		<div id="sidebar">
+			<div>
+				<h2>Navigation</h2>
+				<ul class="list-style1">
+					<li><a href="#response">Response to Heuristic Evaluation</a></li>
+				    </a>
+				</ul>
+			</div>
+		</div>
+		<!-- end #sidebar -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+
+
+</div>
+
+<div id="footer">
+	<p>© 2012. All rights reserved. Design by <a href="http://www.freecsstemplates.org">FCT</a>.  Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
