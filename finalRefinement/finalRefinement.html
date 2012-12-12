@@ -55,7 +55,7 @@ Released   : 20120818
 			<div class="post">
 				<h2 class="title" id="finalTests">Final Usability Test</h2>
 				<div class="entry">
-					<p>Team Nietzsche conducted one final usability study in this last phase. In the interests of ease of naivgation, a sumamry of the study and its results can be found <a href="finaltesting.html">here</a>.</p>
+					<p>Our prototype is functional, but lacks a critical feature: helping users recover from errors or delays in the MBTA system. We conducted a formal usability test to determine what the optimal interaction would be to guide users through the process of recognizing an error and selecting a new route. In the interests of ease of naivgation, a sumamry of the study and its results can be found <a href="finaltesting.html">here</a>.</p>
 				</div>
             </div>
 
@@ -113,10 +113,11 @@ Released   : 20120818
                         </p>
 
                     <h3>Interaction Flow</h3>  
-                        <p><img src="interaction_flow.png" alt="interaction flow" width="100%"/></p>
+                    	<p> Below is a graphical representation of the interaction flow our users experience in using our prototype. Click on the image to make it larger. </p>
+                        <p><a href="../finalRefinement/interaction_flow.png"> <img src="interaction_flow.png" alt="interaction flow" width="100%"/> </a></p>
                     
                     <h3>Future Work</h3>
-                        <p>Whilst we tried extremely hard to make all of the modifications and refinements outlined in <a href="../designRefinement/..html">Heuristic Evaluation Response</a>, there were certain features that we were unable to address in the time allocated. Specifically:</p>
+                        <p>Whilst we tried extremely hard to make all of the modifications and refinements outlined in <a href="../designRefinement/MBTAHeuristicEvaluation.pdf">Heuristic Evaluation Response</a>, there were certain features that we were unable to address in the time allocated. Specifically:</p>
                         <h4>Adding text descriptions to line segments</h4>
                         	<p>Our heuristic evaluators suggested adding a text description to each line segment in the graphical comparison in order to clarify what each segment represented. This would be particularly effective at making sure users understand that a gap means they will be waiting between transit segments. However, when there are multiple segments of only a short duration, icons and text can overlap each other. Ideally this would be fixed by being able to zoom in and out of each route, but this introduces both technical challenges and questions about usability (e.g. What information should be visible when zoomed-in, but not when zoomed out?, Should all routes zoom in simultaneously, or just one at a time?, etc.). Whilst this would be a very useful feature, we decided there was insufficient time to refine and implement it properly.</p>
                         
@@ -204,22 +205,45 @@ Released   : 20120818
                     <h3>Screen 4</h3>
                         <p><img src="screen4_comparisons.png" alt="screen 4 comparisons" width="100%"/></p>
                         <p>During our ideation, we explored the possibility of a "street-view" style of directions. Rather than simply giving plain text to users, perhaps it would be possible to show them a picture of where they ought to go. Users quickly poked holes in this idea by pointing out that the world can look very different depending on which of the train you exit and that spinning around trying to line up a picture with their surroundings felt no easier or more comforting than simply looking for a sign. Thus, this feature was removed after initial testing.</p>
+                       
+				</div>
+			</div>
 
-                    <h3>Evaluation Techniques</h3>
-                        <p>It's very hard to single-out which of the evaluation techniques used over the course of this project was "most valuable" since each offered insight to different aspects of the design. Low-fidelity paper-prototypes challenged our understanding of our personas and were instrumental in determining the direction of our project. For example, we were unsure of whether a textual or graphical representation of possible routes would be the most  effective for our users, but paper-prototyping made it clear the graphical view was what we should pursue. With that said, we found paper-prototyping very limiting when it comes to dynamically changing content or gesture-based interactions.</p>
+			<div class="#post">
+				<h2 class="title" id="evaluations">Evaluation Techniques</h2>
+					<div class="entry">
+						 <p>It's very hard to single-out which of the evaluation techniques used over the course of this project was "most valuable" since each offered insight to different aspects of the design. Low-fidelity paper-prototypes challenged our understanding of our personas and were instrumental in determining the direction of our project. For example, we were unsure of whether a textual or graphical representation of possible routes would be the most  effective for our users, but paper-prototyping made it clear the graphical view was what we should pursue. With that said, we found paper-prototyping very limiting when it comes to dynamically changing content or gesture-based interactions.</p>
 
                         <p>On the opposite side of the scale was a high-fidelity digital-prototype used for the formal usability test. As described in our usability report, there were significant challenges in implementing our particular feature in the dynamic prototype, forcing us to use a lower-fidelity PowerPoint presentation. This had sufficient functionality for the test and also allowed us to address heuristic violations that had not been resolved in the dynamic prototype. This was enough to conduct usability tests that successfully helped us develop our error-recovery feature, but it would have been more useful if we could have integrated this with the full functionality of our final prototype, if for no other reason than demonstration purposes.</p>
 
                         <p>Perhaps the most useful evaluation technique was the heuristic evaluation. Submitting our prototype to the scrutiny of other class members who were familiar with level of sophistication and principles guiding our process, but not as familiar with our design decisions or user needs led to conversations our team would not have had independently. We needed to justify our design based on technical capabilities and user requirements. Certain concerns raised by the evaluators conflicted with our users, helping us refine and strengthen our personas. Other concerns were extremely valid and raised issues that we were either not aware of or had not found an adequate solution to. For example, we originally intended for users to make a swiping gesture to return from screen 3 to screen 2. The lack of a touch target made this extremely non-apparent to the evaluators, but they provided several useful suggestions for how we might create a touch target that makes the interaction flow more obvious with compromising our other design needs.</p> 
 
                         <p>Overall, the heuristic evaluation was the most effective evaluation tool because it allowed us to have a highly detailed conversation with other designers and benefit from their perspectives and expertise.</p>
+                    </div>
+                </div>
+
+
+			<div class="#post">
+				<h2 class="title" id="Presentation">Presentation</h2>
+				<div class="entry">
+					<p>Our final in-class presentation, complete with speaker notes, can be viewed and downloaded in pdf form <a href="finalPresentation.pdf">here</a></p>
 				</div>
 			</div>
 
 			<div class="#post">
-				<h2 class="title" id="solutionoverview">Presentation</h2>
+				<h2 class="title" id="finalproto">Final Prototype and Scenarios</h2>
 				<div class="entry">
-					<p>Our final in-class presentation, complete with speaker notes, can be viewed and downloaded in pdf form <a href="finalPresentation.pdf">here</a></p>
+					<p>Below you can find a link to our final dynamic prototype. The <a href="../designRefinement/dynamicprototype.html#scenarios">scenarios we developed for testing</a> were for testing purposes and had to consider the limited functionality of our prototype. Given the increase functionality of our prototype, we have refined these scenarios to highlight our full functionality.</p>
+
+				<h3>Scenario: What do I need to know?</h3>
+					<p>Peter is a recent graduate of the Harvard Business School working at a well-known company in the Financial District. Punctuality is his middle name - being late if simply out of the question. That's what he hates about using public transportation to get to work everyday - it's a lot cheaper and easier than driving, but the variability means he has to waste time arriving at stations early. And if there's anything Peter hates more than being late, it's wasting time. Peter wants to know when he needs to get to the station and when he's going to arrive at his destination.</p>
+
+					<p>Today Peter is going to visit his friend Bob after work. So he opens up Nietzsche, types in B...o...there's the address. He taps it and sees the options for getting there. He roughly knows which steps to take, but is more concerned in knowing exactly when he needs to be at his first station and when he'll get to Bob's.</p>
+
+				<h3>Scenario: Which route is best for me?</h3>
+					<p>Samantha is a single mother of two young children, aged 2 and 6. She lives in the suburbs and doesn't have much trouble getting around, but driving into Boston and dealing with the stress of traffic and parking is just too much on top of the stress of looking after her kids. Public transit isn't easy, but it's easier....sometimes. Leading a 2 year and a 6 year old through a crowded station can be really tough, let alone entertaining them while waiting for the train. Sam needs to be able to balance all of these factors when picking a route.</p>
+
+					<p>Sam wants to do some shopping on Newbury Street today, but she needs to give the kids some sort of incentive to keep their machetes at home . . . better promise them ice cream (it's a good motivator). So, while keeping an eye and a half on her kids on the jungle gym, she finds the easiest route to the kids' favorite Ben and Jerry's, quickly swipes over to the detailed directions screen to check how to get to the nearest station from the park, and prepares to rescue everyone else from the little monsters' latest plans for world domination.</p>
 				</div>
 			</div>
 
@@ -230,10 +254,15 @@ Released   : 20120818
 			<div>
 				<h2>Navigation</h2>
 				<ul class="list-style1">
-					<li><a href="#problem">Problem Statement</a></li>
-				    <li><a href="#solutionovervieww">Solution Overview</a></li>
-				    <li><a href="#description">Description of Final Interface Design</a></li>
+					<li><a href="heuristicresponse.html">Heuristic Evaluation Response</a>
+					<li><a href="finaltesting.html">Formal Usability Report</a>
+					<li><a href="#problem">Refined Problem Statement</a></li>
+				    <li><a href="#solutionoverview">Solution Overview</a></li>
+				    <li><a href="#description">Final Design Description</a></li>
 				    <li><a href="#evolution">Design Evolution</a></li>
+				    <li><a href="#evaluations">Reflection on Evaluation Techniques</a></li>
+				    <li><a href="#Presentation">Final Presentation</a></li>
+				    <li><a href="#finalproto">Final Dynamic Prototype </a></li>
 				    </a>
 				</ul>
 			</div>
